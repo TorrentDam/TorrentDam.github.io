@@ -1,35 +1,16 @@
-'use strict';
-import * as $j_main$002dsw from "./main-sw.js";
-function $s_Ldefault_ServiceWorker__init__V() {
-  $m_Ldefault_ServiceWorker$().init__V()
-}
-/** @constructor */
-function $c_Ldefault_ServiceWorker$() {
-  /*<skip>*/
-}
-$c_Ldefault_ServiceWorker$.prototype = new $j_main$002dsw.$h_O();
-$c_Ldefault_ServiceWorker$.prototype.constructor = $c_Ldefault_ServiceWorker$;
-/** @constructor */
-function $h_Ldefault_ServiceWorker$() {
-  /*<skip>*/
-}
-$h_Ldefault_ServiceWorker$.prototype = $c_Ldefault_ServiceWorker$.prototype;
-$c_Ldefault_ServiceWorker$.prototype.init__V = (function() {
-  $j_main$002dsw.$m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().info("ServiceWorker.init")
-});
-var $d_Ldefault_ServiceWorker$ = new $j_main$002dsw.$TypeData().initClass({
-  Ldefault_ServiceWorker$: 0
-}, false, "default.ServiceWorker$", {
-  Ldefault_ServiceWorker$: 1,
-  O: 1
-});
-$c_Ldefault_ServiceWorker$.prototype.$classData = $d_Ldefault_ServiceWorker$;
-var $n_Ldefault_ServiceWorker$;
-function $m_Ldefault_ServiceWorker$() {
-  if ((!$n_Ldefault_ServiceWorker$)) {
-    $n_Ldefault_ServiceWorker$ = new $c_Ldefault_ServiceWorker$()
-  };
-  return $n_Ldefault_ServiceWorker$
-}
-$s_Ldefault_ServiceWorker__init__V();
+(function(){
+'use strict';Object.freeze({assumingES6:!0,productionMode:!0,linkerVersion:"1.5.1",fileLevelThis:this});var g=Math.imul,h=Math.clz32,l;function m(a){for(var b in a)return b}
+function p(a){switch(typeof a){case "string":return"java.lang.String";case "number":return"number"===typeof a&&(a|0)===a&&1/a!==1/-0?a<<24>>24===a?"java.lang.Byte":a<<16>>16===a?"java.lang.Short":"java.lang.Integer":"java.lang.Float";case "boolean":return"java.lang.Boolean";case "undefined":return"java.lang.Void";default:return null===a?a.u():a instanceof q?"java.lang.Long":a&&a.$classData?a.$classData.name:null.v()}}var t=0,u=new WeakMap;
+function v(a){switch(typeof a){case "string":return w(a);case "number":a=+a;x||(x=new y);var b=x;var d=a|0;d===a&&-Infinity!==1/a?a=d:(b.o[0]=a,a=(b.g[0]|0)^(b.g[1]|0));return a;case "bigint":b=0;for(a<BigInt(0)&&(a=~a);a!==BigInt(0);)b^=Number(BigInt.asIntN(32,a)),a>>=BigInt(32);return b;case "boolean":return a?1231:1237;case "undefined":return 0;case "symbol":return a=a.description,void 0===a?0:w(a);default:if(null===a)return 0;b=u.get(a);void 0===b&&(t=b=t+1|0,u.set(a,b));return b}}
+function z(){}z.prototype.constructor=z;function A(){}A.prototype=z.prototype;z.prototype.n=function(){return v(this)};z.prototype.p=function(){var a=this.n();return p(this)+"@"+(+(a>>>0)).toString(16)};z.prototype.toString=function(){return this.p()};function B(a){if("number"===typeof a){this.a=Array(a);for(var b=0;b<a;b++)this.a[b]=null}else this.a=a}B.prototype=new A;B.prototype.constructor=B;function C(a){if("number"===typeof a){this.a=Array(a);for(var b=0;b<a;b++)this.a[b]=!1}else this.a=a}
+C.prototype=new A;C.prototype.constructor=C;function D(a){this.a="number"===typeof a?new Uint16Array(a):a}D.prototype=new A;D.prototype.constructor=D;function E(a){this.a="number"===typeof a?new Int8Array(a):a}E.prototype=new A;E.prototype.constructor=E;function F(a){this.a="number"===typeof a?new Int16Array(a):a}F.prototype=new A;F.prototype.constructor=F;function G(a){this.a="number"===typeof a?new Int32Array(a):a}G.prototype=new A;G.prototype.constructor=G;
+function H(a){if("number"===typeof a){this.a=Array(a);for(var b=0;b<a;b++)this.a[b]=l}else this.a=a}H.prototype=new A;H.prototype.constructor=H;function I(a){this.a="number"===typeof a?new Float32Array(a):a}I.prototype=new A;I.prototype.constructor=I;function J(a){this.a="number"===typeof a?new Float64Array(a):a}J.prototype=new A;J.prototype.constructor=J;
+function K(){this.l=this.b=null;this.m=0;this.q=null;this.c="";this.f=this.k=void 0;this.name="";this.isJSClass=this.isArrayClass=this.isInterface=this.isPrimitive=!1;this.isInstance=void 0}function L(a,b,d,c){var e=new K;e.b={};e.q=a;e.c=b;e.f=f=>f===e;e.name=d;e.isPrimitive=!0;e.isInstance=()=>!1;void 0!==c&&(e.k=M(e,c));return e}function N(a,b,d){var c=new K,e=m(a);c.b=d;c.c="L"+b+";";c.f=f=>!!f.b[e];c.name=b;c.isInterface=!1;c.isInstance=f=>!!(f&&f.$classData&&f.$classData.b[e]);return c}
+function M(a,b,d){var c=new K;b.prototype.$classData=c;var e="["+a.c;c.b={e:1,w:1,h:1};c.l=a;c.m=1;c.c=e;c.name=e;c.isArrayClass=!0;c.f=d||(f=>c===f);c.isInstance=f=>f instanceof b;return c}var O=new K;O.b={e:1};O.c="Ljava.lang.Object;";O.f=a=>!a.isPrimitive;O.name="java.lang.Object";O.isInstance=a=>null!==a;O.k=M(O,B,a=>{var b=a.m;return 1===b?!a.l.isPrimitive:1<b});z.prototype.$classData=O;L(void 0,"V","void",void 0);L(!1,"Z","boolean",C);L(0,"C","char",D);L(0,"B","byte",E);L(0,"S","short",F);
+L(0,"I","int",G);var P=L(null,"J","long",H);L(0,"F","float",I);L(0,"D","double",J);function y(){this.o=this.g=this.d=null;x=this;this.d=new ArrayBuffer(8);this.g=new Int32Array(this.d,0,2);new Float32Array(this.d,0,2);this.o=new Float64Array(this.d,0,1);this.g[0]=16909060;new Int8Array(this.d,0,8)}y.prototype=new A;y.prototype.constructor=y;y.prototype.$classData=N({t:0},"java.lang.FloatingPointBits$",{t:1,e:1});var x;function R(){}R.prototype=new A;R.prototype.constructor=R;function S(){}
+S.prototype=R.prototype;
+function T(a,b){if(0===(-2097152&b))b=""+(4294967296*b+ +(a>>>0));else{var d=(32+h(1E9)|0)-(0!==b?h(b):32+h(a)|0)|0,c=d,e=0===(32&c)?1E9<<c:0;c=0===(32&c)?5E8>>>(31-c|0)|0|0<<c:1E9<<c;var f=a,k=b;for(a=b=0;0<=d&&0!==(-2097152&k);){var n=f,r=k,W=e,Q=c;if(r===Q?(-2147483648^n)>=(-2147483648^W):(-2147483648^r)>=(-2147483648^Q))n=k,r=c,k=f-e|0,n=(-2147483648^k)>(-2147483648^f)?-1+(n-r|0)|0:n-r|0,f=k,k=n,32>d?b|=1<<d:a|=1<<d;d=-1+d|0;n=c>>>1|0;e=e>>>1|0|c<<31;c=n}d=k;if(0===d?-1147483648<=(-2147483648^
+f):-2147483648<=(-2147483648^d))d=4294967296*k+ +(f>>>0),f=d/1E9,e=f/4294967296|0,c=b,b=f=c+(f|0)|0,a=(-2147483648^f)<(-2147483648^c)?1+(a+e|0)|0:a+e|0,f=d%1E9|0;d=""+f;b=""+(4294967296*a+ +(b>>>0))+"000000000".substring(d.length|0)+d}return b}function U(){}U.prototype=new A;U.prototype.constructor=U;U.prototype.$classData=N({s:0},"org.scalajs.linker.runtime.RuntimeLong$",{s:1,e:1,h:1});var V;
+function w(a){for(var b=0,d=1,c=-1+(a.length|0)|0;0<=c;)b=b+g(65535&(a.charCodeAt(c)|0),d)|0,d=g(31,d),c=-1+c|0;return b}function q(a,b){this.j=a;this.i=b}q.prototype=new S;q.prototype.constructor=q;q.prototype.n=function(){return this.j^this.i};q.prototype.p=function(){V||(V=new U);var a=this.j,b=this.i;return b===a>>31?""+a:0>b?"-"+T(-a|0,0!==a?~b:-b|0):T(a,b)};q.prototype.$classData=N({r:0},"org.scalajs.linker.runtime.RuntimeLong",{r:1,y:1,e:1,h:1,x:1});l=new q(0,0);P.q=l;
+}).call(this);
 //# sourceMappingURL=sw.js.map
