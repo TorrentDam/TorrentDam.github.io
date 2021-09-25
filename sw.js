@@ -1,9 +1,10 @@
 (function(){
 'use strict';
 var $linkingInfo = Object.freeze({
+  "esVersion": 6,
   "assumingES6": true,
   "productionMode": false,
-  "linkerVersion": "1.5.1",
+  "linkerVersion": "1.7.0",
   "fileLevelThis": this
 });
 var $imul = Math.imul;
@@ -1122,6 +1123,26 @@ $c_RTLong$.prototype.org$scalajs$linker$runtime$RuntimeLong$$toDouble__I__I__D =
     return ((4.294967296E9 * hi) + $uD((lo >>> 0)))
   }
 });
+$c_RTLong$.prototype.org$scalajs$linker$runtime$RuntimeLong$$toFloat__I__I__F = (function(lo, hi) {
+  if ((hi < 0)) {
+    var lo$1 = ((-lo) | 0);
+    var hi$1 = ((lo !== 0) ? (~hi) : ((-hi) | 0));
+    var abs__lo = lo$1;
+    var abs__hi = hi$1
+  } else {
+    var abs__lo = lo;
+    var abs__hi = hi
+  };
+  var hi$2 = abs__hi;
+  if (((((-2097152) & hi$2) === 0) || ((65535 & abs__lo) === 0))) {
+    var compressedAbsLo = abs__lo
+  } else {
+    var compressedAbsLo = (32768 | ((-65536) & abs__lo))
+  };
+  var x = abs__hi;
+  var absRes = ((4.294967296E9 * $uD((x >>> 0))) + $uD((compressedAbsLo >>> 0)));
+  return $fround(((hi < 0) ? (-absRes) : absRes))
+});
 $c_RTLong$.prototype.fromInt__I__RTLong = (function(value) {
   return new $c_RTLong(value, (value >> 31))
 });
@@ -1169,35 +1190,23 @@ $c_RTLong$.prototype.divideImpl__I__I__I__I__I = (function(alo, ahi, blo, bhi) {
       return 0
     }
   } else {
-    var aAbs__lo;
-    var aAbs__hi;
     if ((ahi < 0)) {
       var lo$1 = ((-alo) | 0);
       var hi = ((alo !== 0) ? (~ahi) : ((-ahi) | 0));
-      var $$x1__lo = lo$1;
-      var $$x1__hi = hi;
-      aAbs__lo = $$x1__lo;
-      aAbs__hi = $$x1__hi
+      var aAbs__lo = lo$1;
+      var aAbs__hi = hi
     } else {
-      var $$x2__lo = alo;
-      var $$x2__hi = ahi;
-      aAbs__lo = $$x2__lo;
-      aAbs__hi = $$x2__hi
+      var aAbs__lo = alo;
+      var aAbs__hi = ahi
     };
-    var bAbs__lo;
-    var bAbs__hi;
     if ((bhi < 0)) {
       var lo$2 = ((-blo) | 0);
       var hi$1 = ((blo !== 0) ? (~bhi) : ((-bhi) | 0));
-      var $$x3__lo = lo$2;
-      var $$x3__hi = hi$1;
-      bAbs__lo = $$x3__lo;
-      bAbs__hi = $$x3__hi
+      var bAbs__lo = lo$2;
+      var bAbs__hi = hi$1
     } else {
-      var $$x4__lo = blo;
-      var $$x4__hi = bhi;
-      bAbs__lo = $$x4__lo;
-      bAbs__hi = $$x4__hi
+      var bAbs__lo = blo;
+      var bAbs__hi = bhi
     };
     var absRLo = $p_RTLong$__unsigned_$div__I__I__I__I__I(this, aAbs__lo, aAbs__hi, bAbs__lo, bAbs__hi);
     if (((ahi ^ bhi) >= 0)) {
@@ -1231,35 +1240,23 @@ $c_RTLong$.prototype.remainderImpl__I__I__I__I__I = (function(alo, ahi, blo, bhi
       return alo
     }
   } else {
-    var aAbs__lo;
-    var aAbs__hi;
     if ((ahi < 0)) {
       var lo$1 = ((-alo) | 0);
       var hi = ((alo !== 0) ? (~ahi) : ((-ahi) | 0));
-      var $$x1__lo = lo$1;
-      var $$x1__hi = hi;
-      aAbs__lo = $$x1__lo;
-      aAbs__hi = $$x1__hi
+      var aAbs__lo = lo$1;
+      var aAbs__hi = hi
     } else {
-      var $$x2__lo = alo;
-      var $$x2__hi = ahi;
-      aAbs__lo = $$x2__lo;
-      aAbs__hi = $$x2__hi
+      var aAbs__lo = alo;
+      var aAbs__hi = ahi
     };
-    var bAbs__lo;
-    var bAbs__hi;
     if ((bhi < 0)) {
       var lo$2 = ((-blo) | 0);
       var hi$1 = ((blo !== 0) ? (~bhi) : ((-bhi) | 0));
-      var $$x3__lo = lo$2;
-      var $$x3__hi = hi$1;
-      bAbs__lo = $$x3__lo;
-      bAbs__hi = $$x3__hi
+      var bAbs__lo = lo$2;
+      var bAbs__hi = hi$1
     } else {
-      var $$x4__lo = blo;
-      var $$x4__hi = bhi;
-      bAbs__lo = $$x4__lo;
-      bAbs__hi = $$x4__hi
+      var bAbs__lo = blo;
+      var bAbs__hi = bhi
     };
     var absRLo = $p_RTLong$__unsigned_$percent__I__I__I__I__I(this, aAbs__lo, aAbs__hi, bAbs__lo, bAbs__hi);
     if ((ahi < 0)) {
@@ -1500,6 +1497,9 @@ $c_RTLong.prototype.toString__T = (function() {
 $c_RTLong.prototype.toInt__I = (function() {
   return this.RTLong__f_lo
 });
+$c_RTLong.prototype.toFloat__F = (function() {
+  return $m_RTLong$().org$scalajs$linker$runtime$RuntimeLong$$toFloat__I__I__F(this.RTLong__f_lo, this.RTLong__f_hi)
+});
 $c_RTLong.prototype.toDouble__D = (function() {
   return $m_RTLong$().org$scalajs$linker$runtime$RuntimeLong$$toDouble__I__I__D(this.RTLong__f_lo, this.RTLong__f_hi)
 });
@@ -1516,7 +1516,7 @@ $c_RTLong.prototype.longValue__J = (function() {
   return $uJ(this)
 });
 $c_RTLong.prototype.floatValue__F = (function() {
-  return $fround($m_RTLong$().org$scalajs$linker$runtime$RuntimeLong$$toDouble__I__I__D(this.RTLong__f_lo, this.RTLong__f_hi))
+  return $m_RTLong$().org$scalajs$linker$runtime$RuntimeLong$$toFloat__I__I__F(this.RTLong__f_lo, this.RTLong__f_hi)
 });
 $c_RTLong.prototype.doubleValue__D = (function() {
   return $m_RTLong$().org$scalajs$linker$runtime$RuntimeLong$$toDouble__I__I__D(this.RTLong__f_lo, this.RTLong__f_hi)
