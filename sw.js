@@ -1107,45 +1107,44 @@ function $h_Ldefault_ServiceWorker$() {
 }
 $h_Ldefault_ServiceWorker$.prototype = $c_Ldefault_ServiceWorker$.prototype;
 $c_Ldefault_ServiceWorker$.prototype.init__V = (function() {
-  var index = new $c_sr_ObjectRef(null);
-  self.oninstall = ((this$2, index$2) => ((event) => {
+  $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("ServiceWorker.init");
+  var a = $ct_s_concurrent_impl_Promise$DefaultPromise__(new $c_s_concurrent_impl_Promise$DefaultPromise());
+  $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Fetch https://raw.githubusercontent.com/TorrentDam/torrents/master/index/index.json");
+  var p = fetch("https://raw.githubusercontent.com/TorrentDam/torrents/master/index/index.json");
+  $m_sjs_js_Thenable$ThenableOps$().toFuture$extension__sjs_js_Thenable__s_concurrent_Future(p).flatMap__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$5, promise$2) => ((response) => {
+    var p$1 = response.text();
+    return $m_sjs_js_Thenable$ThenableOps$().toFuture$extension__sjs_js_Thenable__s_concurrent_Future(p$1).map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$7, promise$1$2) => ((body) => {
+      var body$1 = $as_T(body);
+      $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Parse index");
+      var $$x1 = $m_Ldefault_TorrentIndex$Entries$().fromString__T__s_util_Either(body$1);
+      var this$8 = $m_s_$less$colon$less$();
+      var entries = $as_Ldefault_TorrentIndex$Entries($$x1.toTry__s_$less$colon$less__s_util_Try(this$8.s_$less$colon$less$__f_singleton).get__O());
+      var value = new $c_Ldefault_TorrentIndex$$anon$1(entries);
+      $f_s_concurrent_Promise__success__O__s_concurrent_Promise(promise$1$2, value);
+      $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Parse finished")
+    }))(this$5, promise$2)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
+  }))(this, a)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor());
+  self.oninstall = ((this$2$1) => ((event) => {
     $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Install event");
-    $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Download index");
-    var p = fetch("https://raw.githubusercontent.com/TorrentDam/torrents/master/index/index.json");
-    var getIndex = $m_sjs_js_Thenable$ThenableOps$().toFuture$extension__sjs_js_Thenable__s_concurrent_Future(p).flatMap__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$4, index$1$2) => ((response) => {
-      var p$1 = response.text();
-      return $m_sjs_js_Thenable$ThenableOps$().toFuture$extension__sjs_js_Thenable__s_concurrent_Future(p$1).map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$6, index$2$2) => ((body) => {
-        var body$1 = $as_T(body);
-        $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Download finished");
-        $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Parse index");
-        var $$x1 = $m_Ldefault_TorrentIndex$Entries$().fromString__T__s_util_Either(body$1);
-        var this$7 = $m_s_$less$colon$less$();
-        var entries = $as_Ldefault_TorrentIndex$Entries($$x1.toTry__s_$less$colon$less__s_util_Try(this$7.s_$less$colon$less$__f_singleton).get__O());
-        var ev$5 = new $c_Ldefault_TorrentIndex$$anon$1(entries);
-        index$2$2.sr_ObjectRef__f_elem = ev$5;
-        $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Parse finished")
-      }))(this$4, index$1$2)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
-    }))(this$2, index$2)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor());
-    event.waitUntil($m_sjs_js_JSConverters$JSRichFuture$().toJSPromise$extension__s_concurrent_Future__s_concurrent_ExecutionContext__sjs_js_Promise(getIndex, $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor()))
-  }))(this, index);
-  self.onactivate = ((this$2$1) => ((event$2) => {
+    event.waitUntil(self.skipWaiting())
+  }))(this);
+  self.onactivate = ((this$3$1) => ((event$2) => {
     $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Activate event");
     event$2.waitUntil(self.clients.claim())
   }))(this);
-  self.onmessage = ((this$3$1, index$3) => ((event$3) => {
-    $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log(("Message: " + event$3.data));
-    if (($as_Ldefault_TorrentIndex(index$3.sr_ObjectRef__f_elem) !== null)) {
-      var results = $as_Ldefault_TorrentIndex(index$3.sr_ObjectRef__f_elem).search__T__Ldefault_TorrentIndex$Results($dp_toString__T(event$3.data));
-      var \u03b41$ = event$3.ports[0];
+  self.onmessage = ((this$4$1, indexPromise$2) => ((event$3) => {
+    var query = $as_T(event$3.data);
+    $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log(("Search: " + query));
+    indexPromise$2.foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$12, event$2$1, query$2) => ((index) => {
+      var index$1 = $as_Ldefault_TorrentIndex(index);
+      var results = index$1.search__T__Ldefault_TorrentIndex$Results(query$2);
+      var \u03b41$ = event$2$1.source;
       var encoder = $m_Ldefault_TorrentIndex$Results$().given_Codec_Results__Lio_circe_Codec();
-      var this$19 = encoder.apply__O__Lio_circe_Json(results);
-      var s = $m_Lio_circe_Printer$().Lio_circe_Printer$__f_noSpaces.print__Lio_circe_Json__T(this$19);
-      \u03b41$.postMessage(s);
-      return (void 0)
-    } else {
-      return (void 0)
-    }
-  }))(this, index)
+      var this$15 = encoder.apply__O__Lio_circe_Json(results);
+      var s = $m_Lio_circe_Printer$().Lio_circe_Printer$__f_noSpaces.print__Lio_circe_Json__T(this$15);
+      \u03b41$.postMessage(s, null)
+    }))(this$4$1, event$3, query)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
+  }))(this, a)
 });
 var $d_Ldefault_ServiceWorker$ = new $TypeData().initClass({
   Ldefault_ServiceWorker$: 0
@@ -9747,59 +9746,6 @@ function $m_sjs_concurrent_QueueExecutionContext$() {
     $n_sjs_concurrent_QueueExecutionContext$ = new $c_sjs_concurrent_QueueExecutionContext$()
   };
   return $n_sjs_concurrent_QueueExecutionContext$
-}
-/** @constructor */
-function $c_sjs_js_JSConverters$JSRichFuture$() {
-  /*<skip>*/
-}
-$c_sjs_js_JSConverters$JSRichFuture$.prototype = new $h_O();
-$c_sjs_js_JSConverters$JSRichFuture$.prototype.constructor = $c_sjs_js_JSConverters$JSRichFuture$;
-/** @constructor */
-function $h_sjs_js_JSConverters$JSRichFuture$() {
-  /*<skip>*/
-}
-$h_sjs_js_JSConverters$JSRichFuture$.prototype = $c_sjs_js_JSConverters$JSRichFuture$.prototype;
-$c_sjs_js_JSConverters$JSRichFuture$.prototype.toJSPromise$extension__s_concurrent_Future__s_concurrent_ExecutionContext__sjs_js_Promise = (function(this$, ec) {
-  return new Promise(((\u03b4this$1, ec$1) => ((arg1$2, arg2$2) => {
-    $m_sjs_js_JSConverters$JSRichFuture$().scala$scalajs$js$JSConverters$JSRichFuture$$$anonfun$toJSPromise$1__sjs_js_Function1__sjs_js_Function1__s_concurrent_Future__s_concurrent_ExecutionContext__V(arg1$2, arg2$2, \u03b4this$1, ec$1)
-  }))(this$, ec))
-});
-$c_sjs_js_JSConverters$JSRichFuture$.prototype.scala$scalajs$js$JSConverters$JSRichFuture$$$anonfun$toJSPromise$1__sjs_js_Function1__sjs_js_Function1__s_concurrent_Future__s_concurrent_ExecutionContext__V = (function(resolve, reject, \u03b4this$1, ec$1) {
-  \u03b4this$1.onComplete__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$1, resolve$1, reject$1) => ((x0$1$2) => {
-    var x0$1 = $as_s_util_Try(x0$1$2);
-    if ((x0$1 instanceof $c_s_util_Success)) {
-      var x2 = $as_s_util_Success(x0$1);
-      var value = x2.s_util_Success__f_value;
-      return resolve$1(value)
-    } else if ((x0$1 instanceof $c_s_util_Failure)) {
-      var x3 = $as_s_util_Failure(x0$1);
-      var th = x3.s_util_Failure__f_exception;
-      if ((th instanceof $c_sjs_js_JavaScriptException)) {
-        var x2$2 = $as_sjs_js_JavaScriptException(th);
-        var e = x2$2.sjs_js_JavaScriptException__f_exception;
-        var $$x1 = e
-      } else {
-        var $$x1 = th
-      };
-      return reject$1($$x1)
-    } else {
-      throw new $c_s_MatchError(x0$1)
-    }
-  }))(this, resolve, reject)), ec$1)
-});
-var $d_sjs_js_JSConverters$JSRichFuture$ = new $TypeData().initClass({
-  sjs_js_JSConverters$JSRichFuture$: 0
-}, false, "scala.scalajs.js.JSConverters$JSRichFuture$", {
-  sjs_js_JSConverters$JSRichFuture$: 1,
-  O: 1
-});
-$c_sjs_js_JSConverters$JSRichFuture$.prototype.$classData = $d_sjs_js_JSConverters$JSRichFuture$;
-var $n_sjs_js_JSConverters$JSRichFuture$;
-function $m_sjs_js_JSConverters$JSRichFuture$() {
-  if ((!$n_sjs_js_JSConverters$JSRichFuture$)) {
-    $n_sjs_js_JSConverters$JSRichFuture$ = new $c_sjs_js_JSConverters$JSRichFuture$()
-  };
-  return $n_sjs_js_JSConverters$JSRichFuture$
 }
 /** @constructor */
 function $c_sjs_js_JSConverters$JSRichIterableOnce$() {
@@ -39555,6 +39501,12 @@ function $h_s_concurrent_impl_Promise$DefaultPromise() {
   /*<skip>*/
 }
 $h_s_concurrent_impl_Promise$DefaultPromise.prototype = $c_s_concurrent_impl_Promise$DefaultPromise.prototype;
+$c_s_concurrent_impl_Promise$DefaultPromise.prototype.foreach__F1__s_concurrent_ExecutionContext__V = (function(f, executor) {
+  var state = this.ju_concurrent_atomic_AtomicReference__f_value;
+  if ((!(state instanceof $c_s_util_Failure))) {
+    $p_s_concurrent_impl_Promise$DefaultPromise__dispatchOrAddCallbacks__O__s_concurrent_impl_Promise$Callbacks__s_concurrent_impl_Promise$Callbacks(this, state, $ct_s_concurrent_impl_Promise$Transformation__I__F1__s_concurrent_ExecutionContext__(new $c_s_concurrent_impl_Promise$Transformation(), 5, f, executor))
+  }
+});
 $c_s_concurrent_impl_Promise$DefaultPromise.prototype.flatMap__F1__s_concurrent_ExecutionContext__s_concurrent_Future = (function(f, executor) {
   var state = this.ju_concurrent_atomic_AtomicReference__f_value;
   return ((!(state instanceof $c_s_util_Failure)) ? $as_s_concurrent_Future($p_s_concurrent_impl_Promise$DefaultPromise__dispatchOrAddCallbacks__O__s_concurrent_impl_Promise$Callbacks__s_concurrent_impl_Promise$Callbacks(this, state, $ct_s_concurrent_impl_Promise$Transformation__I__F1__s_concurrent_ExecutionContext__(new $c_s_concurrent_impl_Promise$Transformation(), 2, f, executor))) : this)
