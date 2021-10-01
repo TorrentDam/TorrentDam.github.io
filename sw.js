@@ -1081,10 +1081,10 @@ function $m_Lcats_package$() {
 function $s_Ldefault_ServiceWorker__init__V() {
   $m_Ldefault_ServiceWorker$().init__V()
 }
-function $p_Ldefault_ServiceWorker$__get$5__Lorg_scalajs_dom_raw_IDBObjectStore__T__s_concurrent_Future($thiz, store$1, pk) {
+function $p_Ldefault_ServiceWorker$__get$5__Lorg_scalajs_dom_raw_IDBObjectStore__T__s_concurrent_Future($thiz, store$2, pk) {
   $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log(("getting: " + pk));
   var promise = $ct_s_concurrent_impl_Promise$DefaultPromise__(new $c_s_concurrent_impl_Promise$DefaultPromise());
-  store$1.get(pk).onsuccess = ((this$3, promise$2) => ((event) => {
+  store$2.get(pk).onsuccess = ((this$3, promise$2) => ((event) => {
     var value = event.target.result;
     var str = $as_T(JSON.stringify(value));
     var this$4 = $m_Lio_circe_parser_package$().parse__T__s_util_Either(str);
@@ -1127,79 +1127,107 @@ function $c_Ldefault_ServiceWorker$() {
     return $f_s_concurrent_Promise__success__O__s_concurrent_Promise(this$11, db$1)
   }))(this);
   self.oninstall = ((this$2$2) => ((event$1) => {
-    $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("ServiceWorker: install")
+    $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("ServiceWorker: install");
+    $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Fetch https://raw.githubusercontent.com/TorrentDam/torrents/master/index/index.json");
+    var p = fetch("https://raw.githubusercontent.com/TorrentDam/torrents/master/index/index.json");
+    var indexJson = $m_sjs_js_Thenable$ThenableOps$().toFuture$extension__sjs_js_Thenable__s_concurrent_Future(p).flatMap__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$13) => ((response) => {
+      var p$1 = response.json();
+      return $m_sjs_js_Thenable$ThenableOps$().toFuture$extension__sjs_js_Thenable__s_concurrent_Future(p$1).map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$15) => ((body) => {
+        $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Fetch complete");
+        return body
+      }))(this$13)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
+    }))(this$2$2)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor());
+    var storeComplete = $ct_s_concurrent_impl_Promise$DefaultPromise__(new $c_s_concurrent_impl_Promise$DefaultPromise());
+    indexJson.flatMap__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$2$3, storeComplete$2) => ((indexJson$2) => this$2$3.Ldefault_ServiceWorker$__f_database.map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$19, storeComplete$2$2, indexJson$2$1) => ((database) => {
+      var tx = database.transaction("torrents", "readwrite");
+      var store$1 = tx.objectStore("torrents");
+      store$1.clear();
+      $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Store torrents");
+      var len = $uI(indexJson$2$1.length);
+      var i = 0;
+      while ((i < len)) {
+        var arg1 = indexJson$2$1[i];
+        store$1.add(arg1);
+        i = ((1 + i) | 0)
+      };
+      tx.oncomplete = ((this$2$4, storeComplete$1$2) => ((event$3) => {
+        $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Store complete");
+        return $f_s_concurrent_Promise__success__O__s_concurrent_Promise(storeComplete$1$2, true)
+      }))(this$19, storeComplete$2$2)
+    }))(this$2$3, storeComplete$2, indexJson$2)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())))(this$2$2, storeComplete)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor());
+    event$1.waitUntil($m_sjs_js_JSConverters$JSRichFuture$().toJSPromise$extension__s_concurrent_Future__s_concurrent_ExecutionContext__sjs_js_Promise(storeComplete, $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor()))
   }))(this);
   self.onactivate = ((this$3$1) => ((event$2$1) => {
     $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("ServiceWorker: activate");
     event$2$1.waitUntil(self.clients.claim())
   }))(this);
-  self.onmessage = ((this$4$1) => ((event$3) => {
-    var source = event$3.source;
-    var query = $as_T(event$3.data);
+  self.onmessage = ((this$4$1) => ((event$3$1) => {
+    var source = event$3$1.source;
+    var query = $as_T(event$3$1.data);
     $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("ServiceWorker: message");
     $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log(("Search: " + query));
-    this$4$1.torrentsStore__s_concurrent_Future().foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$12, source$2, query$2) => ((store$1) => {
-      var \u03b41$ = store$1.index("name");
+    this$4$1.torrentsStore__s_concurrent_Future().foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$31, source$2, query$2) => ((store$2) => {
+      var \u03b41$ = store$2.index("name");
       var c = \u03b41$.openKeyCursor();
       $m_s_package$();
       var elem = $m_sci_Nil$();
       var list = new $c_sr_ObjectRef(elem);
       var complete = $ct_s_concurrent_impl_Promise$DefaultPromise__(new $c_s_concurrent_impl_Promise$DefaultPromise());
-      c.onsuccess = ((this$16, query$2$2, list$2, complete$2) => ((event$4) => {
+      c.onsuccess = ((this$35, query$2$2, list$2, complete$2) => ((event$4) => {
         var cursor = event$4.target.result;
         if ((cursor !== null)) {
-          var this$17 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
-          var $$x1 = (this$17.length__I() < 10)
+          var this$36 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
+          var $$x1 = (this$36.length__I() < 10)
         } else {
           var $$x1 = false
         };
         if ($$x1) {
-          var this$18 = $as_T(cursor.key);
-          var this$19 = $as_T(this$18.toLowerCase());
-          if (($uI(this$19.indexOf(query$2$2)) !== (-1))) {
+          var this$37 = $as_T(cursor.key);
+          var this$38 = $as_T(this$37.toLowerCase());
+          if (($uI(this$38.indexOf(query$2$2)) !== (-1))) {
             $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log(("Cursor: " + cursor.primaryKey));
             var pk = $as_T(cursor.primaryKey);
-            var this$21 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
-            var ev$3 = new $c_sci_$colon$colon(pk, this$21);
-            list$2.sr_ObjectRef__f_elem = ev$3
+            var this$40 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
+            var ev$7 = new $c_sci_$colon$colon(pk, this$40);
+            list$2.sr_ObjectRef__f_elem = ev$7
           };
           cursor.continue();
           return (void 0)
         } else {
           return $f_s_concurrent_Promise__success__O__s_concurrent_Promise(complete$2, (void 0))
         }
-      }))(this$12, query$2, list, complete);
-      complete.foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$3, source$1$2, query$2$3, store$2, list$3) => ((x$1) => {
+      }))(this$31, query$2, list, complete);
+      complete.foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$5, source$1$2, query$2$3, store$2$1, list$3) => ((x$1) => {
         $as_jl_Void(x$1);
-        var this$24 = $m_s_concurrent_Future$();
+        var this$43 = $m_s_concurrent_Future$();
         var in$1 = $as_sci_List(list$3.sr_ObjectRef__f_elem).reverse__sci_List();
-        var this$22 = $m_sc_BuildFrom$();
-        new $c_sc_BuildFromLowPriority2$$anon$11(this$22);
+        var this$41 = $m_sc_BuildFrom$();
+        new $c_sc_BuildFromLowPriority2$$anon$11(this$41);
         var executor = $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor();
-        var this$26 = in$1.iterator__sc_Iterator();
-        var z = this$24.successful__O__s_concurrent_Future(($m_sci_List$(), new $c_scm_ListBuffer()));
+        var this$45 = in$1.iterator__sc_Iterator();
+        var z = this$43.successful__O__s_concurrent_Future(($m_sci_List$(), new $c_scm_ListBuffer()));
         var result = z;
-        while (this$26.hasNext__Z()) {
-          var arg1 = result;
-          var arg2 = this$26.next__O();
-          var fr = $as_s_concurrent_Future(arg1);
+        while (this$45.hasNext__Z()) {
+          var arg1$1 = result;
+          var arg2 = this$45.next__O();
+          var fr = $as_s_concurrent_Future(arg1$1);
           var pk$1 = $as_T(arg2);
-          var that = $p_Ldefault_ServiceWorker$__get$5__Lorg_scalajs_dom_raw_IDBObjectStore__T__s_concurrent_Future(this$2$3, store$2, pk$1);
+          var that = $p_Ldefault_ServiceWorker$__get$5__Lorg_scalajs_dom_raw_IDBObjectStore__T__s_concurrent_Future(this$2$5, store$2$1, pk$1);
           var f = $m_s_concurrent_Future$().s_concurrent_Future$__f__addToBuilderFun;
           result = $f_s_concurrent_Future__zipWith__s_concurrent_Future__F2__s_concurrent_ExecutionContext__s_concurrent_Future(fr, that, f, executor)
         };
-        $as_s_concurrent_Future(result).map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$2$4) => ((x$9$2) => {
+        $as_s_concurrent_Future(result).map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$2$6) => ((x$9$2) => {
           var x$9 = $as_scm_Builder(x$9$2);
           return $as_sc_IterableOnce(x$9.result__O())
-        }))(this$24)), ($is_s_concurrent_BatchingExecutor(executor) ? executor : $m_s_concurrent_ExecutionContext$parasitic$())).foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$5, source$2$2, query$3$2) => ((entries) => {
+        }))(this$43)), ($is_s_concurrent_BatchingExecutor(executor) ? executor : $m_s_concurrent_ExecutionContext$parasitic$())).foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$7, source$2$2, query$3$2) => ((entries) => {
           var entries$1 = $as_sci_List(entries);
           var results = new $c_Ldefault_TorrentIndex$Results(query$3$2, entries$1);
           var encoder = $m_Ldefault_TorrentIndex$Results$().given_Codec_Results__Lio_circe_Codec();
-          var this$30 = encoder.apply__O__Lio_circe_Json(results);
-          var s = $m_Lio_circe_Printer$().Lio_circe_Printer$__f_noSpaces.print__Lio_circe_Json__T(this$30);
+          var this$49 = encoder.apply__O__Lio_circe_Json(results);
+          var s = $m_Lio_circe_Printer$().Lio_circe_Printer$__f_noSpaces.print__Lio_circe_Json__T(this$49);
           source$2$2.postMessage(s, null)
-        }))(this$2$3, source$1$2, query$2$3)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
-      }))(this$12, source$2, query$2, store$1, list)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
+        }))(this$2$5, source$1$2, query$2$3)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
+      }))(this$31, source$2, query$2, store$2, list)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
     }))(this$4$1, source, query)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
   }))(this)
 }
@@ -7222,6 +7250,10 @@ function $f_s_concurrent_Promise__success__O__s_concurrent_Promise($thiz, value)
   var result = new $c_s_util_Success(value);
   return $f_s_concurrent_Promise__complete__s_util_Try__s_concurrent_Promise($thiz, result)
 }
+function $f_s_concurrent_Promise__failure__jl_Throwable__s_concurrent_Promise($thiz, cause) {
+  var result = new $c_s_util_Failure(cause);
+  return $f_s_concurrent_Promise__complete__s_util_Try__s_concurrent_Promise($thiz, result)
+}
 /** @constructor */
 function $c_s_concurrent_Promise$() {
   /*<skip>*/
@@ -8395,6 +8427,59 @@ function $m_sjs_concurrent_QueueExecutionContext$() {
   return $n_sjs_concurrent_QueueExecutionContext$
 }
 /** @constructor */
+function $c_sjs_js_JSConverters$JSRichFuture$() {
+  /*<skip>*/
+}
+$c_sjs_js_JSConverters$JSRichFuture$.prototype = new $h_O();
+$c_sjs_js_JSConverters$JSRichFuture$.prototype.constructor = $c_sjs_js_JSConverters$JSRichFuture$;
+/** @constructor */
+function $h_sjs_js_JSConverters$JSRichFuture$() {
+  /*<skip>*/
+}
+$h_sjs_js_JSConverters$JSRichFuture$.prototype = $c_sjs_js_JSConverters$JSRichFuture$.prototype;
+$c_sjs_js_JSConverters$JSRichFuture$.prototype.toJSPromise$extension__s_concurrent_Future__s_concurrent_ExecutionContext__sjs_js_Promise = (function(this$, ec) {
+  return new Promise(((\u03b4this$1, ec$1) => ((arg1$2, arg2$2) => {
+    $m_sjs_js_JSConverters$JSRichFuture$().scala$scalajs$js$JSConverters$JSRichFuture$$$anonfun$toJSPromise$1__sjs_js_Function1__sjs_js_Function1__s_concurrent_Future__s_concurrent_ExecutionContext__V(arg1$2, arg2$2, \u03b4this$1, ec$1)
+  }))(this$, ec))
+});
+$c_sjs_js_JSConverters$JSRichFuture$.prototype.scala$scalajs$js$JSConverters$JSRichFuture$$$anonfun$toJSPromise$1__sjs_js_Function1__sjs_js_Function1__s_concurrent_Future__s_concurrent_ExecutionContext__V = (function(resolve, reject, \u03b4this$1, ec$1) {
+  \u03b4this$1.onComplete__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$1, resolve$1, reject$1) => ((x0$1$2) => {
+    var x0$1 = $as_s_util_Try(x0$1$2);
+    if ((x0$1 instanceof $c_s_util_Success)) {
+      var x2 = $as_s_util_Success(x0$1);
+      var value = x2.s_util_Success__f_value;
+      return resolve$1(value)
+    } else if ((x0$1 instanceof $c_s_util_Failure)) {
+      var x3 = $as_s_util_Failure(x0$1);
+      var th = x3.s_util_Failure__f_exception;
+      if ((th instanceof $c_sjs_js_JavaScriptException)) {
+        var x2$2 = $as_sjs_js_JavaScriptException(th);
+        var e = x2$2.sjs_js_JavaScriptException__f_exception;
+        var $$x1 = e
+      } else {
+        var $$x1 = th
+      };
+      return reject$1($$x1)
+    } else {
+      throw new $c_s_MatchError(x0$1)
+    }
+  }))(this, resolve, reject)), ec$1)
+});
+var $d_sjs_js_JSConverters$JSRichFuture$ = new $TypeData().initClass({
+  sjs_js_JSConverters$JSRichFuture$: 0
+}, false, "scala.scalajs.js.JSConverters$JSRichFuture$", {
+  sjs_js_JSConverters$JSRichFuture$: 1,
+  O: 1
+});
+$c_sjs_js_JSConverters$JSRichFuture$.prototype.$classData = $d_sjs_js_JSConverters$JSRichFuture$;
+var $n_sjs_js_JSConverters$JSRichFuture$;
+function $m_sjs_js_JSConverters$JSRichFuture$() {
+  if ((!$n_sjs_js_JSConverters$JSRichFuture$)) {
+    $n_sjs_js_JSConverters$JSRichFuture$ = new $c_sjs_js_JSConverters$JSRichFuture$()
+  };
+  return $n_sjs_js_JSConverters$JSRichFuture$
+}
+/** @constructor */
 function $c_sjs_js_JSConverters$JSRichIterableOnce$() {
   /*<skip>*/
 }
@@ -8459,6 +8544,48 @@ function $m_sjs_js_JSConverters$JSRichMap$() {
   return $n_sjs_js_JSConverters$JSRichMap$
 }
 /** @constructor */
+function $c_sjs_js_Thenable$ThenableOps$() {
+  /*<skip>*/
+}
+$c_sjs_js_Thenable$ThenableOps$.prototype = new $h_O();
+$c_sjs_js_Thenable$ThenableOps$.prototype.constructor = $c_sjs_js_Thenable$ThenableOps$;
+/** @constructor */
+function $h_sjs_js_Thenable$ThenableOps$() {
+  /*<skip>*/
+}
+$h_sjs_js_Thenable$ThenableOps$.prototype = $c_sjs_js_Thenable$ThenableOps$.prototype;
+$c_sjs_js_Thenable$ThenableOps$.prototype.toFuture$extension__sjs_js_Thenable__s_concurrent_Future = (function(this$) {
+  var p2 = $ct_s_concurrent_impl_Promise$DefaultPromise__(new $c_s_concurrent_impl_Promise$DefaultPromise());
+  this$.then(((p2$1) => ((arg1$2) => $m_sjs_js_Thenable$ThenableOps$().scala$scalajs$js$Thenable$ThenableOps$$$anonfun$toFuture$1__O__s_concurrent_Promise__sjs_js_$bar(arg1$2, p2$1)))(p2), $m_sjs_js_defined$().apply__O__sjs_js_$bar(((p2$1$1) => ((arg1$2$1) => $m_sjs_js_Thenable$ThenableOps$().scala$scalajs$js$Thenable$ThenableOps$$$anonfun$toFuture$2__O__s_concurrent_Promise__sjs_js_$bar(arg1$2$1, p2$1$1)))(p2)));
+  return p2
+});
+$c_sjs_js_Thenable$ThenableOps$.prototype.scala$scalajs$js$Thenable$ThenableOps$$$anonfun$toFuture$1__O__s_concurrent_Promise__sjs_js_$bar = (function(v, p2$1) {
+  $f_s_concurrent_Promise__success__O__s_concurrent_Promise(p2$1, v)
+});
+$c_sjs_js_Thenable$ThenableOps$.prototype.scala$scalajs$js$Thenable$ThenableOps$$$anonfun$toFuture$2__O__s_concurrent_Promise__sjs_js_$bar = (function(e, p2$1) {
+  if ((e instanceof $c_jl_Throwable)) {
+    var x2 = $as_jl_Throwable(e);
+    var cause = x2
+  } else {
+    var cause = new $c_sjs_js_JavaScriptException(e)
+  };
+  $f_s_concurrent_Promise__failure__jl_Throwable__s_concurrent_Promise(p2$1, cause)
+});
+var $d_sjs_js_Thenable$ThenableOps$ = new $TypeData().initClass({
+  sjs_js_Thenable$ThenableOps$: 0
+}, false, "scala.scalajs.js.Thenable$ThenableOps$", {
+  sjs_js_Thenable$ThenableOps$: 1,
+  O: 1
+});
+$c_sjs_js_Thenable$ThenableOps$.prototype.$classData = $d_sjs_js_Thenable$ThenableOps$;
+var $n_sjs_js_Thenable$ThenableOps$;
+function $m_sjs_js_Thenable$ThenableOps$() {
+  if ((!$n_sjs_js_Thenable$ThenableOps$)) {
+    $n_sjs_js_Thenable$ThenableOps$ = new $c_sjs_js_Thenable$ThenableOps$()
+  };
+  return $n_sjs_js_Thenable$ThenableOps$
+}
+/** @constructor */
 function $c_sjs_js_WrappedDictionary$Cache$() {
   this.sjs_js_WrappedDictionary$Cache$__f_safeHasOwnProperty = null;
   $n_sjs_js_WrappedDictionary$Cache$ = this;
@@ -8484,6 +8611,34 @@ function $m_sjs_js_WrappedDictionary$Cache$() {
     $n_sjs_js_WrappedDictionary$Cache$ = new $c_sjs_js_WrappedDictionary$Cache$()
   };
   return $n_sjs_js_WrappedDictionary$Cache$
+}
+/** @constructor */
+function $c_sjs_js_defined$() {
+  /*<skip>*/
+}
+$c_sjs_js_defined$.prototype = new $h_O();
+$c_sjs_js_defined$.prototype.constructor = $c_sjs_js_defined$;
+/** @constructor */
+function $h_sjs_js_defined$() {
+  /*<skip>*/
+}
+$h_sjs_js_defined$.prototype = $c_sjs_js_defined$.prototype;
+$c_sjs_js_defined$.prototype.apply__O__sjs_js_$bar = (function(a) {
+  return a
+});
+var $d_sjs_js_defined$ = new $TypeData().initClass({
+  sjs_js_defined$: 0
+}, false, "scala.scalajs.js.defined$", {
+  sjs_js_defined$: 1,
+  O: 1
+});
+$c_sjs_js_defined$.prototype.$classData = $d_sjs_js_defined$;
+var $n_sjs_js_defined$;
+function $m_sjs_js_defined$() {
+  if ((!$n_sjs_js_defined$)) {
+    $n_sjs_js_defined$ = new $c_sjs_js_defined$()
+  };
+  return $n_sjs_js_defined$
 }
 /** @constructor */
 function $c_sjs_js_special_package$() {
