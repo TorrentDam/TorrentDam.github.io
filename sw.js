@@ -1082,7 +1082,6 @@ function $s_Ldefault_ServiceWorker__init__V() {
   $m_Ldefault_ServiceWorker$().init__V()
 }
 function $p_Ldefault_ServiceWorker$__get$5__Lorg_scalajs_dom_raw_IDBObjectStore__T__s_concurrent_Future($thiz, store$2, pk) {
-  $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log(("getting: " + pk));
   var promise = $ct_s_concurrent_impl_Promise$DefaultPromise__(new $c_s_concurrent_impl_Promise$DefaultPromise());
   store$2.get(pk).onsuccess = ((this$3, promise$2) => ((event) => {
     var value = event.target.result;
@@ -1092,12 +1091,12 @@ function $p_Ldefault_ServiceWorker$__get$5__Lorg_scalajs_dom_raw_IDBObjectStore_
       var x2 = $as_s_util_Right(this$4);
       var b = x2.s_util_Right__f_value;
       var json = $as_Lio_circe_Json(b);
-      var d = $m_Ldefault_TorrentIndex$Entry$().given_Codec_Entry__Lio_circe_Codec();
+      var d = $m_Ldefault_WindowMessage$SearchResults$().given_Codec_Entry__Lio_circe_Codec();
       var this$6 = d.apply__Lio_circe_HCursor__s_util_Either(new $c_Lio_circe_cursor_TopCursor(json, null, null));
       if ((this$6 instanceof $c_s_util_Right)) {
         var x2$1 = $as_s_util_Right(this$6);
         var b$1 = x2$1.s_util_Right__f_value;
-        var entry = $as_Ldefault_TorrentIndex$Entry(b$1);
+        var entry = $as_Ldefault_WindowMessage$SearchResults$Entry(b$1);
         $f_s_concurrent_Promise__success__O__s_concurrent_Promise(promise$2, entry)
       }
     }
@@ -1163,32 +1162,50 @@ function $c_Ldefault_ServiceWorker$() {
   }))(this);
   self.onmessage = ((this$4$1) => ((event$3$1) => {
     var source = event$3$1.source;
-    var query = $as_T(event$3$1.data);
-    $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("ServiceWorker: message");
-    $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log(("Search: " + query));
-    this$4$1.torrentsStore__s_concurrent_Future().foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$31, source$2, query$2) => ((store$2) => {
+    var this$31 = $m_Lio_circe_parser_package$().parse__T__s_util_Either($as_T(event$3$1.data));
+    if ((this$31 instanceof $c_s_util_Right)) {
+      var x2 = $as_s_util_Right(this$31);
+      var b = x2.s_util_Right__f_value;
+      var _$1 = $as_Lio_circe_Json(b);
+      var d = $m_Ldefault_ServiceWorkerMessage$().given_Codec_ServiceWorkerMessage__Lio_circe_Codec();
+      var $$x1 = d.apply__Lio_circe_HCursor__s_util_Either(new $c_Lio_circe_cursor_TopCursor(_$1, null, null))
+    } else {
+      var $$x1 = this$31
+    };
+    var message = $as_Ldefault_ServiceWorkerMessage($$x1.toOption__s_Option().get__O());
+    $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log(("ServiceWorker: " + message));
+    matchResult1: {
+      var query$2;
+      if ((message instanceof $c_Ldefault_ServiceWorkerMessage$Query)) {
+        var x$1 = $as_Ldefault_ServiceWorkerMessage$Query(message);
+        var x4 = x$1.Ldefault_ServiceWorkerMessage$Query__f_query;
+        var query$2 = x4;
+        break matchResult1
+      };
+      throw new $c_s_MatchError(message)
+    };
+    this$4$1.torrentsStore__s_concurrent_Future().foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$5, source$2, query$3) => ((store$2) => {
       var \u03b41$ = store$2.index("name");
       var c = \u03b41$.openKeyCursor();
       $m_s_package$();
       var elem = $m_sci_Nil$();
       var list = new $c_sr_ObjectRef(elem);
       var complete = $ct_s_concurrent_impl_Promise$DefaultPromise__(new $c_s_concurrent_impl_Promise$DefaultPromise());
-      c.onsuccess = ((this$35, query$2$2, list$2, complete$2) => ((event$4) => {
+      c.onsuccess = ((this$37, query$2$2, list$2, complete$2) => ((event$4) => {
         var cursor = event$4.target.result;
         if ((cursor !== null)) {
-          var this$36 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
-          var $$x1 = (this$36.length__I() < 10)
+          var this$38 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
+          var $$x2 = (this$38.length__I() < 10)
         } else {
-          var $$x1 = false
+          var $$x2 = false
         };
-        if ($$x1) {
-          var this$37 = $as_T(cursor.key);
-          var this$38 = $as_T(this$37.toLowerCase());
-          if (($uI(this$38.indexOf(query$2$2)) !== (-1))) {
-            $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log(("Cursor: " + cursor.primaryKey));
+        if ($$x2) {
+          var this$39 = $as_T(cursor.key);
+          var this$40 = $as_T(this$39.toLowerCase());
+          if (($uI(this$40.indexOf(query$2$2)) !== (-1))) {
             var pk = $as_T(cursor.primaryKey);
-            var this$40 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
-            var ev$7 = new $c_sci_$colon$colon(pk, this$40);
+            var this$42 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
+            var ev$7 = new $c_sci_$colon$colon(pk, this$42);
             list$2.sr_ObjectRef__f_elem = ev$7
           };
           cursor.continue();
@@ -1196,39 +1213,39 @@ function $c_Ldefault_ServiceWorker$() {
         } else {
           return $f_s_concurrent_Promise__success__O__s_concurrent_Promise(complete$2, (void 0))
         }
-      }))(this$31, query$2, list, complete);
-      complete.foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$5, source$1$2, query$2$3, store$2$1, list$3) => ((x$1) => {
-        $as_jl_Void(x$1);
-        var this$43 = $m_s_concurrent_Future$();
+      }))(this$2$5, query$3, list, complete);
+      complete.foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$6, source$1$2, query$2$3, store$2$1, list$3) => ((x$1$1) => {
+        $as_jl_Void(x$1$1);
+        var this$45 = $m_s_concurrent_Future$();
         var in$1 = $as_sci_List(list$3.sr_ObjectRef__f_elem).reverse__sci_List();
-        var this$41 = $m_sc_BuildFrom$();
-        new $c_sc_BuildFromLowPriority2$$anon$11(this$41);
+        var this$43 = $m_sc_BuildFrom$();
+        new $c_sc_BuildFromLowPriority2$$anon$11(this$43);
         var executor = $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor();
-        var this$45 = in$1.iterator__sc_Iterator();
-        var z = this$43.successful__O__s_concurrent_Future(($m_sci_List$(), new $c_scm_ListBuffer()));
+        var this$47 = in$1.iterator__sc_Iterator();
+        var z = this$45.successful__O__s_concurrent_Future(($m_sci_List$(), new $c_scm_ListBuffer()));
         var result = z;
-        while (this$45.hasNext__Z()) {
+        while (this$47.hasNext__Z()) {
           var arg1$1 = result;
-          var arg2 = this$45.next__O();
+          var arg2 = this$47.next__O();
           var fr = $as_s_concurrent_Future(arg1$1);
           var pk$1 = $as_T(arg2);
-          var that = $p_Ldefault_ServiceWorker$__get$5__Lorg_scalajs_dom_raw_IDBObjectStore__T__s_concurrent_Future(this$2$5, store$2$1, pk$1);
+          var that = $p_Ldefault_ServiceWorker$__get$5__Lorg_scalajs_dom_raw_IDBObjectStore__T__s_concurrent_Future(this$2$6, store$2$1, pk$1);
           var f = $m_s_concurrent_Future$().s_concurrent_Future$__f__addToBuilderFun;
           result = $f_s_concurrent_Future__zipWith__s_concurrent_Future__F2__s_concurrent_ExecutionContext__s_concurrent_Future(fr, that, f, executor)
         };
-        $as_s_concurrent_Future(result).map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$2$6) => ((x$9$2) => {
+        $as_s_concurrent_Future(result).map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$2$7) => ((x$9$2) => {
           var x$9 = $as_scm_Builder(x$9$2);
           return $as_sc_IterableOnce(x$9.result__O())
-        }))(this$43)), ($is_s_concurrent_BatchingExecutor(executor) ? executor : $m_s_concurrent_ExecutionContext$parasitic$())).foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$7, source$2$2, query$3$2) => ((entries) => {
+        }))(this$45)), ($is_s_concurrent_BatchingExecutor(executor) ? executor : $m_s_concurrent_ExecutionContext$parasitic$())).foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$8, source$2$2, query$3$2) => ((entries) => {
           var entries$1 = $as_sci_List(entries);
-          var results = new $c_Ldefault_TorrentIndex$Results(query$3$2, entries$1);
-          var encoder = $m_Ldefault_TorrentIndex$Results$().given_Codec_Results__Lio_circe_Codec();
-          var this$49 = encoder.apply__O__Lio_circe_Json(results);
-          var s = $m_Lio_circe_Printer$().Lio_circe_Printer$__f_noSpaces.print__Lio_circe_Json__T(this$49);
+          var results = new $c_Ldefault_WindowMessage$SearchResults(query$3$2, entries$1);
+          var encoder = $m_Ldefault_WindowMessage$().given_Codec_WindowMessage__Lio_circe_Codec();
+          var this$51 = encoder.apply__O__Lio_circe_Json(results);
+          var s = $m_Lio_circe_Printer$().Lio_circe_Printer$__f_noSpaces.print__Lio_circe_Json__T(this$51);
           source$2$2.postMessage(s, null)
-        }))(this$2$5, source$1$2, query$2$3)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
-      }))(this$31, source$2, query$2, store$2, list)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
-    }))(this$4$1, source, query)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
+        }))(this$2$6, source$1$2, query$2$3)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
+      }))(this$2$5, source$2, query$3, store$2, list)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
+    }))(this$4$1, source, query$2)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
   }))(this)
 }
 $c_Ldefault_ServiceWorker$.prototype = new $h_O();
@@ -1491,6 +1508,16 @@ function $m_Lio_circe_DecodingFailure$() {
 function $f_Lio_circe_DerivedInstance__elemCount__I($thiz) {
   return $thiz.elemLabels__AT().u.length
 }
+function $f_Lio_circe_DerivedInstance__findLabel__T__I($thiz, name) {
+  var i = 0;
+  while ((i < $f_Lio_circe_DerivedInstance__elemCount__I($thiz))) {
+    if (($thiz.elemLabels__AT().get(i) === name)) {
+      return i
+    };
+    i = ((1 + i) | 0)
+  };
+  return (-1)
+}
 /** @constructor */
 function $c_Lio_circe_JsonNumber$() {
   this.Lio_circe_JsonNumber$__f_bigDecimalMinLong = null;
@@ -1634,6 +1661,14 @@ $c_Lio_circe_JsonObject$.prototype.fromIterable__sc_Iterable__Lio_circe_JsonObje
     map.java$util$HashMap$$put0__O__O__I__Z__O(key$2, value$2, $$x1, false)
   };
   return new $c_Lio_circe_JsonObject$LinkedHashMapJsonObject(map)
+});
+$c_Lio_circe_JsonObject$.prototype.singleton__T__Lio_circe_Json__Lio_circe_JsonObject = (function(key, value) {
+  var this$2 = $m_sci_Map$();
+  var elems = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T2.getArrayOf().constr)([new $c_T2(key, value)]));
+  var $$x1 = this$2.from__sc_IterableOnce__sci_Map(elems);
+  var this$3 = $m_s_package$().s_package$__f_Vector;
+  var elems$1 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([key]));
+  return new $c_Lio_circe_JsonObject$MapAndVectorJsonObject($$x1, this$3.from__sc_IterableOnce__sci_Vector(elems$1))
 });
 var $d_Lio_circe_JsonObject$ = new $TypeData().initClass({
   Lio_circe_JsonObject$: 0
@@ -9822,6 +9857,15 @@ $c_Lscodec_bits_ByteVector$At.prototype.copyToArray__AB__I__J__I__V = (function(
     i = ((1 + i) | 0)
   }
 });
+function $as_Lscodec_bits_ByteVector$At(obj) {
+  return (((obj instanceof $c_Lscodec_bits_ByteVector$At) || (obj === null)) ? obj : $throwClassCastException(obj, "scodec.bits.ByteVector$At"))
+}
+function $isArrayOf_Lscodec_bits_ByteVector$At(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Lscodec_bits_ByteVector$At)))
+}
+function $asArrayOf_Lscodec_bits_ByteVector$At(obj, depth) {
+  return (($isArrayOf_Lscodec_bits_ByteVector$At(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Lscodec.bits.ByteVector$At;", depth))
+}
 /** @constructor */
 function $c_Lscodec_bits_ByteVector$F1BU() {
   /*<skip>*/
@@ -11780,7 +11824,7 @@ $c_ju_LinkedHashMap$AbstractLinkedHashMapIterator.prototype.next__O = (function(
   var node = this.ju_LinkedHashMap$AbstractLinkedHashMapIterator__f_nextNode;
   this.ju_LinkedHashMap$AbstractLinkedHashMapIterator__f_lastNode = node;
   this.ju_LinkedHashMap$AbstractLinkedHashMapIterator__f_nextNode = node.ju_LinkedHashMap$Node__f_younger;
-  return node
+  return this.extract__ju_LinkedHashMap$Node__O(node)
 });
 function $ct_ju_concurrent_atomic_AtomicReference__O__($thiz, value) {
   $thiz.ju_concurrent_atomic_AtomicReference__f_value = value;
@@ -14276,6 +14320,12 @@ $h_Lcom_github_lavrov_bittorrent_InfoHash$.prototype = $c_Lcom_github_lavrov_bit
 $c_Lcom_github_lavrov_bittorrent_InfoHash$.prototype.toString__T = (function() {
   return "InfoHash"
 });
+$c_Lcom_github_lavrov_bittorrent_InfoHash$.prototype.fromProduct__s_Product__Lcom_github_lavrov_bittorrent_InfoHash = (function(x$0) {
+  return new $c_Lcom_github_lavrov_bittorrent_InfoHash($as_Lscodec_bits_ByteVector(x$0.productElement__I__O(0)))
+});
+$c_Lcom_github_lavrov_bittorrent_InfoHash$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this.fromProduct__s_Product__Lcom_github_lavrov_bittorrent_InfoHash(p)
+});
 var $d_Lcom_github_lavrov_bittorrent_InfoHash$ = new $TypeData().initClass({
   Lcom_github_lavrov_bittorrent_InfoHash$: 0
 }, false, "com.github.lavrov.bittorrent.InfoHash$", {
@@ -14293,35 +14343,141 @@ function $m_Lcom_github_lavrov_bittorrent_InfoHash$() {
   return $n_Lcom_github_lavrov_bittorrent_InfoHash$
 }
 /** @constructor */
-function $c_Ldefault_TorrentIndex$Entry$() {
-  this.Ldefault_TorrentIndex$Entry$__f_given_Codec_InfoHash$lzy1 = null;
-  this.Ldefault_TorrentIndex$Entry$__f_given_Codec_InfoHashbitmap$1 = false;
-  this.Ldefault_TorrentIndex$Entry$__f_given_Codec_Entry$lzy1 = null;
-  this.Ldefault_TorrentIndex$Entry$__f_given_Codec_Entrybitmap$1 = false
+function $c_Ldefault_ServiceWorkerMessage$() {
+  this.Ldefault_ServiceWorkerMessage$__f_given_Codec_ServiceWorkerMessage$lzy1 = null;
+  this.Ldefault_ServiceWorkerMessage$__f_given_Codec_ServiceWorkerMessagebitmap$1 = false
 }
-$c_Ldefault_TorrentIndex$Entry$.prototype = new $h_O();
-$c_Ldefault_TorrentIndex$Entry$.prototype.constructor = $c_Ldefault_TorrentIndex$Entry$;
+$c_Ldefault_ServiceWorkerMessage$.prototype = new $h_O();
+$c_Ldefault_ServiceWorkerMessage$.prototype.constructor = $c_Ldefault_ServiceWorkerMessage$;
 /** @constructor */
-function $h_Ldefault_TorrentIndex$Entry$() {
+function $h_Ldefault_ServiceWorkerMessage$() {
   /*<skip>*/
 }
-$h_Ldefault_TorrentIndex$Entry$.prototype = $c_Ldefault_TorrentIndex$Entry$.prototype;
-$c_Ldefault_TorrentIndex$Entry$.prototype.toString__T = (function() {
-  return "Entry"
+$h_Ldefault_ServiceWorkerMessage$.prototype = $c_Ldefault_ServiceWorkerMessage$.prototype;
+$c_Ldefault_ServiceWorkerMessage$.prototype.given_Codec_ServiceWorkerMessage__Lio_circe_Codec = (function() {
+  if ((!this.Ldefault_ServiceWorkerMessage$__f_given_Codec_ServiceWorkerMessagebitmap$1)) {
+    this.Ldefault_ServiceWorkerMessage$__f_given_Codec_ServiceWorkerMessage$lzy1 = new $c_Ldefault_ServiceWorkerMessage$$anon$1();
+    this.Ldefault_ServiceWorkerMessage$__f_given_Codec_ServiceWorkerMessagebitmap$1 = true
+  };
+  return this.Ldefault_ServiceWorkerMessage$__f_given_Codec_ServiceWorkerMessage$lzy1
 });
-$c_Ldefault_TorrentIndex$Entry$.prototype.given_Codec_InfoHash__Lio_circe_Codec = (function() {
-  if ((!this.Ldefault_TorrentIndex$Entry$__f_given_Codec_InfoHashbitmap$1)) {
+var $d_Ldefault_ServiceWorkerMessage$ = new $TypeData().initClass({
+  Ldefault_ServiceWorkerMessage$: 0
+}, false, "default.ServiceWorkerMessage$", {
+  Ldefault_ServiceWorkerMessage$: 1,
+  O: 1,
+  s_deriving_Mirror: 1,
+  s_deriving_Mirror$Sum: 1
+});
+$c_Ldefault_ServiceWorkerMessage$.prototype.$classData = $d_Ldefault_ServiceWorkerMessage$;
+var $n_Ldefault_ServiceWorkerMessage$;
+function $m_Ldefault_ServiceWorkerMessage$() {
+  if ((!$n_Ldefault_ServiceWorkerMessage$)) {
+    $n_Ldefault_ServiceWorkerMessage$ = new $c_Ldefault_ServiceWorkerMessage$()
+  };
+  return $n_Ldefault_ServiceWorkerMessage$
+}
+/** @constructor */
+function $c_Ldefault_ServiceWorkerMessage$Query$() {
+  /*<skip>*/
+}
+$c_Ldefault_ServiceWorkerMessage$Query$.prototype = new $h_O();
+$c_Ldefault_ServiceWorkerMessage$Query$.prototype.constructor = $c_Ldefault_ServiceWorkerMessage$Query$;
+/** @constructor */
+function $h_Ldefault_ServiceWorkerMessage$Query$() {
+  /*<skip>*/
+}
+$h_Ldefault_ServiceWorkerMessage$Query$.prototype = $c_Ldefault_ServiceWorkerMessage$Query$.prototype;
+$c_Ldefault_ServiceWorkerMessage$Query$.prototype.toString__T = (function() {
+  return "Query"
+});
+$c_Ldefault_ServiceWorkerMessage$Query$.prototype.fromProduct__s_Product__Ldefault_ServiceWorkerMessage$Query = (function(x$0) {
+  return new $c_Ldefault_ServiceWorkerMessage$Query($as_T(x$0.productElement__I__O(0)))
+});
+$c_Ldefault_ServiceWorkerMessage$Query$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this.fromProduct__s_Product__Ldefault_ServiceWorkerMessage$Query(p)
+});
+var $d_Ldefault_ServiceWorkerMessage$Query$ = new $TypeData().initClass({
+  Ldefault_ServiceWorkerMessage$Query$: 0
+}, false, "default.ServiceWorkerMessage$Query$", {
+  Ldefault_ServiceWorkerMessage$Query$: 1,
+  O: 1,
+  s_deriving_Mirror: 1,
+  s_deriving_Mirror$Product: 1
+});
+$c_Ldefault_ServiceWorkerMessage$Query$.prototype.$classData = $d_Ldefault_ServiceWorkerMessage$Query$;
+var $n_Ldefault_ServiceWorkerMessage$Query$;
+function $m_Ldefault_ServiceWorkerMessage$Query$() {
+  if ((!$n_Ldefault_ServiceWorkerMessage$Query$)) {
+    $n_Ldefault_ServiceWorkerMessage$Query$ = new $c_Ldefault_ServiceWorkerMessage$Query$()
+  };
+  return $n_Ldefault_ServiceWorkerMessage$Query$
+}
+/** @constructor */
+function $c_Ldefault_WindowMessage$() {
+  this.Ldefault_WindowMessage$__f_given_Codec_WindowMessage$lzy1 = null;
+  this.Ldefault_WindowMessage$__f_given_Codec_WindowMessagebitmap$1 = false
+}
+$c_Ldefault_WindowMessage$.prototype = new $h_O();
+$c_Ldefault_WindowMessage$.prototype.constructor = $c_Ldefault_WindowMessage$;
+/** @constructor */
+function $h_Ldefault_WindowMessage$() {
+  /*<skip>*/
+}
+$h_Ldefault_WindowMessage$.prototype = $c_Ldefault_WindowMessage$.prototype;
+$c_Ldefault_WindowMessage$.prototype.given_Codec_WindowMessage__Lio_circe_Codec = (function() {
+  if ((!this.Ldefault_WindowMessage$__f_given_Codec_WindowMessagebitmap$1)) {
+    this.Ldefault_WindowMessage$__f_given_Codec_WindowMessage$lzy1 = new $c_Ldefault_WindowMessage$$anon$2();
+    this.Ldefault_WindowMessage$__f_given_Codec_WindowMessagebitmap$1 = true
+  };
+  return this.Ldefault_WindowMessage$__f_given_Codec_WindowMessage$lzy1
+});
+var $d_Ldefault_WindowMessage$ = new $TypeData().initClass({
+  Ldefault_WindowMessage$: 0
+}, false, "default.WindowMessage$", {
+  Ldefault_WindowMessage$: 1,
+  O: 1,
+  s_deriving_Mirror: 1,
+  s_deriving_Mirror$Sum: 1
+});
+$c_Ldefault_WindowMessage$.prototype.$classData = $d_Ldefault_WindowMessage$;
+var $n_Ldefault_WindowMessage$;
+function $m_Ldefault_WindowMessage$() {
+  if ((!$n_Ldefault_WindowMessage$)) {
+    $n_Ldefault_WindowMessage$ = new $c_Ldefault_WindowMessage$()
+  };
+  return $n_Ldefault_WindowMessage$
+}
+/** @constructor */
+function $c_Ldefault_WindowMessage$SearchResults$() {
+  this.Ldefault_WindowMessage$SearchResults$__f_given_Codec_InfoHash$lzy1 = null;
+  this.Ldefault_WindowMessage$SearchResults$__f_given_Codec_InfoHashbitmap$1 = false;
+  this.Ldefault_WindowMessage$SearchResults$__f_given_Codec_Entry$lzy1 = null;
+  this.Ldefault_WindowMessage$SearchResults$__f_given_Codec_Entrybitmap$1 = false
+}
+$c_Ldefault_WindowMessage$SearchResults$.prototype = new $h_O();
+$c_Ldefault_WindowMessage$SearchResults$.prototype.constructor = $c_Ldefault_WindowMessage$SearchResults$;
+/** @constructor */
+function $h_Ldefault_WindowMessage$SearchResults$() {
+  /*<skip>*/
+}
+$h_Ldefault_WindowMessage$SearchResults$.prototype = $c_Ldefault_WindowMessage$SearchResults$.prototype;
+$c_Ldefault_WindowMessage$SearchResults$.prototype.toString__T = (function() {
+  return "SearchResults"
+});
+$c_Ldefault_WindowMessage$SearchResults$.prototype.given_Codec_InfoHash__Lio_circe_Codec = (function() {
+  if ((!this.Ldefault_WindowMessage$SearchResults$__f_given_Codec_InfoHashbitmap$1)) {
     $m_Lio_circe_Codec$();
     var this$5 = $m_Lio_circe_Decoder$().Lio_circe_Decoder$__f_decodeString;
     var f = new $c_sjsr_AnonFunction1(((this$1) => ((x$1) => {
       var x$1$1 = $as_T(x$1);
       if ((x$1$1 !== null)) {
         var this$2 = $m_Lcom_github_lavrov_bittorrent_InfoHash$().Lcom_github_lavrov_bittorrent_InfoHash$__f_fromString;
-        var x13 = $as_s_Option(this$2.lift__F1().apply__O__O(x$1$1));
-        if ((!x13.isEmpty__Z())) {
-          var x14 = $as_Lcom_github_lavrov_bittorrent_InfoHash(x13.get__O());
+        var x10 = $as_s_Option(this$2.lift__F1().apply__O__O(x$1$1));
+        if ((!x10.isEmpty__Z())) {
+          var x11 = $as_Lcom_github_lavrov_bittorrent_InfoHash(x10.get__O());
           $m_s_package$();
-          return new $c_s_util_Right(x14)
+          return new $c_s_util_Right(x11)
         }
       };
       $m_s_package$();
@@ -14329,83 +14485,81 @@ $c_Ldefault_TorrentIndex$Entry$.prototype.given_Codec_InfoHash__Lio_circe_Codec 
     }))(this));
     var decodeA = new $c_Lio_circe_Decoder$$anon$13(f, this$5);
     var this$7 = $m_Lio_circe_Encoder$().Lio_circe_Encoder$__f_encodeString;
-    var f$1 = new $c_sjsr_AnonFunction1(((this$2$1) => ((_$4) => {
-      var _$4$1 = $as_Lcom_github_lavrov_bittorrent_InfoHash(_$4);
-      var this$6 = _$4$1.Lcom_github_lavrov_bittorrent_InfoHash__f_bytes;
+    var f$1 = new $c_sjsr_AnonFunction1(((this$2$1) => ((_$1) => {
+      var _$1$1 = $as_Lcom_github_lavrov_bittorrent_InfoHash(_$1);
+      var this$6 = _$1$1.Lcom_github_lavrov_bittorrent_InfoHash__f_bytes;
       return this$6.toHex__Lscodec_bits_Bases$HexAlphabet__T($m_Lscodec_bits_Bases$Alphabets$HexLowercase$())
     }))(this));
     var encodeA = new $c_Lio_circe_Encoder$$anon$1(f$1, this$7);
-    this.Ldefault_TorrentIndex$Entry$__f_given_Codec_InfoHash$lzy1 = new $c_Lio_circe_Codec$$anon$4(decodeA, encodeA);
-    this.Ldefault_TorrentIndex$Entry$__f_given_Codec_InfoHashbitmap$1 = true
+    this.Ldefault_WindowMessage$SearchResults$__f_given_Codec_InfoHash$lzy1 = new $c_Lio_circe_Codec$$anon$4(decodeA, encodeA);
+    this.Ldefault_WindowMessage$SearchResults$__f_given_Codec_InfoHashbitmap$1 = true
   };
-  return this.Ldefault_TorrentIndex$Entry$__f_given_Codec_InfoHash$lzy1
+  return this.Ldefault_WindowMessage$SearchResults$__f_given_Codec_InfoHash$lzy1
 });
-$c_Ldefault_TorrentIndex$Entry$.prototype.given_Codec_Entry__Lio_circe_Codec = (function() {
-  if ((!this.Ldefault_TorrentIndex$Entry$__f_given_Codec_Entrybitmap$1)) {
-    this.Ldefault_TorrentIndex$Entry$__f_given_Codec_Entry$lzy1 = new $c_Ldefault_TorrentIndex$$anon$2();
-    this.Ldefault_TorrentIndex$Entry$__f_given_Codec_Entrybitmap$1 = true
+$c_Ldefault_WindowMessage$SearchResults$.prototype.given_Codec_Entry__Lio_circe_Codec = (function() {
+  if ((!this.Ldefault_WindowMessage$SearchResults$__f_given_Codec_Entrybitmap$1)) {
+    this.Ldefault_WindowMessage$SearchResults$__f_given_Codec_Entry$lzy1 = new $c_Ldefault_WindowMessage$$anon$1();
+    this.Ldefault_WindowMessage$SearchResults$__f_given_Codec_Entrybitmap$1 = true
   };
-  return this.Ldefault_TorrentIndex$Entry$__f_given_Codec_Entry$lzy1
+  return this.Ldefault_WindowMessage$SearchResults$__f_given_Codec_Entry$lzy1
 });
-$c_Ldefault_TorrentIndex$Entry$.prototype.fromProduct__s_Product__Ldefault_TorrentIndex$Entry = (function(x$0) {
-  return new $c_Ldefault_TorrentIndex$Entry($as_T(x$0.productElement__I__O(0)), $as_Lcom_github_lavrov_bittorrent_InfoHash(x$0.productElement__I__O(1)), $uJ(x$0.productElement__I__O(2)), $as_sci_List(x$0.productElement__I__O(3)))
+$c_Ldefault_WindowMessage$SearchResults$.prototype.fromProduct__s_Product__Ldefault_WindowMessage$SearchResults = (function(x$0) {
+  return new $c_Ldefault_WindowMessage$SearchResults($as_T(x$0.productElement__I__O(0)), $as_sci_List(x$0.productElement__I__O(1)))
 });
-var $d_Ldefault_TorrentIndex$Entry$ = new $TypeData().initClass({
-  Ldefault_TorrentIndex$Entry$: 0
-}, false, "default.TorrentIndex$Entry$", {
-  Ldefault_TorrentIndex$Entry$: 1,
+$c_Ldefault_WindowMessage$SearchResults$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this.fromProduct__s_Product__Ldefault_WindowMessage$SearchResults(p)
+});
+var $d_Ldefault_WindowMessage$SearchResults$ = new $TypeData().initClass({
+  Ldefault_WindowMessage$SearchResults$: 0
+}, false, "default.WindowMessage$SearchResults$", {
+  Ldefault_WindowMessage$SearchResults$: 1,
   O: 1,
   s_deriving_Mirror: 1,
   s_deriving_Mirror$Product: 1
 });
-$c_Ldefault_TorrentIndex$Entry$.prototype.$classData = $d_Ldefault_TorrentIndex$Entry$;
-var $n_Ldefault_TorrentIndex$Entry$;
-function $m_Ldefault_TorrentIndex$Entry$() {
-  if ((!$n_Ldefault_TorrentIndex$Entry$)) {
-    $n_Ldefault_TorrentIndex$Entry$ = new $c_Ldefault_TorrentIndex$Entry$()
+$c_Ldefault_WindowMessage$SearchResults$.prototype.$classData = $d_Ldefault_WindowMessage$SearchResults$;
+var $n_Ldefault_WindowMessage$SearchResults$;
+function $m_Ldefault_WindowMessage$SearchResults$() {
+  if ((!$n_Ldefault_WindowMessage$SearchResults$)) {
+    $n_Ldefault_WindowMessage$SearchResults$ = new $c_Ldefault_WindowMessage$SearchResults$()
   };
-  return $n_Ldefault_TorrentIndex$Entry$
+  return $n_Ldefault_WindowMessage$SearchResults$
 }
 /** @constructor */
-function $c_Ldefault_TorrentIndex$Results$() {
-  this.Ldefault_TorrentIndex$Results$__f_given_Codec_Results$lzy1 = null;
-  this.Ldefault_TorrentIndex$Results$__f_given_Codec_Resultsbitmap$1 = false
-}
-$c_Ldefault_TorrentIndex$Results$.prototype = new $h_O();
-$c_Ldefault_TorrentIndex$Results$.prototype.constructor = $c_Ldefault_TorrentIndex$Results$;
-/** @constructor */
-function $h_Ldefault_TorrentIndex$Results$() {
+function $c_Ldefault_WindowMessage$SearchResults$Entry$() {
   /*<skip>*/
 }
-$h_Ldefault_TorrentIndex$Results$.prototype = $c_Ldefault_TorrentIndex$Results$.prototype;
-$c_Ldefault_TorrentIndex$Results$.prototype.toString__T = (function() {
-  return "Results"
+$c_Ldefault_WindowMessage$SearchResults$Entry$.prototype = new $h_O();
+$c_Ldefault_WindowMessage$SearchResults$Entry$.prototype.constructor = $c_Ldefault_WindowMessage$SearchResults$Entry$;
+/** @constructor */
+function $h_Ldefault_WindowMessage$SearchResults$Entry$() {
+  /*<skip>*/
+}
+$h_Ldefault_WindowMessage$SearchResults$Entry$.prototype = $c_Ldefault_WindowMessage$SearchResults$Entry$.prototype;
+$c_Ldefault_WindowMessage$SearchResults$Entry$.prototype.toString__T = (function() {
+  return "Entry"
 });
-$c_Ldefault_TorrentIndex$Results$.prototype.given_Codec_Results__Lio_circe_Codec = (function() {
-  if ((!this.Ldefault_TorrentIndex$Results$__f_given_Codec_Resultsbitmap$1)) {
-    this.Ldefault_TorrentIndex$Results$__f_given_Codec_Results$lzy1 = new $c_Ldefault_TorrentIndex$$anon$3();
-    this.Ldefault_TorrentIndex$Results$__f_given_Codec_Resultsbitmap$1 = true
-  };
-  return this.Ldefault_TorrentIndex$Results$__f_given_Codec_Results$lzy1
+$c_Ldefault_WindowMessage$SearchResults$Entry$.prototype.fromProduct__s_Product__Ldefault_WindowMessage$SearchResults$Entry = (function(x$0) {
+  return new $c_Ldefault_WindowMessage$SearchResults$Entry($as_T(x$0.productElement__I__O(0)), $as_Lcom_github_lavrov_bittorrent_InfoHash(x$0.productElement__I__O(1)), $uJ(x$0.productElement__I__O(2)), $as_sci_List(x$0.productElement__I__O(3)))
 });
-$c_Ldefault_TorrentIndex$Results$.prototype.fromProduct__s_Product__Ldefault_TorrentIndex$Results = (function(x$0) {
-  return new $c_Ldefault_TorrentIndex$Results($as_T(x$0.productElement__I__O(0)), $as_sci_List(x$0.productElement__I__O(1)))
+$c_Ldefault_WindowMessage$SearchResults$Entry$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this.fromProduct__s_Product__Ldefault_WindowMessage$SearchResults$Entry(p)
 });
-var $d_Ldefault_TorrentIndex$Results$ = new $TypeData().initClass({
-  Ldefault_TorrentIndex$Results$: 0
-}, false, "default.TorrentIndex$Results$", {
-  Ldefault_TorrentIndex$Results$: 1,
+var $d_Ldefault_WindowMessage$SearchResults$Entry$ = new $TypeData().initClass({
+  Ldefault_WindowMessage$SearchResults$Entry$: 0
+}, false, "default.WindowMessage$SearchResults$Entry$", {
+  Ldefault_WindowMessage$SearchResults$Entry$: 1,
   O: 1,
   s_deriving_Mirror: 1,
   s_deriving_Mirror$Product: 1
 });
-$c_Ldefault_TorrentIndex$Results$.prototype.$classData = $d_Ldefault_TorrentIndex$Results$;
-var $n_Ldefault_TorrentIndex$Results$;
-function $m_Ldefault_TorrentIndex$Results$() {
-  if ((!$n_Ldefault_TorrentIndex$Results$)) {
-    $n_Ldefault_TorrentIndex$Results$ = new $c_Ldefault_TorrentIndex$Results$()
+$c_Ldefault_WindowMessage$SearchResults$Entry$.prototype.$classData = $d_Ldefault_WindowMessage$SearchResults$Entry$;
+var $n_Ldefault_WindowMessage$SearchResults$Entry$;
+function $m_Ldefault_WindowMessage$SearchResults$Entry$() {
+  if ((!$n_Ldefault_WindowMessage$SearchResults$Entry$)) {
+    $n_Ldefault_WindowMessage$SearchResults$Entry$ = new $c_Ldefault_WindowMessage$SearchResults$Entry$()
   };
-  return $n_Ldefault_TorrentIndex$Results$
+  return $n_Ldefault_WindowMessage$SearchResults$Entry$
 }
 function $ct_Lio_circe_BiggerDecimalJsonNumber__T__($thiz, input) {
   $thiz.Lio_circe_BiggerDecimalJsonNumber__f_input = input;
@@ -15393,6 +15547,16 @@ $h_Lio_circe_HCursor.prototype = $c_Lio_circe_HCursor.prototype;
 $c_Lio_circe_HCursor.prototype.succeeded__Z = (function() {
   return true
 });
+$c_Lio_circe_HCursor.prototype.keys__s_Option = (function() {
+  var x5 = this.value__Lio_circe_Json();
+  if ((x5 instanceof $c_Lio_circe_Json$JObject)) {
+    var x$1 = $as_Lio_circe_Json$JObject(x5);
+    var x8 = x$1.Lio_circe_Json$JObject__f_value;
+    var value = x8.keys__sc_Iterable();
+    return new $c_s_Some(value)
+  };
+  return $m_s_None$()
+});
 $c_Lio_circe_HCursor.prototype.downArray__Lio_circe_ACursor = (function() {
   var x9 = this.value__Lio_circe_Json();
   if ((x9 instanceof $c_Lio_circe_Json$JArray)) {
@@ -15600,6 +15764,9 @@ $c_Lio_circe_JsonObject$LinkedHashMapJsonObject.prototype.contains__T__Z = (func
 $c_Lio_circe_JsonObject$LinkedHashMapJsonObject.prototype.isEmpty__Z = (function() {
   return this.Lio_circe_JsonObject$LinkedHashMapJsonObject__f_io$circe$JsonObject$LinkedHashMapJsonObject$$fields.isEmpty__Z()
 });
+$c_Lio_circe_JsonObject$LinkedHashMapJsonObject.prototype.keys__sc_Iterable = (function() {
+  return new $c_Lio_circe_JsonObject$$anon$1(this)
+});
 $c_Lio_circe_JsonObject$LinkedHashMapJsonObject.prototype.toMap__sci_Map = (function() {
   var builder = new $c_sci_MapBuilderImpl();
   this.size__I();
@@ -15683,6 +15850,9 @@ $c_Lio_circe_JsonObject$MapAndVectorJsonObject.prototype.contains__T__Z = (funct
 });
 $c_Lio_circe_JsonObject$MapAndVectorJsonObject.prototype.isEmpty__Z = (function() {
   return this.Lio_circe_JsonObject$MapAndVectorJsonObject__f_fields.isEmpty__Z()
+});
+$c_Lio_circe_JsonObject$MapAndVectorJsonObject.prototype.keys__sc_Iterable = (function() {
+  return this.Lio_circe_JsonObject$MapAndVectorJsonObject__f_orderedKeys
 });
 $c_Lio_circe_JsonObject$MapAndVectorJsonObject.prototype.toMap__sci_Map = (function() {
   return this.Lio_circe_JsonObject$MapAndVectorJsonObject__f_fields
@@ -15774,6 +15944,12 @@ function $h_Lio_circe_ParsingFailure$() {
 $h_Lio_circe_ParsingFailure$.prototype = $c_Lio_circe_ParsingFailure$.prototype;
 $c_Lio_circe_ParsingFailure$.prototype.toString__T = (function() {
   return "ParsingFailure"
+});
+$c_Lio_circe_ParsingFailure$.prototype.fromProduct__s_Product__Lio_circe_ParsingFailure = (function(x$0) {
+  return new $c_Lio_circe_ParsingFailure($as_T(x$0.productElement__I__O(0)), $as_jl_Throwable(x$0.productElement__I__O(1)))
+});
+$c_Lio_circe_ParsingFailure$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this.fromProduct__s_Product__Lio_circe_ParsingFailure(p)
 });
 var $d_Lio_circe_ParsingFailure$ = new $TypeData().initClass({
   Lio_circe_ParsingFailure$: 0
@@ -15976,6 +16152,12 @@ $c_Lio_circe_Printer$.prototype.toString__T = (function() {
 });
 $c_Lio_circe_Printer$.prototype.io$circe$Printer$$$writeEscapedChar__jl_Appendable__C__V = (function(writer, c) {
   writer.append__C__jl_Appendable(117).append__C__jl_Appendable($p_Lio_circe_Printer$__toHex__I__C(this, (15 & (c >> 12)))).append__C__jl_Appendable($p_Lio_circe_Printer$__toHex__I__C(this, (15 & (c >> 8)))).append__C__jl_Appendable($p_Lio_circe_Printer$__toHex__I__C(this, (15 & (c >> 4)))).append__C__jl_Appendable($p_Lio_circe_Printer$__toHex__I__C(this, (15 & c)))
+});
+$c_Lio_circe_Printer$.prototype.fromProduct__s_Product__Lio_circe_Printer = (function(x$0) {
+  return new $c_Lio_circe_Printer($uZ(x$0.productElement__I__O(0)), $as_T(x$0.productElement__I__O(1)), $as_T(x$0.productElement__I__O(2)), $as_T(x$0.productElement__I__O(3)), $as_T(x$0.productElement__I__O(4)), $as_T(x$0.productElement__I__O(5)), $as_T(x$0.productElement__I__O(6)), $as_T(x$0.productElement__I__O(7)), $as_T(x$0.productElement__I__O(8)), $as_T(x$0.productElement__I__O(9)), $as_T(x$0.productElement__I__O(10)), $as_T(x$0.productElement__I__O(11)), $as_T(x$0.productElement__I__O(12)), $as_T(x$0.productElement__I__O(13)), $as_T(x$0.productElement__I__O(14)), $as_T(x$0.productElement__I__O(15)), $as_T(x$0.productElement__I__O(16)), $uZ(x$0.productElement__I__O(17)), $uZ(x$0.productElement__I__O(18)), $uZ(x$0.productElement__I__O(19)), $uZ(x$0.productElement__I__O(20)))
+});
+$c_Lio_circe_Printer$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this.fromProduct__s_Product__Lio_circe_Printer(p)
 });
 var $d_Lio_circe_Printer$ = new $TypeData().initClass({
   Lio_circe_Printer$: 0
@@ -16755,6 +16937,32 @@ $c_ju_AbstractCollection.prototype.toString__T = (function() {
   return (result + "]")
 });
 /** @constructor */
+function $c_ju_LinkedHashMap$KeyIterator(outer) {
+  this.ju_LinkedHashMap$AbstractLinkedHashMapIterator__f_nextNode = null;
+  this.ju_LinkedHashMap$AbstractLinkedHashMapIterator__f_lastNode = null;
+  this.ju_LinkedHashMap$AbstractLinkedHashMapIterator__f_$outer = null;
+  $ct_ju_LinkedHashMap$AbstractLinkedHashMapIterator__ju_LinkedHashMap__(this, outer)
+}
+$c_ju_LinkedHashMap$KeyIterator.prototype = new $h_ju_LinkedHashMap$AbstractLinkedHashMapIterator();
+$c_ju_LinkedHashMap$KeyIterator.prototype.constructor = $c_ju_LinkedHashMap$KeyIterator;
+/** @constructor */
+function $h_ju_LinkedHashMap$KeyIterator() {
+  /*<skip>*/
+}
+$h_ju_LinkedHashMap$KeyIterator.prototype = $c_ju_LinkedHashMap$KeyIterator.prototype;
+$c_ju_LinkedHashMap$KeyIterator.prototype.extract__ju_LinkedHashMap$Node__O = (function(node) {
+  return node.ju_HashMap$Node__f_key
+});
+var $d_ju_LinkedHashMap$KeyIterator = new $TypeData().initClass({
+  ju_LinkedHashMap$KeyIterator: 0
+}, false, "java.util.LinkedHashMap$KeyIterator", {
+  ju_LinkedHashMap$KeyIterator: 1,
+  ju_LinkedHashMap$AbstractLinkedHashMapIterator: 1,
+  O: 1,
+  ju_Iterator: 1
+});
+$c_ju_LinkedHashMap$KeyIterator.prototype.$classData = $d_ju_LinkedHashMap$KeyIterator;
+/** @constructor */
 function $c_ju_LinkedHashMap$Node(key, hash, value, previous, next, older, younger) {
   this.ju_HashMap$Node__f_key = null;
   this.ju_HashMap$Node__f_hash = 0;
@@ -16806,6 +17014,9 @@ function $h_ju_LinkedHashMap$NodeIterator() {
   /*<skip>*/
 }
 $h_ju_LinkedHashMap$NodeIterator.prototype = $c_ju_LinkedHashMap$NodeIterator.prototype;
+$c_ju_LinkedHashMap$NodeIterator.prototype.extract__ju_LinkedHashMap$Node__O = (function(node) {
+  return node
+});
 var $d_ju_LinkedHashMap$NodeIterator = new $TypeData().initClass({
   ju_LinkedHashMap$NodeIterator: 0
 }, false, "java.util.LinkedHashMap$NodeIterator", {
@@ -20299,6 +20510,12 @@ $h_Lscodec_bits_ByteVector$View$.prototype = $c_Lscodec_bits_ByteVector$View$.pr
 $c_Lscodec_bits_ByteVector$View$.prototype.toString__T = (function() {
   return "View"
 });
+$c_Lscodec_bits_ByteVector$View$.prototype.fromProduct__s_Product__Lscodec_bits_ByteVector$View = (function(x$0) {
+  return new $c_Lscodec_bits_ByteVector$View($as_Lscodec_bits_ByteVector$At(x$0.productElement__I__O(0)), $uJ(x$0.productElement__I__O(1)), $uJ(x$0.productElement__I__O(2)))
+});
+$c_Lscodec_bits_ByteVector$View$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this.fromProduct__s_Product__Lscodec_bits_ByteVector$View(p)
+});
 var $d_Lscodec_bits_ByteVector$View$ = new $TypeData().initClass({
   Lscodec_bits_ByteVector$View$: 0
 }, false, "scodec.bits.ByteVector$View$", {
@@ -20665,69 +20882,69 @@ var $d_Lcom_github_lavrov_bittorrent_InfoHash = new $TypeData().initClass({
 });
 $c_Lcom_github_lavrov_bittorrent_InfoHash.prototype.$classData = $d_Lcom_github_lavrov_bittorrent_InfoHash;
 /** @constructor */
-function $c_Ldefault_TorrentIndex$Entry(name, infoHash, size, ext) {
-  this.Ldefault_TorrentIndex$Entry__f_name = null;
-  this.Ldefault_TorrentIndex$Entry__f_infoHash = null;
-  this.Ldefault_TorrentIndex$Entry__f_size = $L0;
-  this.Ldefault_TorrentIndex$Entry__f_ext = null;
-  this.Ldefault_TorrentIndex$Entry__f_name = name;
-  this.Ldefault_TorrentIndex$Entry__f_infoHash = infoHash;
-  this.Ldefault_TorrentIndex$Entry__f_size = size;
-  this.Ldefault_TorrentIndex$Entry__f_ext = ext
+function $c_Ldefault_WindowMessage$SearchResults$Entry(name, infoHash, size, ext) {
+  this.Ldefault_WindowMessage$SearchResults$Entry__f_name = null;
+  this.Ldefault_WindowMessage$SearchResults$Entry__f_infoHash = null;
+  this.Ldefault_WindowMessage$SearchResults$Entry__f_size = $L0;
+  this.Ldefault_WindowMessage$SearchResults$Entry__f_ext = null;
+  this.Ldefault_WindowMessage$SearchResults$Entry__f_name = name;
+  this.Ldefault_WindowMessage$SearchResults$Entry__f_infoHash = infoHash;
+  this.Ldefault_WindowMessage$SearchResults$Entry__f_size = size;
+  this.Ldefault_WindowMessage$SearchResults$Entry__f_ext = ext
 }
-$c_Ldefault_TorrentIndex$Entry.prototype = new $h_O();
-$c_Ldefault_TorrentIndex$Entry.prototype.constructor = $c_Ldefault_TorrentIndex$Entry;
+$c_Ldefault_WindowMessage$SearchResults$Entry.prototype = new $h_O();
+$c_Ldefault_WindowMessage$SearchResults$Entry.prototype.constructor = $c_Ldefault_WindowMessage$SearchResults$Entry;
 /** @constructor */
-function $h_Ldefault_TorrentIndex$Entry() {
+function $h_Ldefault_WindowMessage$SearchResults$Entry() {
   /*<skip>*/
 }
-$h_Ldefault_TorrentIndex$Entry.prototype = $c_Ldefault_TorrentIndex$Entry.prototype;
-$c_Ldefault_TorrentIndex$Entry.prototype.productIterator__sc_Iterator = (function() {
+$h_Ldefault_WindowMessage$SearchResults$Entry.prototype = $c_Ldefault_WindowMessage$SearchResults$Entry.prototype;
+$c_Ldefault_WindowMessage$SearchResults$Entry.prototype.productIterator__sc_Iterator = (function() {
   return new $c_s_Product$$anon$1(this)
 });
-$c_Ldefault_TorrentIndex$Entry.prototype.hashCode__I = (function() {
+$c_Ldefault_WindowMessage$SearchResults$Entry.prototype.hashCode__I = (function() {
   var acc = (-889275714);
   var hash = acc;
   var data = $f_T__hashCode__I("Entry");
   acc = $m_sr_Statics$().mix__I__I__I(hash, data);
   var hash$1 = acc;
-  var x = this.Ldefault_TorrentIndex$Entry__f_name;
+  var x = this.Ldefault_WindowMessage$SearchResults$Entry__f_name;
   var data$1 = $m_sr_Statics$().anyHash__O__I(x);
   acc = $m_sr_Statics$().mix__I__I__I(hash$1, data$1);
   var hash$2 = acc;
-  var x$1 = this.Ldefault_TorrentIndex$Entry__f_infoHash;
+  var x$1 = this.Ldefault_WindowMessage$SearchResults$Entry__f_infoHash;
   var data$2 = $m_sr_Statics$().anyHash__O__I(x$1);
   acc = $m_sr_Statics$().mix__I__I__I(hash$2, data$2);
   var hash$3 = acc;
-  var t = this.Ldefault_TorrentIndex$Entry__f_size;
+  var t = this.Ldefault_WindowMessage$SearchResults$Entry__f_size;
   var lo = t.RTLong__f_lo;
   var hi = t.RTLong__f_hi;
   var data$3 = $m_sr_Statics$().longHash__J__I(new $c_RTLong(lo, hi));
   acc = $m_sr_Statics$().mix__I__I__I(hash$3, data$3);
   var hash$4 = acc;
-  var x$2 = this.Ldefault_TorrentIndex$Entry__f_ext;
+  var x$2 = this.Ldefault_WindowMessage$SearchResults$Entry__f_ext;
   var data$4 = $m_sr_Statics$().anyHash__O__I(x$2);
   acc = $m_sr_Statics$().mix__I__I__I(hash$4, data$4);
   var hash$5 = acc;
   return $m_sr_Statics$().finalizeHash__I__I__I(hash$5, 4)
 });
-$c_Ldefault_TorrentIndex$Entry.prototype.equals__O__Z = (function(x$0) {
+$c_Ldefault_WindowMessage$SearchResults$Entry.prototype.equals__O__Z = (function(x$0) {
   if ((this === x$0)) {
     return true
-  } else if ((x$0 instanceof $c_Ldefault_TorrentIndex$Entry)) {
-    var x$0$2 = $as_Ldefault_TorrentIndex$Entry(x$0);
-    var this$1 = this.Ldefault_TorrentIndex$Entry__f_size;
-    var b = x$0$2.Ldefault_TorrentIndex$Entry__f_size;
-    if ((((this$1.RTLong__f_lo === b.RTLong__f_lo) && (this$1.RTLong__f_hi === b.RTLong__f_hi)) && (this.Ldefault_TorrentIndex$Entry__f_name === x$0$2.Ldefault_TorrentIndex$Entry__f_name))) {
-      var x = this.Ldefault_TorrentIndex$Entry__f_infoHash;
-      var x$2 = x$0$2.Ldefault_TorrentIndex$Entry__f_infoHash;
+  } else if ((x$0 instanceof $c_Ldefault_WindowMessage$SearchResults$Entry)) {
+    var x$0$2 = $as_Ldefault_WindowMessage$SearchResults$Entry(x$0);
+    var this$1 = this.Ldefault_WindowMessage$SearchResults$Entry__f_size;
+    var b = x$0$2.Ldefault_WindowMessage$SearchResults$Entry__f_size;
+    if ((((this$1.RTLong__f_lo === b.RTLong__f_lo) && (this$1.RTLong__f_hi === b.RTLong__f_hi)) && (this.Ldefault_WindowMessage$SearchResults$Entry__f_name === x$0$2.Ldefault_WindowMessage$SearchResults$Entry__f_name))) {
+      var x = this.Ldefault_WindowMessage$SearchResults$Entry__f_infoHash;
+      var x$2 = x$0$2.Ldefault_WindowMessage$SearchResults$Entry__f_infoHash;
       var $$x1 = ((x === null) ? (x$2 === null) : x.equals__O__Z(x$2))
     } else {
       var $$x1 = false
     };
     if ($$x1) {
-      var x$3 = this.Ldefault_TorrentIndex$Entry__f_ext;
-      var x$4 = x$0$2.Ldefault_TorrentIndex$Entry__f_ext;
+      var x$3 = this.Ldefault_WindowMessage$SearchResults$Entry__f_ext;
+      var x$4 = x$0$2.Ldefault_WindowMessage$SearchResults$Entry__f_ext;
       return ((x$3 === null) ? (x$4 === null) : x$3.equals__O__Z(x$4))
     } else {
       return false
@@ -20736,31 +20953,31 @@ $c_Ldefault_TorrentIndex$Entry.prototype.equals__O__Z = (function(x$0) {
     return false
   }
 });
-$c_Ldefault_TorrentIndex$Entry.prototype.toString__T = (function() {
+$c_Ldefault_WindowMessage$SearchResults$Entry.prototype.toString__T = (function() {
   return $m_sr_ScalaRunTime$()._toString__s_Product__T(this)
 });
-$c_Ldefault_TorrentIndex$Entry.prototype.productArity__I = (function() {
+$c_Ldefault_WindowMessage$SearchResults$Entry.prototype.productArity__I = (function() {
   return 4
 });
-$c_Ldefault_TorrentIndex$Entry.prototype.productPrefix__T = (function() {
+$c_Ldefault_WindowMessage$SearchResults$Entry.prototype.productPrefix__T = (function() {
   return "Entry"
 });
-$c_Ldefault_TorrentIndex$Entry.prototype.productElement__I__O = (function(n) {
+$c_Ldefault_WindowMessage$SearchResults$Entry.prototype.productElement__I__O = (function(n) {
   switch (n) {
     case 0: {
-      return this.Ldefault_TorrentIndex$Entry__f_name;
+      return this.Ldefault_WindowMessage$SearchResults$Entry__f_name;
       break
     }
     case 1: {
-      return this.Ldefault_TorrentIndex$Entry__f_infoHash;
+      return this.Ldefault_WindowMessage$SearchResults$Entry__f_infoHash;
       break
     }
     case 2: {
-      return this.Ldefault_TorrentIndex$Entry__f_size;
+      return this.Ldefault_WindowMessage$SearchResults$Entry__f_size;
       break
     }
     case 3: {
-      return this.Ldefault_TorrentIndex$Entry__f_ext;
+      return this.Ldefault_WindowMessage$SearchResults$Entry__f_ext;
       break
     }
     default: {
@@ -20768,99 +20985,25 @@ $c_Ldefault_TorrentIndex$Entry.prototype.productElement__I__O = (function(n) {
     }
   }
 });
-function $as_Ldefault_TorrentIndex$Entry(obj) {
-  return (((obj instanceof $c_Ldefault_TorrentIndex$Entry) || (obj === null)) ? obj : $throwClassCastException(obj, "default.TorrentIndex$Entry"))
+function $as_Ldefault_WindowMessage$SearchResults$Entry(obj) {
+  return (((obj instanceof $c_Ldefault_WindowMessage$SearchResults$Entry) || (obj === null)) ? obj : $throwClassCastException(obj, "default.WindowMessage$SearchResults$Entry"))
 }
-function $isArrayOf_Ldefault_TorrentIndex$Entry(obj, depth) {
-  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Ldefault_TorrentIndex$Entry)))
+function $isArrayOf_Ldefault_WindowMessage$SearchResults$Entry(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Ldefault_WindowMessage$SearchResults$Entry)))
 }
-function $asArrayOf_Ldefault_TorrentIndex$Entry(obj, depth) {
-  return (($isArrayOf_Ldefault_TorrentIndex$Entry(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ldefault.TorrentIndex$Entry;", depth))
+function $asArrayOf_Ldefault_WindowMessage$SearchResults$Entry(obj, depth) {
+  return (($isArrayOf_Ldefault_WindowMessage$SearchResults$Entry(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ldefault.WindowMessage$SearchResults$Entry;", depth))
 }
-var $d_Ldefault_TorrentIndex$Entry = new $TypeData().initClass({
-  Ldefault_TorrentIndex$Entry: 0
-}, false, "default.TorrentIndex$Entry", {
-  Ldefault_TorrentIndex$Entry: 1,
+var $d_Ldefault_WindowMessage$SearchResults$Entry = new $TypeData().initClass({
+  Ldefault_WindowMessage$SearchResults$Entry: 0
+}, false, "default.WindowMessage$SearchResults$Entry", {
+  Ldefault_WindowMessage$SearchResults$Entry: 1,
   O: 1,
   s_Equals: 1,
   s_Product: 1,
   Ljava_io_Serializable: 1
 });
-$c_Ldefault_TorrentIndex$Entry.prototype.$classData = $d_Ldefault_TorrentIndex$Entry;
-/** @constructor */
-function $c_Ldefault_TorrentIndex$Results(query, entries) {
-  this.Ldefault_TorrentIndex$Results__f_query = null;
-  this.Ldefault_TorrentIndex$Results__f_entries = null;
-  this.Ldefault_TorrentIndex$Results__f_query = query;
-  this.Ldefault_TorrentIndex$Results__f_entries = entries
-}
-$c_Ldefault_TorrentIndex$Results.prototype = new $h_O();
-$c_Ldefault_TorrentIndex$Results.prototype.constructor = $c_Ldefault_TorrentIndex$Results;
-/** @constructor */
-function $h_Ldefault_TorrentIndex$Results() {
-  /*<skip>*/
-}
-$h_Ldefault_TorrentIndex$Results.prototype = $c_Ldefault_TorrentIndex$Results.prototype;
-$c_Ldefault_TorrentIndex$Results.prototype.productIterator__sc_Iterator = (function() {
-  return new $c_s_Product$$anon$1(this)
-});
-$c_Ldefault_TorrentIndex$Results.prototype.hashCode__I = (function() {
-  var this$2 = $m_s_util_hashing_MurmurHash3$();
-  return this$2.productHash__s_Product__I__Z__I(this, (-889275714), false)
-});
-$c_Ldefault_TorrentIndex$Results.prototype.equals__O__Z = (function(x$0) {
-  if ((this === x$0)) {
-    return true
-  } else if ((x$0 instanceof $c_Ldefault_TorrentIndex$Results)) {
-    var x$0$2 = $as_Ldefault_TorrentIndex$Results(x$0);
-    if ((this.Ldefault_TorrentIndex$Results__f_query === x$0$2.Ldefault_TorrentIndex$Results__f_query)) {
-      var x = this.Ldefault_TorrentIndex$Results__f_entries;
-      var x$2 = x$0$2.Ldefault_TorrentIndex$Results__f_entries;
-      return ((x === null) ? (x$2 === null) : x.equals__O__Z(x$2))
-    } else {
-      return false
-    }
-  } else {
-    return false
-  }
-});
-$c_Ldefault_TorrentIndex$Results.prototype.toString__T = (function() {
-  return $m_sr_ScalaRunTime$()._toString__s_Product__T(this)
-});
-$c_Ldefault_TorrentIndex$Results.prototype.productArity__I = (function() {
-  return 2
-});
-$c_Ldefault_TorrentIndex$Results.prototype.productPrefix__T = (function() {
-  return "Results"
-});
-$c_Ldefault_TorrentIndex$Results.prototype.productElement__I__O = (function(n) {
-  if ((n === 0)) {
-    return this.Ldefault_TorrentIndex$Results__f_query
-  };
-  if ((n === 1)) {
-    return this.Ldefault_TorrentIndex$Results__f_entries
-  };
-  throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n))
-});
-function $as_Ldefault_TorrentIndex$Results(obj) {
-  return (((obj instanceof $c_Ldefault_TorrentIndex$Results) || (obj === null)) ? obj : $throwClassCastException(obj, "default.TorrentIndex$Results"))
-}
-function $isArrayOf_Ldefault_TorrentIndex$Results(obj, depth) {
-  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Ldefault_TorrentIndex$Results)))
-}
-function $asArrayOf_Ldefault_TorrentIndex$Results(obj, depth) {
-  return (($isArrayOf_Ldefault_TorrentIndex$Results(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ldefault.TorrentIndex$Results;", depth))
-}
-var $d_Ldefault_TorrentIndex$Results = new $TypeData().initClass({
-  Ldefault_TorrentIndex$Results: 0
-}, false, "default.TorrentIndex$Results", {
-  Ldefault_TorrentIndex$Results: 1,
-  O: 1,
-  s_Equals: 1,
-  s_Product: 1,
-  Ljava_io_Serializable: 1
-});
-$c_Ldefault_TorrentIndex$Results.prototype.$classData = $d_Ldefault_TorrentIndex$Results;
+$c_Ldefault_WindowMessage$SearchResults$Entry.prototype.$classData = $d_Ldefault_WindowMessage$SearchResults$Entry;
 /** @constructor */
 function $c_Lio_circe_CursorOp() {
   /*<skip>*/
@@ -21409,6 +21552,24 @@ $c_Lio_circe_Decoder$$anon$45.prototype.$classData = $d_Lio_circe_Decoder$$anon$
 function $f_Lio_circe_DerivedDecoder__decodeWith__I__Lio_circe_HCursor__s_util_Either($thiz, index, c) {
   return $thiz.elemDecoders__ALio_circe_Decoder().get(index).tryDecode__Lio_circe_ACursor__s_util_Either(c.downField__T__Lio_circe_ACursor($thiz.elemLabels__AT().get(index)))
 }
+function $f_Lio_circe_DerivedDecoder__extractIndexFromWrapper__Lio_circe_HCursor__I($thiz, c) {
+  var x35 = c.keys__s_Option();
+  if ((x35 instanceof $c_s_Some)) {
+    var keys = $as_sc_Iterable($as_s_Some(x35).s_Some__f_value);
+    var iter = keys.iterator__sc_Iterator();
+    if (iter.hasNext__Z()) {
+      var key = $as_T(iter.next__O());
+      return (iter.hasNext__Z() ? (-1) : $f_Lio_circe_DerivedInstance__findLabel__T__I($thiz, key))
+    } else {
+      return (-1)
+    }
+  };
+  var x = $m_s_None$();
+  if ((x === x35)) {
+    return (-1)
+  };
+  throw new $c_s_MatchError(x35)
+}
 /** @constructor */
 function $c_Lio_circe_DerivedDecoder$$anon$1(c$3, outer) {
   this.Lio_circe_DerivedDecoder$$anon$1__f_c$1 = null;
@@ -21615,6 +21776,65 @@ function $isArrayOf_Lio_circe_Json(obj, depth) {
 function $asArrayOf_Lio_circe_Json(obj, depth) {
   return (($isArrayOf_Lio_circe_Json(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Lio.circe.Json;", depth))
 }
+/** @constructor */
+function $c_Lio_circe_JsonObject$$anon$4(outer) {
+  this.Lio_circe_JsonObject$$anon$4__f_underlying = null;
+  if ((outer === null)) {
+    throw $ct_jl_NullPointerException__(new $c_jl_NullPointerException())
+  };
+  var this$1 = outer.Lio_circe_JsonObject$$anon$1__f_$outer.Lio_circe_JsonObject$LinkedHashMapJsonObject__f_io$circe$JsonObject$LinkedHashMapJsonObject$$fields;
+  this.Lio_circe_JsonObject$$anon$4__f_underlying = new $c_ju_HashMap$KeySet(this$1).iterator__ju_Iterator()
+}
+$c_Lio_circe_JsonObject$$anon$4.prototype = new $h_O();
+$c_Lio_circe_JsonObject$$anon$4.prototype.constructor = $c_Lio_circe_JsonObject$$anon$4;
+/** @constructor */
+function $h_Lio_circe_JsonObject$$anon$4() {
+  /*<skip>*/
+}
+$h_Lio_circe_JsonObject$$anon$4.prototype = $c_Lio_circe_JsonObject$$anon$4.prototype;
+$c_Lio_circe_JsonObject$$anon$4.prototype.knownSize__I = (function() {
+  return (-1)
+});
+$c_Lio_circe_JsonObject$$anon$4.prototype.copyToArray__O__I__I__I = (function(xs, start, len) {
+  return $f_sc_IterableOnceOps__copyToArray__O__I__I__I(this, xs, start, len)
+});
+$c_Lio_circe_JsonObject$$anon$4.prototype.addString__scm_StringBuilder__T__T__T__scm_StringBuilder = (function(b, start, sep, end) {
+  return $f_sc_IterableOnceOps__addString__scm_StringBuilder__T__T__T__scm_StringBuilder(this, b, start, sep, end)
+});
+$c_Lio_circe_JsonObject$$anon$4.prototype.iterator__sc_Iterator = (function() {
+  return this
+});
+$c_Lio_circe_JsonObject$$anon$4.prototype.isEmpty__Z = (function() {
+  return (!this.hasNext__Z())
+});
+$c_Lio_circe_JsonObject$$anon$4.prototype.concat__F0__sc_Iterator = (function(xs) {
+  return $f_sc_Iterator__concat__F0__sc_Iterator(this, xs)
+});
+$c_Lio_circe_JsonObject$$anon$4.prototype.drop__I__sc_Iterator = (function(n) {
+  return $f_sc_Iterator__drop__I__sc_Iterator(this, n)
+});
+$c_Lio_circe_JsonObject$$anon$4.prototype.toString__T = (function() {
+  return "<iterator>"
+});
+$c_Lio_circe_JsonObject$$anon$4.prototype.hasNext__Z = (function() {
+  return this.Lio_circe_JsonObject$$anon$4__f_underlying.hasNext__Z()
+});
+$c_Lio_circe_JsonObject$$anon$4.prototype.next__T = (function() {
+  return $as_T(this.Lio_circe_JsonObject$$anon$4__f_underlying.next__O())
+});
+$c_Lio_circe_JsonObject$$anon$4.prototype.next__O = (function() {
+  return this.next__T()
+});
+var $d_Lio_circe_JsonObject$$anon$4 = new $TypeData().initClass({
+  Lio_circe_JsonObject$$anon$4: 0
+}, false, "io.circe.JsonObject$$anon$4", {
+  Lio_circe_JsonObject$$anon$4: 1,
+  O: 1,
+  sc_IterableOnce: 1,
+  sc_IterableOnceOps: 1,
+  sc_Iterator: 1
+});
+$c_Lio_circe_JsonObject$$anon$4.prototype.$classData = $d_Lio_circe_JsonObject$$anon$4;
 /** @constructor */
 function $c_Lio_circe_JsonObject$$anon$6(outer) {
   this.Lio_circe_JsonObject$$anon$6__f_underlying = null;
@@ -26049,6 +26269,85 @@ function $m_Lcats_Show$() {
   return $n_Lcats_Show$
 }
 /** @constructor */
+function $c_Lcats_data_NonEmptyList(head, tail) {
+  this.Lcats_data_NonEmptyList__f_head = null;
+  this.Lcats_data_NonEmptyList__f_tail = null;
+  this.Lcats_data_NonEmptyList__f_head = head;
+  this.Lcats_data_NonEmptyList__f_tail = tail
+}
+$c_Lcats_data_NonEmptyList.prototype = new $h_O();
+$c_Lcats_data_NonEmptyList.prototype.constructor = $c_Lcats_data_NonEmptyList;
+/** @constructor */
+function $h_Lcats_data_NonEmptyList() {
+  /*<skip>*/
+}
+$h_Lcats_data_NonEmptyList.prototype = $c_Lcats_data_NonEmptyList.prototype;
+$c_Lcats_data_NonEmptyList.prototype.productIterator__sc_Iterator = (function() {
+  return new $c_s_Product$$anon$1(this)
+});
+$c_Lcats_data_NonEmptyList.prototype.hashCode__I = (function() {
+  var this$2 = $m_s_util_hashing_MurmurHash3$();
+  return this$2.productHash__s_Product__I__Z__I(this, (-889275714), false)
+});
+$c_Lcats_data_NonEmptyList.prototype.equals__O__Z = (function(x$0) {
+  if ((this === x$0)) {
+    return true
+  } else if ((x$0 instanceof $c_Lcats_data_NonEmptyList)) {
+    var x$0$2 = $as_Lcats_data_NonEmptyList(x$0);
+    var x = this.Lcats_data_NonEmptyList__f_head;
+    var y = x$0$2.Lcats_data_NonEmptyList__f_head;
+    if ($m_sr_BoxesRunTime$().equals__O__O__Z(x, y)) {
+      var x$1 = this.Lcats_data_NonEmptyList__f_tail;
+      var x$2 = x$0$2.Lcats_data_NonEmptyList__f_tail;
+      return ((x$1 === null) ? (x$2 === null) : x$1.equals__O__Z(x$2))
+    } else {
+      return false
+    }
+  } else {
+    return false
+  }
+});
+$c_Lcats_data_NonEmptyList.prototype.productArity__I = (function() {
+  return 2
+});
+$c_Lcats_data_NonEmptyList.prototype.productPrefix__T = (function() {
+  return "NonEmptyList"
+});
+$c_Lcats_data_NonEmptyList.prototype.productElement__I__O = (function(n) {
+  if ((n === 0)) {
+    return this.Lcats_data_NonEmptyList__f_head
+  };
+  if ((n === 1)) {
+    return this.Lcats_data_NonEmptyList__f_tail
+  };
+  throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n))
+});
+$c_Lcats_data_NonEmptyList.prototype.toString__T = (function() {
+  var this$1 = this.Lcats_data_NonEmptyList__f_tail;
+  var elem = this.Lcats_data_NonEmptyList__f_head;
+  return ("NonEmpty" + new $c_sci_$colon$colon(elem, this$1))
+});
+function $as_Lcats_data_NonEmptyList(obj) {
+  return (((obj instanceof $c_Lcats_data_NonEmptyList) || (obj === null)) ? obj : $throwClassCastException(obj, "cats.data.NonEmptyList"))
+}
+function $isArrayOf_Lcats_data_NonEmptyList(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Lcats_data_NonEmptyList)))
+}
+function $asArrayOf_Lcats_data_NonEmptyList(obj, depth) {
+  return (($isArrayOf_Lcats_data_NonEmptyList(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Lcats.data.NonEmptyList;", depth))
+}
+var $d_Lcats_data_NonEmptyList = new $TypeData().initClass({
+  Lcats_data_NonEmptyList: 0
+}, false, "cats.data.NonEmptyList", {
+  Lcats_data_NonEmptyList: 1,
+  O: 1,
+  Lcats_data_NonEmptyCollection: 1,
+  s_Equals: 1,
+  s_Product: 1,
+  Ljava_io_Serializable: 1
+});
+$c_Lcats_data_NonEmptyList.prototype.$classData = $d_Lcats_data_NonEmptyList;
+/** @constructor */
 function $c_Lcats_data_Validated$Valid(a) {
   this.Lcats_data_Validated$Valid__f_a = null;
   this.Lcats_data_Validated$Valid__f_a = a
@@ -26243,6 +26542,275 @@ function $m_Lcats_kernel_Order$() {
   };
   return $n_Lcats_kernel_Order$
 }
+/** @constructor */
+function $c_Ldefault_ServiceWorkerMessage() {
+  /*<skip>*/
+}
+$c_Ldefault_ServiceWorkerMessage.prototype = new $h_O();
+$c_Ldefault_ServiceWorkerMessage.prototype.constructor = $c_Ldefault_ServiceWorkerMessage;
+/** @constructor */
+function $h_Ldefault_ServiceWorkerMessage() {
+  /*<skip>*/
+}
+$h_Ldefault_ServiceWorkerMessage.prototype = $c_Ldefault_ServiceWorkerMessage.prototype;
+$c_Ldefault_ServiceWorkerMessage.prototype.productIterator__sc_Iterator = (function() {
+  return new $c_s_Product$$anon$1(this)
+});
+function $as_Ldefault_ServiceWorkerMessage(obj) {
+  return (((obj instanceof $c_Ldefault_ServiceWorkerMessage) || (obj === null)) ? obj : $throwClassCastException(obj, "default.ServiceWorkerMessage"))
+}
+function $isArrayOf_Ldefault_ServiceWorkerMessage(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Ldefault_ServiceWorkerMessage)))
+}
+function $asArrayOf_Ldefault_ServiceWorkerMessage(obj, depth) {
+  return (($isArrayOf_Ldefault_ServiceWorkerMessage(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ldefault.ServiceWorkerMessage;", depth))
+}
+/** @constructor */
+function $c_Ldefault_ServiceWorkerMessage$$anon$2(evidence$2$2) {
+  this.Ldefault_ServiceWorkerMessage$$anon$2__f_evidence$2$1 = null;
+  this.Ldefault_ServiceWorkerMessage$$anon$2__f_elemLabels = null;
+  this.Ldefault_ServiceWorkerMessage$$anon$2__f_elemDecoders$lzy1 = null;
+  this.Ldefault_ServiceWorkerMessage$$anon$2__f_elemDecodersbitmap$1 = false;
+  this.Ldefault_ServiceWorkerMessage$$anon$2__f_evidence$2$1 = evidence$2$2;
+  var this$1 = $m_s_package$().s_package$__f_Nil;
+  var this$3 = new $c_sci_$colon$colon("query", this$1);
+  var capacity = 0;
+  var size = 0;
+  var jsElems = null;
+  capacity = 0;
+  size = 0;
+  jsElems = [];
+  var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$3);
+  while (it.hasNext__Z()) {
+    var elem = it.next__O();
+    var unboxedElem = ((elem === null) ? null : elem);
+    jsElems.push(unboxedElem)
+  };
+  this.Ldefault_ServiceWorkerMessage$$anon$2__f_elemLabels = new ($d_T.getArrayOf().constr)(jsElems)
+}
+$c_Ldefault_ServiceWorkerMessage$$anon$2.prototype = new $h_O();
+$c_Ldefault_ServiceWorkerMessage$$anon$2.prototype.constructor = $c_Ldefault_ServiceWorkerMessage$$anon$2;
+/** @constructor */
+function $h_Ldefault_ServiceWorkerMessage$$anon$2() {
+  /*<skip>*/
+}
+$h_Ldefault_ServiceWorkerMessage$$anon$2.prototype = $c_Ldefault_ServiceWorkerMessage$$anon$2.prototype;
+$c_Ldefault_ServiceWorkerMessage$$anon$2.prototype.elemLabels__AT = (function() {
+  return this.Ldefault_ServiceWorkerMessage$$anon$2__f_elemLabels
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$2.prototype.tryDecode__Lio_circe_ACursor__s_util_Either = (function(c) {
+  return $f_Lio_circe_Decoder__tryDecode__Lio_circe_ACursor__s_util_Either(this, c)
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$2.prototype.elemDecoders__ALio_circe_Decoder = (function() {
+  if ((!this.Ldefault_ServiceWorkerMessage$$anon$2__f_elemDecodersbitmap$1)) {
+    var decodeA = $m_Lio_circe_Decoder$().Lio_circe_Decoder$__f_decodeString;
+    var this$1 = $m_s_package$().s_package$__f_Nil;
+    var this$3 = new $c_sci_$colon$colon(decodeA, this$1);
+    var capacity = 0;
+    var size = 0;
+    var jsElems = null;
+    capacity = 0;
+    size = 0;
+    jsElems = [];
+    var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$3);
+    while (it.hasNext__Z()) {
+      var elem = it.next__O();
+      var unboxedElem = ((elem === null) ? null : elem);
+      jsElems.push(unboxedElem)
+    };
+    this.Ldefault_ServiceWorkerMessage$$anon$2__f_elemDecoders$lzy1 = new ($d_Lio_circe_Decoder.getArrayOf().constr)(jsElems);
+    this.Ldefault_ServiceWorkerMessage$$anon$2__f_elemDecodersbitmap$1 = true
+  };
+  return this.Ldefault_ServiceWorkerMessage$$anon$2__f_elemDecoders$lzy1
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$2.prototype.apply__Lio_circe_HCursor__s_util_Either = (function(c) {
+  var \u03b4scrutinee10 = this.Ldefault_ServiceWorkerMessage$$anon$2__f_evidence$2$1;
+  if (c.value__Lio_circe_Json().isObject__Z()) {
+    var iter = new $c_Lio_circe_DerivedDecoder$$anon$1(c, this);
+    var dimensions = new $ac_I(new Int32Array([$f_Lio_circe_DerivedInstance__elemCount__I(this)]));
+    var res = $asArrayOf_O($m_jl_reflect_Array$().newInstance__jl_Class__AI__O($d_O.getClassOf(), dimensions), 1);
+    var failed = null;
+    var i = 0;
+    while ((iter.hasNext__Z() && (failed === null))) {
+      matchResult4: {
+        var x5 = iter.next__s_util_Either();
+        if ((x5 instanceof $c_s_util_Right)) {
+          var value = $as_s_util_Right(x5).s_util_Right__f_value;
+          res.set(i, value);
+          break matchResult4
+        };
+        if ((x5 instanceof $c_s_util_Left)) {
+          var l = $as_s_util_Left(x5);
+          failed = l;
+          break matchResult4
+        };
+        throw new $c_s_MatchError(x5)
+      };
+      i = ((1 + i) | 0)
+    };
+    if ((failed === null)) {
+      $m_s_package$();
+      var value$1 = \u03b4scrutinee10.fromProduct__s_Product__O($m_T$().fromArray__O__s_Product(res));
+      return new $c_s_util_Right(value$1)
+    } else {
+      return failed
+    }
+  } else {
+    $m_s_package$();
+    $m_Lio_circe_DecodingFailure$();
+    var ops = new $c_sjsr_AnonFunction0(((c$2) => (() => c$2.history__sci_List()))(c));
+    var value$2 = new $c_Lio_circe_DecodingFailure$$anon$2("Query", ops);
+    return new $c_s_util_Left(value$2)
+  }
+});
+var $d_Ldefault_ServiceWorkerMessage$$anon$2 = new $TypeData().initClass({
+  Ldefault_ServiceWorkerMessage$$anon$2: 0
+}, false, "default.ServiceWorkerMessage$$anon$2", {
+  Ldefault_ServiceWorkerMessage$$anon$2: 1,
+  O: 1,
+  Lio_circe_DerivedInstance: 1,
+  Ljava_io_Serializable: 1,
+  Lio_circe_Decoder: 1,
+  Lio_circe_DerivedDecoder: 1
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$2.prototype.$classData = $d_Ldefault_ServiceWorkerMessage$$anon$2;
+/** @constructor */
+function $c_Ldefault_WindowMessage() {
+  /*<skip>*/
+}
+$c_Ldefault_WindowMessage.prototype = new $h_O();
+$c_Ldefault_WindowMessage.prototype.constructor = $c_Ldefault_WindowMessage;
+/** @constructor */
+function $h_Ldefault_WindowMessage() {
+  /*<skip>*/
+}
+$h_Ldefault_WindowMessage.prototype = $c_Ldefault_WindowMessage.prototype;
+$c_Ldefault_WindowMessage.prototype.productIterator__sc_Iterator = (function() {
+  return new $c_s_Product$$anon$1(this)
+});
+function $as_Ldefault_WindowMessage(obj) {
+  return (((obj instanceof $c_Ldefault_WindowMessage) || (obj === null)) ? obj : $throwClassCastException(obj, "default.WindowMessage"))
+}
+function $isArrayOf_Ldefault_WindowMessage(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Ldefault_WindowMessage)))
+}
+function $asArrayOf_Ldefault_WindowMessage(obj, depth) {
+  return (($isArrayOf_Ldefault_WindowMessage(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ldefault.WindowMessage;", depth))
+}
+/** @constructor */
+function $c_Ldefault_WindowMessage$$anon$3(evidence$2$2) {
+  this.Ldefault_WindowMessage$$anon$3__f_evidence$2$1 = null;
+  this.Ldefault_WindowMessage$$anon$3__f_elemLabels = null;
+  this.Ldefault_WindowMessage$$anon$3__f_elemDecoders$lzy2 = null;
+  this.Ldefault_WindowMessage$$anon$3__f_elemDecodersbitmap$2 = false;
+  this.Ldefault_WindowMessage$$anon$3__f_evidence$2$1 = evidence$2$2;
+  var this$1 = $m_s_package$().s_package$__f_Nil;
+  var this$2 = new $c_sci_$colon$colon("entries", this$1);
+  var this$4 = new $c_sci_$colon$colon("query", this$2);
+  var capacity = 0;
+  var size = 0;
+  var jsElems = null;
+  capacity = 0;
+  size = 0;
+  jsElems = [];
+  var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$4);
+  while (it.hasNext__Z()) {
+    var elem = it.next__O();
+    var unboxedElem = ((elem === null) ? null : elem);
+    jsElems.push(unboxedElem)
+  };
+  this.Ldefault_WindowMessage$$anon$3__f_elemLabels = new ($d_T.getArrayOf().constr)(jsElems)
+}
+$c_Ldefault_WindowMessage$$anon$3.prototype = new $h_O();
+$c_Ldefault_WindowMessage$$anon$3.prototype.constructor = $c_Ldefault_WindowMessage$$anon$3;
+/** @constructor */
+function $h_Ldefault_WindowMessage$$anon$3() {
+  /*<skip>*/
+}
+$h_Ldefault_WindowMessage$$anon$3.prototype = $c_Ldefault_WindowMessage$$anon$3.prototype;
+$c_Ldefault_WindowMessage$$anon$3.prototype.elemLabels__AT = (function() {
+  return this.Ldefault_WindowMessage$$anon$3__f_elemLabels
+});
+$c_Ldefault_WindowMessage$$anon$3.prototype.tryDecode__Lio_circe_ACursor__s_util_Either = (function(c) {
+  return $f_Lio_circe_Decoder__tryDecode__Lio_circe_ACursor__s_util_Either(this, c)
+});
+$c_Ldefault_WindowMessage$$anon$3.prototype.elemDecoders__ALio_circe_Decoder = (function() {
+  if ((!this.Ldefault_WindowMessage$$anon$3__f_elemDecodersbitmap$2)) {
+    var decodeA = $m_Lio_circe_Decoder$().Lio_circe_Decoder$__f_decodeString;
+    $m_Lio_circe_Decoder$();
+    var decodeA$1 = $m_Ldefault_WindowMessage$SearchResults$().given_Codec_Entry__Lio_circe_Codec();
+    var decodeA$2 = new $c_Lio_circe_Decoder$$anon$45(decodeA$1);
+    var this$2 = $m_s_package$().s_package$__f_Nil;
+    var this$3 = new $c_sci_$colon$colon(decodeA$2, this$2);
+    var this$5 = new $c_sci_$colon$colon(decodeA, this$3);
+    var capacity = 0;
+    var size = 0;
+    var jsElems = null;
+    capacity = 0;
+    size = 0;
+    jsElems = [];
+    var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$5);
+    while (it.hasNext__Z()) {
+      var elem = it.next__O();
+      var unboxedElem = ((elem === null) ? null : elem);
+      jsElems.push(unboxedElem)
+    };
+    this.Ldefault_WindowMessage$$anon$3__f_elemDecoders$lzy2 = new ($d_Lio_circe_Decoder.getArrayOf().constr)(jsElems);
+    this.Ldefault_WindowMessage$$anon$3__f_elemDecodersbitmap$2 = true
+  };
+  return this.Ldefault_WindowMessage$$anon$3__f_elemDecoders$lzy2
+});
+$c_Ldefault_WindowMessage$$anon$3.prototype.apply__Lio_circe_HCursor__s_util_Either = (function(c) {
+  var \u03b4scrutinee39 = this.Ldefault_WindowMessage$$anon$3__f_evidence$2$1;
+  if (c.value__Lio_circe_Json().isObject__Z()) {
+    var iter = new $c_Lio_circe_DerivedDecoder$$anon$1(c, this);
+    var dimensions = new $ac_I(new Int32Array([$f_Lio_circe_DerivedInstance__elemCount__I(this)]));
+    var res = $asArrayOf_O($m_jl_reflect_Array$().newInstance__jl_Class__AI__O($d_O.getClassOf(), dimensions), 1);
+    var failed = null;
+    var i = 0;
+    while ((iter.hasNext__Z() && (failed === null))) {
+      matchResult10: {
+        var x25 = iter.next__s_util_Either();
+        if ((x25 instanceof $c_s_util_Right)) {
+          var value = $as_s_util_Right(x25).s_util_Right__f_value;
+          res.set(i, value);
+          break matchResult10
+        };
+        if ((x25 instanceof $c_s_util_Left)) {
+          var l = $as_s_util_Left(x25);
+          failed = l;
+          break matchResult10
+        };
+        throw new $c_s_MatchError(x25)
+      };
+      i = ((1 + i) | 0)
+    };
+    if ((failed === null)) {
+      $m_s_package$();
+      var value$1 = \u03b4scrutinee39.fromProduct__s_Product__O($m_T$().fromArray__O__s_Product(res));
+      return new $c_s_util_Right(value$1)
+    } else {
+      return failed
+    }
+  } else {
+    $m_s_package$();
+    $m_Lio_circe_DecodingFailure$();
+    var ops = new $c_sjsr_AnonFunction0(((c$2) => (() => c$2.history__sci_List()))(c));
+    var value$2 = new $c_Lio_circe_DecodingFailure$$anon$2("SearchResults", ops);
+    return new $c_s_util_Left(value$2)
+  }
+});
+var $d_Ldefault_WindowMessage$$anon$3 = new $TypeData().initClass({
+  Ldefault_WindowMessage$$anon$3: 0
+}, false, "default.WindowMessage$$anon$3", {
+  Ldefault_WindowMessage$$anon$3: 1,
+  O: 1,
+  Lio_circe_DerivedInstance: 1,
+  Ljava_io_Serializable: 1,
+  Lio_circe_Decoder: 1,
+  Lio_circe_DerivedDecoder: 1
+});
+$c_Ldefault_WindowMessage$$anon$3.prototype.$classData = $d_Ldefault_WindowMessage$$anon$3;
 /** @constructor */
 function $c_Lio_circe_Codec$$anon$4(decodeA$6, encodeA$6) {
   this.Lio_circe_Codec$$anon$4__f_decodeA$1 = null;
@@ -34532,6 +35100,12 @@ $h_Lcats_data_NonEmptyList$.prototype = $c_Lcats_data_NonEmptyList$.prototype;
 $c_Lcats_data_NonEmptyList$.prototype.toString__T = (function() {
   return "NonEmptyList"
 });
+$c_Lcats_data_NonEmptyList$.prototype.fromProduct__s_Product__Lcats_data_NonEmptyList = (function(x$0) {
+  return new $c_Lcats_data_NonEmptyList(x$0.productElement__I__O(0), $as_sci_List(x$0.productElement__I__O(1)))
+});
+$c_Lcats_data_NonEmptyList$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this.fromProduct__s_Product__Lcats_data_NonEmptyList(p)
+});
 var $d_Lcats_data_NonEmptyList$ = new $TypeData().initClass({
   Lcats_data_NonEmptyList$: 0
 }, false, "cats.data.NonEmptyList$", {
@@ -34585,6 +35159,141 @@ function $m_Lcats_instances_package$list$() {
   };
   return $n_Lcats_instances_package$list$
 }
+/** @constructor */
+function $c_Ldefault_ServiceWorkerMessage$Query(query) {
+  this.Ldefault_ServiceWorkerMessage$Query__f_query = null;
+  this.Ldefault_ServiceWorkerMessage$Query__f_query = query
+}
+$c_Ldefault_ServiceWorkerMessage$Query.prototype = new $h_Ldefault_ServiceWorkerMessage();
+$c_Ldefault_ServiceWorkerMessage$Query.prototype.constructor = $c_Ldefault_ServiceWorkerMessage$Query;
+/** @constructor */
+function $h_Ldefault_ServiceWorkerMessage$Query() {
+  /*<skip>*/
+}
+$h_Ldefault_ServiceWorkerMessage$Query.prototype = $c_Ldefault_ServiceWorkerMessage$Query.prototype;
+$c_Ldefault_ServiceWorkerMessage$Query.prototype.hashCode__I = (function() {
+  var this$2 = $m_s_util_hashing_MurmurHash3$();
+  return this$2.productHash__s_Product__I__Z__I(this, (-889275714), false)
+});
+$c_Ldefault_ServiceWorkerMessage$Query.prototype.equals__O__Z = (function(x$0) {
+  if ((this === x$0)) {
+    return true
+  } else if ((x$0 instanceof $c_Ldefault_ServiceWorkerMessage$Query)) {
+    var x$0$2 = $as_Ldefault_ServiceWorkerMessage$Query(x$0);
+    return (this.Ldefault_ServiceWorkerMessage$Query__f_query === x$0$2.Ldefault_ServiceWorkerMessage$Query__f_query)
+  } else {
+    return false
+  }
+});
+$c_Ldefault_ServiceWorkerMessage$Query.prototype.toString__T = (function() {
+  return $m_sr_ScalaRunTime$()._toString__s_Product__T(this)
+});
+$c_Ldefault_ServiceWorkerMessage$Query.prototype.productArity__I = (function() {
+  return 1
+});
+$c_Ldefault_ServiceWorkerMessage$Query.prototype.productPrefix__T = (function() {
+  return "Query"
+});
+$c_Ldefault_ServiceWorkerMessage$Query.prototype.productElement__I__O = (function(n) {
+  if ((n === 0)) {
+    return this.Ldefault_ServiceWorkerMessage$Query__f_query
+  };
+  throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n))
+});
+function $as_Ldefault_ServiceWorkerMessage$Query(obj) {
+  return (((obj instanceof $c_Ldefault_ServiceWorkerMessage$Query) || (obj === null)) ? obj : $throwClassCastException(obj, "default.ServiceWorkerMessage$Query"))
+}
+function $isArrayOf_Ldefault_ServiceWorkerMessage$Query(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Ldefault_ServiceWorkerMessage$Query)))
+}
+function $asArrayOf_Ldefault_ServiceWorkerMessage$Query(obj, depth) {
+  return (($isArrayOf_Ldefault_ServiceWorkerMessage$Query(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ldefault.ServiceWorkerMessage$Query;", depth))
+}
+var $d_Ldefault_ServiceWorkerMessage$Query = new $TypeData().initClass({
+  Ldefault_ServiceWorkerMessage$Query: 0
+}, false, "default.ServiceWorkerMessage$Query", {
+  Ldefault_ServiceWorkerMessage$Query: 1,
+  Ldefault_ServiceWorkerMessage: 1,
+  O: 1,
+  s_Equals: 1,
+  s_Product: 1,
+  Ljava_io_Serializable: 1,
+  s_reflect_Enum: 1
+});
+$c_Ldefault_ServiceWorkerMessage$Query.prototype.$classData = $d_Ldefault_ServiceWorkerMessage$Query;
+/** @constructor */
+function $c_Ldefault_WindowMessage$SearchResults(query, entries) {
+  this.Ldefault_WindowMessage$SearchResults__f_query = null;
+  this.Ldefault_WindowMessage$SearchResults__f_entries = null;
+  this.Ldefault_WindowMessage$SearchResults__f_query = query;
+  this.Ldefault_WindowMessage$SearchResults__f_entries = entries
+}
+$c_Ldefault_WindowMessage$SearchResults.prototype = new $h_Ldefault_WindowMessage();
+$c_Ldefault_WindowMessage$SearchResults.prototype.constructor = $c_Ldefault_WindowMessage$SearchResults;
+/** @constructor */
+function $h_Ldefault_WindowMessage$SearchResults() {
+  /*<skip>*/
+}
+$h_Ldefault_WindowMessage$SearchResults.prototype = $c_Ldefault_WindowMessage$SearchResults.prototype;
+$c_Ldefault_WindowMessage$SearchResults.prototype.hashCode__I = (function() {
+  var this$2 = $m_s_util_hashing_MurmurHash3$();
+  return this$2.productHash__s_Product__I__Z__I(this, (-889275714), false)
+});
+$c_Ldefault_WindowMessage$SearchResults.prototype.equals__O__Z = (function(x$0) {
+  if ((this === x$0)) {
+    return true
+  } else if ((x$0 instanceof $c_Ldefault_WindowMessage$SearchResults)) {
+    var x$0$2 = $as_Ldefault_WindowMessage$SearchResults(x$0);
+    if ((this.Ldefault_WindowMessage$SearchResults__f_query === x$0$2.Ldefault_WindowMessage$SearchResults__f_query)) {
+      var x = this.Ldefault_WindowMessage$SearchResults__f_entries;
+      var x$2 = x$0$2.Ldefault_WindowMessage$SearchResults__f_entries;
+      return ((x === null) ? (x$2 === null) : x.equals__O__Z(x$2))
+    } else {
+      return false
+    }
+  } else {
+    return false
+  }
+});
+$c_Ldefault_WindowMessage$SearchResults.prototype.toString__T = (function() {
+  return $m_sr_ScalaRunTime$()._toString__s_Product__T(this)
+});
+$c_Ldefault_WindowMessage$SearchResults.prototype.productArity__I = (function() {
+  return 2
+});
+$c_Ldefault_WindowMessage$SearchResults.prototype.productPrefix__T = (function() {
+  return "SearchResults"
+});
+$c_Ldefault_WindowMessage$SearchResults.prototype.productElement__I__O = (function(n) {
+  if ((n === 0)) {
+    return this.Ldefault_WindowMessage$SearchResults__f_query
+  };
+  if ((n === 1)) {
+    return this.Ldefault_WindowMessage$SearchResults__f_entries
+  };
+  throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n))
+});
+function $as_Ldefault_WindowMessage$SearchResults(obj) {
+  return (((obj instanceof $c_Ldefault_WindowMessage$SearchResults) || (obj === null)) ? obj : $throwClassCastException(obj, "default.WindowMessage$SearchResults"))
+}
+function $isArrayOf_Ldefault_WindowMessage$SearchResults(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Ldefault_WindowMessage$SearchResults)))
+}
+function $asArrayOf_Ldefault_WindowMessage$SearchResults(obj, depth) {
+  return (($isArrayOf_Ldefault_WindowMessage$SearchResults(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ldefault.WindowMessage$SearchResults;", depth))
+}
+var $d_Ldefault_WindowMessage$SearchResults = new $TypeData().initClass({
+  Ldefault_WindowMessage$SearchResults: 0
+}, false, "default.WindowMessage$SearchResults", {
+  Ldefault_WindowMessage$SearchResults: 1,
+  Ldefault_WindowMessage: 1,
+  O: 1,
+  s_Equals: 1,
+  s_Product: 1,
+  Ljava_io_Serializable: 1,
+  s_reflect_Enum: 1
+});
+$c_Ldefault_WindowMessage$SearchResults.prototype.$classData = $d_Ldefault_WindowMessage$SearchResults;
 /** @constructor */
 function $c_Lio_circe_CursorOp$DownField(k) {
   this.Lio_circe_CursorOp$DownField__f_k = null;
@@ -34847,6 +35556,73 @@ var $d_Lio_circe_JsonBiggerDecimal = new $TypeData().initClass({
   s_Product: 1
 });
 $c_Lio_circe_JsonBiggerDecimal.prototype.$classData = $d_Lio_circe_JsonBiggerDecimal;
+/** @constructor */
+function $c_Lio_circe_JsonObject$$anon$1(outer) {
+  this.Lio_circe_JsonObject$$anon$1__f_$outer = null;
+  if ((outer === null)) {
+    throw $ct_jl_NullPointerException__(new $c_jl_NullPointerException())
+  };
+  this.Lio_circe_JsonObject$$anon$1__f_$outer = outer
+}
+$c_Lio_circe_JsonObject$$anon$1.prototype = new $h_O();
+$c_Lio_circe_JsonObject$$anon$1.prototype.constructor = $c_Lio_circe_JsonObject$$anon$1;
+/** @constructor */
+function $h_Lio_circe_JsonObject$$anon$1() {
+  /*<skip>*/
+}
+$h_Lio_circe_JsonObject$$anon$1.prototype = $c_Lio_circe_JsonObject$$anon$1.prototype;
+$c_Lio_circe_JsonObject$$anon$1.prototype.knownSize__I = (function() {
+  return (-1)
+});
+$c_Lio_circe_JsonObject$$anon$1.prototype.isEmpty__Z = (function() {
+  return $f_sc_IterableOnceOps__isEmpty__Z(this)
+});
+$c_Lio_circe_JsonObject$$anon$1.prototype.copyToArray__O__I__I__I = (function(xs, start, len) {
+  return $f_sc_IterableOnceOps__copyToArray__O__I__I__I(this, xs, start, len)
+});
+$c_Lio_circe_JsonObject$$anon$1.prototype.addString__scm_StringBuilder__T__T__T__scm_StringBuilder = (function(b, start, sep, end) {
+  return $f_sc_IterableOnceOps__addString__scm_StringBuilder__T__T__T__scm_StringBuilder(this, b, start, sep, end)
+});
+$c_Lio_circe_JsonObject$$anon$1.prototype.head__O = (function() {
+  var this$1 = new $c_Lio_circe_JsonObject$$anon$4(this);
+  return this$1.next__T()
+});
+$c_Lio_circe_JsonObject$$anon$1.prototype.drop__I__O = (function(n) {
+  return $f_sc_IterableOps__drop__I__O(this, n)
+});
+$c_Lio_circe_JsonObject$$anon$1.prototype.tail__O = (function() {
+  return $f_sc_IterableOps__tail__O(this)
+});
+$c_Lio_circe_JsonObject$$anon$1.prototype.map__F1__O = (function(f) {
+  return $f_sc_IterableOps__map__F1__O(this, f)
+});
+$c_Lio_circe_JsonObject$$anon$1.prototype.iterableFactory__sc_IterableFactory = (function() {
+  return $m_sc_Iterable$()
+});
+$c_Lio_circe_JsonObject$$anon$1.prototype.className__T = (function() {
+  return "Iterable"
+});
+$c_Lio_circe_JsonObject$$anon$1.prototype.toString__T = (function() {
+  return $f_sc_Iterable__toString__T(this)
+});
+$c_Lio_circe_JsonObject$$anon$1.prototype.iterator__sc_Iterator = (function() {
+  return new $c_Lio_circe_JsonObject$$anon$4(this)
+});
+$c_Lio_circe_JsonObject$$anon$1.prototype.fromSpecific__sc_IterableOnce__O = (function(coll) {
+  return $as_sc_IterableOps($m_sc_Iterable$().from__sc_IterableOnce__O(coll))
+});
+var $d_Lio_circe_JsonObject$$anon$1 = new $TypeData().initClass({
+  Lio_circe_JsonObject$$anon$1: 0
+}, false, "io.circe.JsonObject$$anon$1", {
+  Lio_circe_JsonObject$$anon$1: 1,
+  O: 1,
+  sc_IterableOnce: 1,
+  sc_IterableOnceOps: 1,
+  sc_IterableOps: 1,
+  sc_IterableFactoryDefaults: 1,
+  sc_Iterable: 1
+});
+$c_Lio_circe_JsonObject$$anon$1.prototype.$classData = $d_Lio_circe_JsonObject$$anon$1;
 /** @constructor */
 function $c_Lio_circe_JsonObject$$anon$3(outer) {
   this.Lio_circe_JsonObject$$anon$3__f_$outer = null;
@@ -35140,6 +35916,44 @@ var $d_ju_HashMap$EntrySet = new $TypeData().initClass({
   ju_Set: 1
 });
 $c_ju_HashMap$EntrySet.prototype.$classData = $d_ju_HashMap$EntrySet;
+/** @constructor */
+function $c_ju_HashMap$KeySet(outer) {
+  this.ju_HashMap$KeySet__f_$outer = null;
+  if ((outer === null)) {
+    throw $m_sjsr_package$().unwrapJavaScriptException__jl_Throwable__O(null)
+  } else {
+    this.ju_HashMap$KeySet__f_$outer = outer
+  }
+}
+$c_ju_HashMap$KeySet.prototype = new $h_ju_AbstractSet();
+$c_ju_HashMap$KeySet.prototype.constructor = $c_ju_HashMap$KeySet;
+/** @constructor */
+function $h_ju_HashMap$KeySet() {
+  /*<skip>*/
+}
+$h_ju_HashMap$KeySet.prototype = $c_ju_HashMap$KeySet.prototype;
+$c_ju_HashMap$KeySet.prototype.iterator__ju_Iterator = (function() {
+  var this$1 = this.ju_HashMap$KeySet__f_$outer;
+  return new $c_ju_LinkedHashMap$KeyIterator(this$1)
+});
+$c_ju_HashMap$KeySet.prototype.size__I = (function() {
+  return this.ju_HashMap$KeySet__f_$outer.ju_HashMap__f_contentSize
+});
+$c_ju_HashMap$KeySet.prototype.contains__O__Z = (function(o) {
+  return this.ju_HashMap$KeySet__f_$outer.containsKey__O__Z(o)
+});
+var $d_ju_HashMap$KeySet = new $TypeData().initClass({
+  ju_HashMap$KeySet: 0
+}, false, "java.util.HashMap$KeySet", {
+  ju_HashMap$KeySet: 1,
+  ju_AbstractSet: 1,
+  ju_AbstractCollection: 1,
+  O: 1,
+  ju_Collection: 1,
+  jl_Iterable: 1,
+  ju_Set: 1
+});
+$c_ju_HashMap$KeySet.prototype.$classData = $d_ju_HashMap$KeySet;
 function $p_ju_LinkedHashMap__appendToOrderedList__ju_LinkedHashMap$Node__V($thiz, node) {
   var older = $thiz.ju_LinkedHashMap__f_youngest;
   if ((older !== null)) {
@@ -36510,6 +37324,161 @@ var $d_Lscodec_bits_ByteVector$Buffer = new $TypeData().initClass({
   Ljava_io_Serializable: 1
 });
 $c_Lscodec_bits_ByteVector$Buffer.prototype.$classData = $d_Lscodec_bits_ByteVector$Buffer;
+/** @constructor */
+function $c_Ldefault_ServiceWorkerMessage$$anon$3() {
+  this.Ldefault_ServiceWorkerMessage$$anon$3__f_elemLabels = null;
+  this.Ldefault_ServiceWorkerMessage$$anon$3__f_elemEncoders$lzy1 = null;
+  this.Ldefault_ServiceWorkerMessage$$anon$3__f_elemEncodersbitmap$1 = false;
+  var this$1 = $m_s_package$().s_package$__f_Nil;
+  var this$3 = new $c_sci_$colon$colon("query", this$1);
+  var capacity = 0;
+  var size = 0;
+  var jsElems = null;
+  capacity = 0;
+  size = 0;
+  jsElems = [];
+  var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$3);
+  while (it.hasNext__Z()) {
+    var elem = it.next__O();
+    var unboxedElem = ((elem === null) ? null : elem);
+    jsElems.push(unboxedElem)
+  };
+  this.Ldefault_ServiceWorkerMessage$$anon$3__f_elemLabels = new ($d_T.getArrayOf().constr)(jsElems)
+}
+$c_Ldefault_ServiceWorkerMessage$$anon$3.prototype = new $h_O();
+$c_Ldefault_ServiceWorkerMessage$$anon$3.prototype.constructor = $c_Ldefault_ServiceWorkerMessage$$anon$3;
+/** @constructor */
+function $h_Ldefault_ServiceWorkerMessage$$anon$3() {
+  /*<skip>*/
+}
+$h_Ldefault_ServiceWorkerMessage$$anon$3.prototype = $c_Ldefault_ServiceWorkerMessage$$anon$3.prototype;
+$c_Ldefault_ServiceWorkerMessage$$anon$3.prototype.elemLabels__AT = (function() {
+  return this.Ldefault_ServiceWorkerMessage$$anon$3__f_elemLabels
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$3.prototype.apply__O__Lio_circe_Json = (function(a) {
+  return $f_Lio_circe_Encoder$AsObject__apply__O__Lio_circe_Json(this, a)
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$3.prototype.elemEncoders__ALio_circe_Encoder = (function() {
+  if ((!this.Ldefault_ServiceWorkerMessage$$anon$3__f_elemEncodersbitmap$1)) {
+    var encodeA = $m_Lio_circe_Encoder$().Lio_circe_Encoder$__f_encodeString;
+    var this$1 = $m_s_package$().s_package$__f_Nil;
+    var this$3 = new $c_sci_$colon$colon(encodeA, this$1);
+    var capacity = 0;
+    var size = 0;
+    var jsElems = null;
+    capacity = 0;
+    size = 0;
+    jsElems = [];
+    var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$3);
+    while (it.hasNext__Z()) {
+      var elem = it.next__O();
+      var unboxedElem = ((elem === null) ? null : elem);
+      jsElems.push(unboxedElem)
+    };
+    this.Ldefault_ServiceWorkerMessage$$anon$3__f_elemEncoders$lzy1 = new ($d_Lio_circe_Encoder.getArrayOf().constr)(jsElems);
+    this.Ldefault_ServiceWorkerMessage$$anon$3__f_elemEncodersbitmap$1 = true
+  };
+  return this.Ldefault_ServiceWorkerMessage$$anon$3__f_elemEncoders$lzy1
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$3.prototype.encodeObject__Ldefault_ServiceWorkerMessage$Query__Lio_circe_JsonObject = (function(a) {
+  return $m_Lio_circe_JsonObject$().fromIterable__sc_Iterable__Lio_circe_JsonObject(new $c_Lio_circe_DerivedEncoder$$anon$1(a, this))
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$3.prototype.encodeObject__O__Lio_circe_JsonObject = (function(a) {
+  return this.encodeObject__Ldefault_ServiceWorkerMessage$Query__Lio_circe_JsonObject($as_Ldefault_ServiceWorkerMessage$Query(a))
+});
+var $d_Ldefault_ServiceWorkerMessage$$anon$3 = new $TypeData().initClass({
+  Ldefault_ServiceWorkerMessage$$anon$3: 0
+}, false, "default.ServiceWorkerMessage$$anon$3", {
+  Ldefault_ServiceWorkerMessage$$anon$3: 1,
+  O: 1,
+  Lio_circe_DerivedInstance: 1,
+  Ljava_io_Serializable: 1,
+  Lio_circe_Encoder: 1,
+  Lio_circe_Encoder$AsRoot: 1,
+  Lio_circe_Encoder$AsObject: 1,
+  Lio_circe_DerivedEncoder: 1
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$3.prototype.$classData = $d_Ldefault_ServiceWorkerMessage$$anon$3;
+/** @constructor */
+function $c_Ldefault_WindowMessage$$anon$4() {
+  this.Ldefault_WindowMessage$$anon$4__f_elemLabels = null;
+  this.Ldefault_WindowMessage$$anon$4__f_elemEncoders$lzy2 = null;
+  this.Ldefault_WindowMessage$$anon$4__f_elemEncodersbitmap$2 = false;
+  var this$1 = $m_s_package$().s_package$__f_Nil;
+  var this$2 = new $c_sci_$colon$colon("entries", this$1);
+  var this$4 = new $c_sci_$colon$colon("query", this$2);
+  var capacity = 0;
+  var size = 0;
+  var jsElems = null;
+  capacity = 0;
+  size = 0;
+  jsElems = [];
+  var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$4);
+  while (it.hasNext__Z()) {
+    var elem = it.next__O();
+    var unboxedElem = ((elem === null) ? null : elem);
+    jsElems.push(unboxedElem)
+  };
+  this.Ldefault_WindowMessage$$anon$4__f_elemLabels = new ($d_T.getArrayOf().constr)(jsElems)
+}
+$c_Ldefault_WindowMessage$$anon$4.prototype = new $h_O();
+$c_Ldefault_WindowMessage$$anon$4.prototype.constructor = $c_Ldefault_WindowMessage$$anon$4;
+/** @constructor */
+function $h_Ldefault_WindowMessage$$anon$4() {
+  /*<skip>*/
+}
+$h_Ldefault_WindowMessage$$anon$4.prototype = $c_Ldefault_WindowMessage$$anon$4.prototype;
+$c_Ldefault_WindowMessage$$anon$4.prototype.elemLabels__AT = (function() {
+  return this.Ldefault_WindowMessage$$anon$4__f_elemLabels
+});
+$c_Ldefault_WindowMessage$$anon$4.prototype.apply__O__Lio_circe_Json = (function(a) {
+  return $f_Lio_circe_Encoder$AsObject__apply__O__Lio_circe_Json(this, a)
+});
+$c_Ldefault_WindowMessage$$anon$4.prototype.elemEncoders__ALio_circe_Encoder = (function() {
+  if ((!this.Ldefault_WindowMessage$$anon$4__f_elemEncodersbitmap$2)) {
+    var encodeA = $m_Lio_circe_Encoder$().Lio_circe_Encoder$__f_encodeString;
+    $m_Lio_circe_Encoder$();
+    var encodeA$1 = $m_Ldefault_WindowMessage$SearchResults$().given_Codec_Entry__Lio_circe_Codec();
+    var encodeA$2 = new $c_Lio_circe_Encoder$$anon$26(encodeA$1);
+    var this$2 = $m_s_package$().s_package$__f_Nil;
+    var this$3 = new $c_sci_$colon$colon(encodeA$2, this$2);
+    var this$5 = new $c_sci_$colon$colon(encodeA, this$3);
+    var capacity = 0;
+    var size = 0;
+    var jsElems = null;
+    capacity = 0;
+    size = 0;
+    jsElems = [];
+    var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$5);
+    while (it.hasNext__Z()) {
+      var elem = it.next__O();
+      var unboxedElem = ((elem === null) ? null : elem);
+      jsElems.push(unboxedElem)
+    };
+    this.Ldefault_WindowMessage$$anon$4__f_elemEncoders$lzy2 = new ($d_Lio_circe_Encoder.getArrayOf().constr)(jsElems);
+    this.Ldefault_WindowMessage$$anon$4__f_elemEncodersbitmap$2 = true
+  };
+  return this.Ldefault_WindowMessage$$anon$4__f_elemEncoders$lzy2
+});
+$c_Ldefault_WindowMessage$$anon$4.prototype.encodeObject__Ldefault_WindowMessage$SearchResults__Lio_circe_JsonObject = (function(a) {
+  return $m_Lio_circe_JsonObject$().fromIterable__sc_Iterable__Lio_circe_JsonObject(new $c_Lio_circe_DerivedEncoder$$anon$1(a, this))
+});
+$c_Ldefault_WindowMessage$$anon$4.prototype.encodeObject__O__Lio_circe_JsonObject = (function(a) {
+  return this.encodeObject__Ldefault_WindowMessage$SearchResults__Lio_circe_JsonObject($as_Ldefault_WindowMessage$SearchResults(a))
+});
+var $d_Ldefault_WindowMessage$$anon$4 = new $TypeData().initClass({
+  Ldefault_WindowMessage$$anon$4: 0
+}, false, "default.WindowMessage$$anon$4", {
+  Ldefault_WindowMessage$$anon$4: 1,
+  O: 1,
+  Lio_circe_DerivedInstance: 1,
+  Ljava_io_Serializable: 1,
+  Lio_circe_Encoder: 1,
+  Lio_circe_Encoder$AsRoot: 1,
+  Lio_circe_Encoder$AsObject: 1,
+  Lio_circe_DerivedEncoder: 1
+});
+$c_Ldefault_WindowMessage$$anon$4.prototype.$classData = $d_Ldefault_WindowMessage$$anon$4;
 /** @constructor */
 function $c_Lio_circe_Encoder$() {
   this.Lio_circe_Encoder$__f_encodeJson = null;
@@ -38236,6 +39205,9 @@ $c_Lcats_kernel_Comparison$EqualTo$.prototype.productPrefix__T = (function() {
 $c_Lcats_kernel_Comparison$EqualTo$.prototype.productElement__I__O = (function(n) {
   throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n))
 });
+$c_Lcats_kernel_Comparison$EqualTo$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this
+});
 var $d_Lcats_kernel_Comparison$EqualTo$ = new $TypeData().initClass({
   Lcats_kernel_Comparison$EqualTo$: 0
 }, false, "cats.kernel.Comparison$EqualTo$", {
@@ -38285,6 +39257,9 @@ $c_Lcats_kernel_Comparison$GreaterThan$.prototype.productPrefix__T = (function()
 $c_Lcats_kernel_Comparison$GreaterThan$.prototype.productElement__I__O = (function(n) {
   throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n))
 });
+$c_Lcats_kernel_Comparison$GreaterThan$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this
+});
 var $d_Lcats_kernel_Comparison$GreaterThan$ = new $TypeData().initClass({
   Lcats_kernel_Comparison$GreaterThan$: 0
 }, false, "cats.kernel.Comparison$GreaterThan$", {
@@ -38333,6 +39308,9 @@ $c_Lcats_kernel_Comparison$LessThan$.prototype.productPrefix__T = (function() {
 });
 $c_Lcats_kernel_Comparison$LessThan$.prototype.productElement__I__O = (function(n) {
   throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n))
+});
+$c_Lcats_kernel_Comparison$LessThan$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this
 });
 var $d_Lcats_kernel_Comparison$LessThan$ = new $TypeData().initClass({
   Lcats_kernel_Comparison$LessThan$: 0
@@ -38395,6 +39373,9 @@ $c_Lio_circe_Json$JNull$.prototype.asNumber__s_Option = (function() {
 });
 $c_Lio_circe_Json$JNull$.prototype.asObject__s_Option = (function() {
   return $m_s_None$()
+});
+$c_Lio_circe_Json$JNull$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this
 });
 var $d_Lio_circe_Json$JNull$ = new $TypeData().initClass({
   Lio_circe_Json$JNull$: 0
@@ -40511,6 +41492,9 @@ $c_Lio_circe_CursorOp$DeleteGoParent$.prototype.productPrefix__T = (function() {
 $c_Lio_circe_CursorOp$DeleteGoParent$.prototype.productElement__I__O = (function(n) {
   throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n))
 });
+$c_Lio_circe_CursorOp$DeleteGoParent$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this
+});
 var $d_Lio_circe_CursorOp$DeleteGoParent$ = new $TypeData().initClass({
   Lio_circe_CursorOp$DeleteGoParent$: 0
 }, false, "io.circe.CursorOp$DeleteGoParent$", {
@@ -40558,6 +41542,9 @@ $c_Lio_circe_CursorOp$DownArray$.prototype.productPrefix__T = (function() {
 });
 $c_Lio_circe_CursorOp$DownArray$.prototype.productElement__I__O = (function(n) {
   throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n))
+});
+$c_Lio_circe_CursorOp$DownArray$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this
 });
 var $d_Lio_circe_CursorOp$DownArray$ = new $TypeData().initClass({
   Lio_circe_CursorOp$DownArray$: 0
@@ -40607,6 +41594,9 @@ $c_Lio_circe_CursorOp$MoveLeft$.prototype.productPrefix__T = (function() {
 $c_Lio_circe_CursorOp$MoveLeft$.prototype.productElement__I__O = (function(n) {
   throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n))
 });
+$c_Lio_circe_CursorOp$MoveLeft$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this
+});
 var $d_Lio_circe_CursorOp$MoveLeft$ = new $TypeData().initClass({
   Lio_circe_CursorOp$MoveLeft$: 0
 }, false, "io.circe.CursorOp$MoveLeft$", {
@@ -40655,6 +41645,9 @@ $c_Lio_circe_CursorOp$MoveRight$.prototype.productPrefix__T = (function() {
 $c_Lio_circe_CursorOp$MoveRight$.prototype.productElement__I__O = (function(n) {
   throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n))
 });
+$c_Lio_circe_CursorOp$MoveRight$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this
+});
 var $d_Lio_circe_CursorOp$MoveRight$ = new $TypeData().initClass({
   Lio_circe_CursorOp$MoveRight$: 0
 }, false, "io.circe.CursorOp$MoveRight$", {
@@ -40702,6 +41695,9 @@ $c_Lio_circe_CursorOp$MoveUp$.prototype.productPrefix__T = (function() {
 });
 $c_Lio_circe_CursorOp$MoveUp$.prototype.productElement__I__O = (function(n) {
   throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), ("" + n))
+});
+$c_Lio_circe_CursorOp$MoveUp$.prototype.fromProduct__s_Product__O = (function(p) {
+  return this
 });
 var $d_Lio_circe_CursorOp$MoveUp$ = new $TypeData().initClass({
   Lio_circe_CursorOp$MoveUp$: 0
@@ -42366,12 +43362,137 @@ function $h_Lcats_data_ValidatedApplicative() {
 }
 $h_Lcats_data_ValidatedApplicative.prototype = $c_Lcats_data_ValidatedApplicative.prototype;
 /** @constructor */
-function $c_Ldefault_TorrentIndex$$anon$2() {
-  this.Ldefault_TorrentIndex$$anon$2__f_elemLabels = null;
-  this.Ldefault_TorrentIndex$$anon$2__f_elemDecoders$lzy1 = null;
-  this.Ldefault_TorrentIndex$$anon$2__f_elemDecodersbitmap$1 = false;
-  this.Ldefault_TorrentIndex$$anon$2__f_elemEncoders$lzy1 = null;
-  this.Ldefault_TorrentIndex$$anon$2__f_elemEncodersbitmap$1 = false;
+function $c_Ldefault_ServiceWorkerMessage$$anon$1() {
+  this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemLabels = null;
+  this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemDecoders$lzy2 = null;
+  this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemDecodersbitmap$2 = false;
+  this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemEncoders$lzy2 = null;
+  this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemEncodersbitmap$2 = false;
+  var this$1 = $m_s_package$().s_package$__f_Nil;
+  var this$3 = new $c_sci_$colon$colon("Query", this$1);
+  var capacity = 0;
+  var size = 0;
+  var jsElems = null;
+  capacity = 0;
+  size = 0;
+  jsElems = [];
+  var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$3);
+  while (it.hasNext__Z()) {
+    var elem = it.next__O();
+    var unboxedElem = ((elem === null) ? null : elem);
+    jsElems.push(unboxedElem)
+  };
+  this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemLabels = new ($d_T.getArrayOf().constr)(jsElems)
+}
+$c_Ldefault_ServiceWorkerMessage$$anon$1.prototype = new $h_O();
+$c_Ldefault_ServiceWorkerMessage$$anon$1.prototype.constructor = $c_Ldefault_ServiceWorkerMessage$$anon$1;
+/** @constructor */
+function $h_Ldefault_ServiceWorkerMessage$$anon$1() {
+  /*<skip>*/
+}
+$h_Ldefault_ServiceWorkerMessage$$anon$1.prototype = $c_Ldefault_ServiceWorkerMessage$$anon$1.prototype;
+$c_Ldefault_ServiceWorkerMessage$$anon$1.prototype.tryDecode__Lio_circe_ACursor__s_util_Either = (function(c) {
+  return $f_Lio_circe_Decoder__tryDecode__Lio_circe_ACursor__s_util_Either(this, c)
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$1.prototype.apply__O__Lio_circe_Json = (function(a) {
+  return $f_Lio_circe_Encoder$AsObject__apply__O__Lio_circe_Json(this, a)
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$1.prototype.elemLabels__AT = (function() {
+  return this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemLabels
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$1.prototype.elemDecoders__ALio_circe_Decoder = (function() {
+  if ((!this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemDecodersbitmap$2)) {
+    var evidence$2 = $m_Ldefault_ServiceWorkerMessage$Query$();
+    var elem$2 = new $c_Ldefault_ServiceWorkerMessage$$anon$2(evidence$2);
+    var this$1 = $m_s_package$().s_package$__f_Nil;
+    var this$3 = new $c_sci_$colon$colon(elem$2, this$1);
+    var capacity = 0;
+    var size = 0;
+    var jsElems = null;
+    capacity = 0;
+    size = 0;
+    jsElems = [];
+    var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$3);
+    while (it.hasNext__Z()) {
+      var elem = it.next__O();
+      var unboxedElem = ((elem === null) ? null : elem);
+      jsElems.push(unboxedElem)
+    };
+    this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemDecoders$lzy2 = new ($d_Lio_circe_Decoder.getArrayOf().constr)(jsElems);
+    this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemDecodersbitmap$2 = true
+  };
+  return this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemDecoders$lzy2
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$1.prototype.elemEncoders__ALio_circe_Encoder = (function() {
+  if ((!this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemEncodersbitmap$2)) {
+    var elem$3 = new $c_Ldefault_ServiceWorkerMessage$$anon$3();
+    var this$1 = $m_s_package$().s_package$__f_Nil;
+    var this$3 = new $c_sci_$colon$colon(elem$3, this$1);
+    var capacity = 0;
+    var size = 0;
+    var jsElems = null;
+    capacity = 0;
+    size = 0;
+    jsElems = [];
+    var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$3);
+    while (it.hasNext__Z()) {
+      var elem = it.next__O();
+      var unboxedElem = ((elem === null) ? null : elem);
+      jsElems.push(unboxedElem)
+    };
+    this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemEncoders$lzy2 = new ($d_Lio_circe_Encoder.getArrayOf().constr)(jsElems);
+    this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemEncodersbitmap$2 = true
+  };
+  return this.Ldefault_ServiceWorkerMessage$$anon$1__f_elemEncoders$lzy2
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$1.prototype.encodeObject__Ldefault_ServiceWorkerMessage__Lio_circe_JsonObject = (function(a) {
+  var x17 = $f_Lio_circe_DerivedEncoder__encodeWith__I__O__T2(this, 0, a);
+  if ((x17 !== null)) {
+    var k = $as_T(x17._1__O());
+    var v = $as_Lio_circe_Json(x17._2__O());
+    return $m_Lio_circe_JsonObject$().singleton__T__Lio_circe_Json__Lio_circe_JsonObject(k, v)
+  };
+  throw new $c_s_MatchError(x17)
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$1.prototype.apply__Lio_circe_HCursor__s_util_Either = (function(c) {
+  var x20 = $f_Lio_circe_DerivedDecoder__extractIndexFromWrapper__Lio_circe_HCursor__I(this, c);
+  if ((x20 === (-1))) {
+    $m_s_package$();
+    $m_Lio_circe_DecodingFailure$();
+    var ops = new $c_sjsr_AnonFunction0(((c$2) => (() => c$2.history__sci_List()))(c));
+    var value = new $c_Lio_circe_DecodingFailure$$anon$2("ServiceWorkerMessage", ops);
+    return new $c_s_util_Left(value)
+  };
+  return $f_Lio_circe_DerivedDecoder__decodeWith__I__Lio_circe_HCursor__s_util_Either(this, x20, c)
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$1.prototype.encodeObject__O__Lio_circe_JsonObject = (function(a) {
+  return this.encodeObject__Ldefault_ServiceWorkerMessage__Lio_circe_JsonObject($as_Ldefault_ServiceWorkerMessage(a))
+});
+var $d_Ldefault_ServiceWorkerMessage$$anon$1 = new $TypeData().initClass({
+  Ldefault_ServiceWorkerMessage$$anon$1: 0
+}, false, "default.ServiceWorkerMessage$$anon$1", {
+  Ldefault_ServiceWorkerMessage$$anon$1: 1,
+  O: 1,
+  Ljava_io_Serializable: 1,
+  Lio_circe_Decoder: 1,
+  Lio_circe_Encoder: 1,
+  Lio_circe_Codec: 1,
+  Lio_circe_Encoder$AsRoot: 1,
+  Lio_circe_Codec$AsRoot: 1,
+  Lio_circe_Encoder$AsObject: 1,
+  Lio_circe_Codec$AsObject: 1,
+  Lio_circe_DerivedInstance: 1,
+  Lio_circe_DerivedDecoder: 1,
+  Lio_circe_DerivedEncoder: 1
+});
+$c_Ldefault_ServiceWorkerMessage$$anon$1.prototype.$classData = $d_Ldefault_ServiceWorkerMessage$$anon$1;
+/** @constructor */
+function $c_Ldefault_WindowMessage$$anon$1() {
+  this.Ldefault_WindowMessage$$anon$1__f_elemLabels = null;
+  this.Ldefault_WindowMessage$$anon$1__f_elemDecoders$lzy1 = null;
+  this.Ldefault_WindowMessage$$anon$1__f_elemDecodersbitmap$1 = false;
+  this.Ldefault_WindowMessage$$anon$1__f_elemEncoders$lzy1 = null;
+  this.Ldefault_WindowMessage$$anon$1__f_elemEncodersbitmap$1 = false;
   var this$1 = $m_s_package$().s_package$__f_Nil;
   var this$2 = new $c_sci_$colon$colon("ext", this$1);
   var this$3 = new $c_sci_$colon$colon("size", this$2);
@@ -42389,28 +43510,28 @@ function $c_Ldefault_TorrentIndex$$anon$2() {
     var unboxedElem = ((elem === null) ? null : elem);
     jsElems.push(unboxedElem)
   };
-  this.Ldefault_TorrentIndex$$anon$2__f_elemLabels = new ($d_T.getArrayOf().constr)(jsElems)
+  this.Ldefault_WindowMessage$$anon$1__f_elemLabels = new ($d_T.getArrayOf().constr)(jsElems)
 }
-$c_Ldefault_TorrentIndex$$anon$2.prototype = new $h_O();
-$c_Ldefault_TorrentIndex$$anon$2.prototype.constructor = $c_Ldefault_TorrentIndex$$anon$2;
+$c_Ldefault_WindowMessage$$anon$1.prototype = new $h_O();
+$c_Ldefault_WindowMessage$$anon$1.prototype.constructor = $c_Ldefault_WindowMessage$$anon$1;
 /** @constructor */
-function $h_Ldefault_TorrentIndex$$anon$2() {
+function $h_Ldefault_WindowMessage$$anon$1() {
   /*<skip>*/
 }
-$h_Ldefault_TorrentIndex$$anon$2.prototype = $c_Ldefault_TorrentIndex$$anon$2.prototype;
-$c_Ldefault_TorrentIndex$$anon$2.prototype.tryDecode__Lio_circe_ACursor__s_util_Either = (function(c) {
+$h_Ldefault_WindowMessage$$anon$1.prototype = $c_Ldefault_WindowMessage$$anon$1.prototype;
+$c_Ldefault_WindowMessage$$anon$1.prototype.tryDecode__Lio_circe_ACursor__s_util_Either = (function(c) {
   return $f_Lio_circe_Decoder__tryDecode__Lio_circe_ACursor__s_util_Either(this, c)
 });
-$c_Ldefault_TorrentIndex$$anon$2.prototype.apply__O__Lio_circe_Json = (function(a) {
+$c_Ldefault_WindowMessage$$anon$1.prototype.apply__O__Lio_circe_Json = (function(a) {
   return $f_Lio_circe_Encoder$AsObject__apply__O__Lio_circe_Json(this, a)
 });
-$c_Ldefault_TorrentIndex$$anon$2.prototype.elemLabels__AT = (function() {
-  return this.Ldefault_TorrentIndex$$anon$2__f_elemLabels
+$c_Ldefault_WindowMessage$$anon$1.prototype.elemLabels__AT = (function() {
+  return this.Ldefault_WindowMessage$$anon$1__f_elemLabels
 });
-$c_Ldefault_TorrentIndex$$anon$2.prototype.elemDecoders__ALio_circe_Decoder = (function() {
-  if ((!this.Ldefault_TorrentIndex$$anon$2__f_elemDecodersbitmap$1)) {
+$c_Ldefault_WindowMessage$$anon$1.prototype.elemDecoders__ALio_circe_Decoder = (function() {
+  if ((!this.Ldefault_WindowMessage$$anon$1__f_elemDecodersbitmap$1)) {
     var decodeA = $m_Lio_circe_Decoder$().Lio_circe_Decoder$__f_decodeString;
-    var decodeA$2 = $m_Ldefault_TorrentIndex$Entry$().given_Codec_InfoHash__Lio_circe_Codec();
+    var decodeA$2 = $m_Ldefault_WindowMessage$SearchResults$().given_Codec_InfoHash__Lio_circe_Codec();
     var decodeA$3 = $m_Lio_circe_Decoder$().Lio_circe_Decoder$__f_decodeLong;
     $m_Lio_circe_Decoder$();
     var decodeA$1 = $m_Lio_circe_Decoder$().Lio_circe_Decoder$__f_decodeString;
@@ -42432,15 +43553,15 @@ $c_Ldefault_TorrentIndex$$anon$2.prototype.elemDecoders__ALio_circe_Decoder = (f
       var unboxedElem = ((elem === null) ? null : elem);
       jsElems.push(unboxedElem)
     };
-    this.Ldefault_TorrentIndex$$anon$2__f_elemDecoders$lzy1 = new ($d_Lio_circe_Decoder.getArrayOf().constr)(jsElems);
-    this.Ldefault_TorrentIndex$$anon$2__f_elemDecodersbitmap$1 = true
+    this.Ldefault_WindowMessage$$anon$1__f_elemDecoders$lzy1 = new ($d_Lio_circe_Decoder.getArrayOf().constr)(jsElems);
+    this.Ldefault_WindowMessage$$anon$1__f_elemDecodersbitmap$1 = true
   };
-  return this.Ldefault_TorrentIndex$$anon$2__f_elemDecoders$lzy1
+  return this.Ldefault_WindowMessage$$anon$1__f_elemDecoders$lzy1
 });
-$c_Ldefault_TorrentIndex$$anon$2.prototype.elemEncoders__ALio_circe_Encoder = (function() {
-  if ((!this.Ldefault_TorrentIndex$$anon$2__f_elemEncodersbitmap$1)) {
+$c_Ldefault_WindowMessage$$anon$1.prototype.elemEncoders__ALio_circe_Encoder = (function() {
+  if ((!this.Ldefault_WindowMessage$$anon$1__f_elemEncodersbitmap$1)) {
     var encodeA = $m_Lio_circe_Encoder$().Lio_circe_Encoder$__f_encodeString;
-    var encodeA$2 = $m_Ldefault_TorrentIndex$Entry$().given_Codec_InfoHash__Lio_circe_Codec();
+    var encodeA$2 = $m_Ldefault_WindowMessage$SearchResults$().given_Codec_InfoHash__Lio_circe_Codec();
     var encodeA$3 = $m_Lio_circe_Encoder$().Lio_circe_Encoder$__f_encodeLong;
     $m_Lio_circe_Encoder$();
     var encodeA$1 = $m_Lio_circe_Encoder$().Lio_circe_Encoder$__f_encodeString;
@@ -42462,16 +43583,16 @@ $c_Ldefault_TorrentIndex$$anon$2.prototype.elemEncoders__ALio_circe_Encoder = (f
       var unboxedElem = ((elem === null) ? null : elem);
       jsElems.push(unboxedElem)
     };
-    this.Ldefault_TorrentIndex$$anon$2__f_elemEncoders$lzy1 = new ($d_Lio_circe_Encoder.getArrayOf().constr)(jsElems);
-    this.Ldefault_TorrentIndex$$anon$2__f_elemEncodersbitmap$1 = true
+    this.Ldefault_WindowMessage$$anon$1__f_elemEncoders$lzy1 = new ($d_Lio_circe_Encoder.getArrayOf().constr)(jsElems);
+    this.Ldefault_WindowMessage$$anon$1__f_elemEncodersbitmap$1 = true
   };
-  return this.Ldefault_TorrentIndex$$anon$2__f_elemEncoders$lzy1
+  return this.Ldefault_WindowMessage$$anon$1__f_elemEncoders$lzy1
 });
-$c_Ldefault_TorrentIndex$$anon$2.prototype.encodeObject__Ldefault_TorrentIndex$Entry__Lio_circe_JsonObject = (function(a) {
+$c_Ldefault_WindowMessage$$anon$1.prototype.encodeObject__Ldefault_WindowMessage$SearchResults$Entry__Lio_circe_JsonObject = (function(a) {
   return $m_Lio_circe_JsonObject$().fromIterable__sc_Iterable__Lio_circe_JsonObject(new $c_Lio_circe_DerivedEncoder$$anon$1(a, this))
 });
-$c_Ldefault_TorrentIndex$$anon$2.prototype.apply__Lio_circe_HCursor__s_util_Either = (function(c) {
-  var \u03b4scrutinee25 = $m_Ldefault_TorrentIndex$Entry$();
+$c_Ldefault_WindowMessage$$anon$1.prototype.apply__Lio_circe_HCursor__s_util_Either = (function(c) {
+  var \u03b4scrutinee25 = $m_Ldefault_WindowMessage$SearchResults$Entry$();
   if (c.value__Lio_circe_Json().isObject__Z()) {
     var iter = new $c_Lio_circe_DerivedDecoder$$anon$1(c, this);
     var dimensions = new $ac_I(new Int32Array([$f_Lio_circe_DerivedInstance__elemCount__I(this)]));
@@ -42479,26 +43600,26 @@ $c_Ldefault_TorrentIndex$$anon$2.prototype.apply__Lio_circe_HCursor__s_util_Eith
     var failed = null;
     var i = 0;
     while ((iter.hasNext__Z() && (failed === null))) {
-      matchResult9: {
-        var x16 = iter.next__s_util_Either();
-        if ((x16 instanceof $c_s_util_Right)) {
-          var value = $as_s_util_Right(x16).s_util_Right__f_value;
+      matchResult8: {
+        var x13 = iter.next__s_util_Either();
+        if ((x13 instanceof $c_s_util_Right)) {
+          var value = $as_s_util_Right(x13).s_util_Right__f_value;
           res.set(i, value);
-          break matchResult9
+          break matchResult8
         };
-        if ((x16 instanceof $c_s_util_Left)) {
-          var l = $as_s_util_Left(x16);
+        if ((x13 instanceof $c_s_util_Left)) {
+          var l = $as_s_util_Left(x13);
           failed = l;
-          break matchResult9
+          break matchResult8
         };
-        throw new $c_s_MatchError(x16)
+        throw new $c_s_MatchError(x13)
       };
       i = ((1 + i) | 0)
     };
     if ((failed === null)) {
       $m_s_package$();
       var p = $m_T$().fromArray__O__s_Product(res);
-      var value$1 = \u03b4scrutinee25.fromProduct__s_Product__Ldefault_TorrentIndex$Entry(p);
+      var value$1 = \u03b4scrutinee25.fromProduct__s_Product__Ldefault_WindowMessage$SearchResults$Entry(p);
       return new $c_s_util_Right(value$1)
     } else {
       return failed
@@ -42511,13 +43632,13 @@ $c_Ldefault_TorrentIndex$$anon$2.prototype.apply__Lio_circe_HCursor__s_util_Eith
     return new $c_s_util_Left(value$2)
   }
 });
-$c_Ldefault_TorrentIndex$$anon$2.prototype.encodeObject__O__Lio_circe_JsonObject = (function(a) {
-  return this.encodeObject__Ldefault_TorrentIndex$Entry__Lio_circe_JsonObject($as_Ldefault_TorrentIndex$Entry(a))
+$c_Ldefault_WindowMessage$$anon$1.prototype.encodeObject__O__Lio_circe_JsonObject = (function(a) {
+  return this.encodeObject__Ldefault_WindowMessage$SearchResults$Entry__Lio_circe_JsonObject($as_Ldefault_WindowMessage$SearchResults$Entry(a))
 });
-var $d_Ldefault_TorrentIndex$$anon$2 = new $TypeData().initClass({
-  Ldefault_TorrentIndex$$anon$2: 0
-}, false, "default.TorrentIndex$$anon$2", {
-  Ldefault_TorrentIndex$$anon$2: 1,
+var $d_Ldefault_WindowMessage$$anon$1 = new $TypeData().initClass({
+  Ldefault_WindowMessage$$anon$1: 0
+}, false, "default.WindowMessage$$anon$1", {
+  Ldefault_WindowMessage$$anon$1: 1,
   O: 1,
   Ljava_io_Serializable: 1,
   Lio_circe_Decoder: 1,
@@ -42531,150 +43652,118 @@ var $d_Ldefault_TorrentIndex$$anon$2 = new $TypeData().initClass({
   Lio_circe_DerivedDecoder: 1,
   Lio_circe_DerivedEncoder: 1
 });
-$c_Ldefault_TorrentIndex$$anon$2.prototype.$classData = $d_Ldefault_TorrentIndex$$anon$2;
+$c_Ldefault_WindowMessage$$anon$1.prototype.$classData = $d_Ldefault_WindowMessage$$anon$1;
 /** @constructor */
-function $c_Ldefault_TorrentIndex$$anon$3() {
-  this.Ldefault_TorrentIndex$$anon$3__f_elemLabels = null;
-  this.Ldefault_TorrentIndex$$anon$3__f_elemDecoders$lzy2 = null;
-  this.Ldefault_TorrentIndex$$anon$3__f_elemDecodersbitmap$2 = false;
-  this.Ldefault_TorrentIndex$$anon$3__f_elemEncoders$lzy2 = null;
-  this.Ldefault_TorrentIndex$$anon$3__f_elemEncodersbitmap$2 = false;
+function $c_Ldefault_WindowMessage$$anon$2() {
+  this.Ldefault_WindowMessage$$anon$2__f_elemLabels = null;
+  this.Ldefault_WindowMessage$$anon$2__f_elemDecoders$lzy3 = null;
+  this.Ldefault_WindowMessage$$anon$2__f_elemDecodersbitmap$3 = false;
+  this.Ldefault_WindowMessage$$anon$2__f_elemEncoders$lzy3 = null;
+  this.Ldefault_WindowMessage$$anon$2__f_elemEncodersbitmap$3 = false;
   var this$1 = $m_s_package$().s_package$__f_Nil;
-  var this$2 = new $c_sci_$colon$colon("entries", this$1);
-  var this$4 = new $c_sci_$colon$colon("query", this$2);
+  var this$3 = new $c_sci_$colon$colon("SearchResults", this$1);
   var capacity = 0;
   var size = 0;
   var jsElems = null;
   capacity = 0;
   size = 0;
   jsElems = [];
-  var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$4);
+  var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$3);
   while (it.hasNext__Z()) {
     var elem = it.next__O();
     var unboxedElem = ((elem === null) ? null : elem);
     jsElems.push(unboxedElem)
   };
-  this.Ldefault_TorrentIndex$$anon$3__f_elemLabels = new ($d_T.getArrayOf().constr)(jsElems)
+  this.Ldefault_WindowMessage$$anon$2__f_elemLabels = new ($d_T.getArrayOf().constr)(jsElems)
 }
-$c_Ldefault_TorrentIndex$$anon$3.prototype = new $h_O();
-$c_Ldefault_TorrentIndex$$anon$3.prototype.constructor = $c_Ldefault_TorrentIndex$$anon$3;
+$c_Ldefault_WindowMessage$$anon$2.prototype = new $h_O();
+$c_Ldefault_WindowMessage$$anon$2.prototype.constructor = $c_Ldefault_WindowMessage$$anon$2;
 /** @constructor */
-function $h_Ldefault_TorrentIndex$$anon$3() {
+function $h_Ldefault_WindowMessage$$anon$2() {
   /*<skip>*/
 }
-$h_Ldefault_TorrentIndex$$anon$3.prototype = $c_Ldefault_TorrentIndex$$anon$3.prototype;
-$c_Ldefault_TorrentIndex$$anon$3.prototype.tryDecode__Lio_circe_ACursor__s_util_Either = (function(c) {
+$h_Ldefault_WindowMessage$$anon$2.prototype = $c_Ldefault_WindowMessage$$anon$2.prototype;
+$c_Ldefault_WindowMessage$$anon$2.prototype.tryDecode__Lio_circe_ACursor__s_util_Either = (function(c) {
   return $f_Lio_circe_Decoder__tryDecode__Lio_circe_ACursor__s_util_Either(this, c)
 });
-$c_Ldefault_TorrentIndex$$anon$3.prototype.apply__O__Lio_circe_Json = (function(a) {
+$c_Ldefault_WindowMessage$$anon$2.prototype.apply__O__Lio_circe_Json = (function(a) {
   return $f_Lio_circe_Encoder$AsObject__apply__O__Lio_circe_Json(this, a)
 });
-$c_Ldefault_TorrentIndex$$anon$3.prototype.elemLabels__AT = (function() {
-  return this.Ldefault_TorrentIndex$$anon$3__f_elemLabels
+$c_Ldefault_WindowMessage$$anon$2.prototype.elemLabels__AT = (function() {
+  return this.Ldefault_WindowMessage$$anon$2__f_elemLabels
 });
-$c_Ldefault_TorrentIndex$$anon$3.prototype.elemDecoders__ALio_circe_Decoder = (function() {
-  if ((!this.Ldefault_TorrentIndex$$anon$3__f_elemDecodersbitmap$2)) {
-    var decodeA = $m_Lio_circe_Decoder$().Lio_circe_Decoder$__f_decodeString;
-    $m_Lio_circe_Decoder$();
-    var decodeA$1 = $m_Ldefault_TorrentIndex$Entry$().given_Codec_Entry__Lio_circe_Codec();
-    var decodeA$2 = new $c_Lio_circe_Decoder$$anon$45(decodeA$1);
-    var this$2 = $m_s_package$().s_package$__f_Nil;
-    var this$3 = new $c_sci_$colon$colon(decodeA$2, this$2);
-    var this$5 = new $c_sci_$colon$colon(decodeA, this$3);
+$c_Ldefault_WindowMessage$$anon$2.prototype.elemDecoders__ALio_circe_Decoder = (function() {
+  if ((!this.Ldefault_WindowMessage$$anon$2__f_elemDecodersbitmap$3)) {
+    var evidence$2 = $m_Ldefault_WindowMessage$SearchResults$();
+    var elem$2 = new $c_Ldefault_WindowMessage$$anon$3(evidence$2);
+    var this$1 = $m_s_package$().s_package$__f_Nil;
+    var this$3 = new $c_sci_$colon$colon(elem$2, this$1);
     var capacity = 0;
     var size = 0;
     var jsElems = null;
     capacity = 0;
     size = 0;
     jsElems = [];
-    var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$5);
+    var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$3);
     while (it.hasNext__Z()) {
       var elem = it.next__O();
       var unboxedElem = ((elem === null) ? null : elem);
       jsElems.push(unboxedElem)
     };
-    this.Ldefault_TorrentIndex$$anon$3__f_elemDecoders$lzy2 = new ($d_Lio_circe_Decoder.getArrayOf().constr)(jsElems);
-    this.Ldefault_TorrentIndex$$anon$3__f_elemDecodersbitmap$2 = true
+    this.Ldefault_WindowMessage$$anon$2__f_elemDecoders$lzy3 = new ($d_Lio_circe_Decoder.getArrayOf().constr)(jsElems);
+    this.Ldefault_WindowMessage$$anon$2__f_elemDecodersbitmap$3 = true
   };
-  return this.Ldefault_TorrentIndex$$anon$3__f_elemDecoders$lzy2
+  return this.Ldefault_WindowMessage$$anon$2__f_elemDecoders$lzy3
 });
-$c_Ldefault_TorrentIndex$$anon$3.prototype.elemEncoders__ALio_circe_Encoder = (function() {
-  if ((!this.Ldefault_TorrentIndex$$anon$3__f_elemEncodersbitmap$2)) {
-    var encodeA = $m_Lio_circe_Encoder$().Lio_circe_Encoder$__f_encodeString;
-    $m_Lio_circe_Encoder$();
-    var encodeA$1 = $m_Ldefault_TorrentIndex$Entry$().given_Codec_Entry__Lio_circe_Codec();
-    var encodeA$2 = new $c_Lio_circe_Encoder$$anon$26(encodeA$1);
-    var this$2 = $m_s_package$().s_package$__f_Nil;
-    var this$3 = new $c_sci_$colon$colon(encodeA$2, this$2);
-    var this$5 = new $c_sci_$colon$colon(encodeA, this$3);
+$c_Ldefault_WindowMessage$$anon$2.prototype.elemEncoders__ALio_circe_Encoder = (function() {
+  if ((!this.Ldefault_WindowMessage$$anon$2__f_elemEncodersbitmap$3)) {
+    var elem$3 = new $c_Ldefault_WindowMessage$$anon$4();
+    var this$1 = $m_s_package$().s_package$__f_Nil;
+    var this$3 = new $c_sci_$colon$colon(elem$3, this$1);
     var capacity = 0;
     var size = 0;
     var jsElems = null;
     capacity = 0;
     size = 0;
     jsElems = [];
-    var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$5);
+    var it = new $c_sc_StrictOptimizedLinearSeqOps$$anon$1(this$3);
     while (it.hasNext__Z()) {
       var elem = it.next__O();
       var unboxedElem = ((elem === null) ? null : elem);
       jsElems.push(unboxedElem)
     };
-    this.Ldefault_TorrentIndex$$anon$3__f_elemEncoders$lzy2 = new ($d_Lio_circe_Encoder.getArrayOf().constr)(jsElems);
-    this.Ldefault_TorrentIndex$$anon$3__f_elemEncodersbitmap$2 = true
+    this.Ldefault_WindowMessage$$anon$2__f_elemEncoders$lzy3 = new ($d_Lio_circe_Encoder.getArrayOf().constr)(jsElems);
+    this.Ldefault_WindowMessage$$anon$2__f_elemEncodersbitmap$3 = true
   };
-  return this.Ldefault_TorrentIndex$$anon$3__f_elemEncoders$lzy2
+  return this.Ldefault_WindowMessage$$anon$2__f_elemEncoders$lzy3
 });
-$c_Ldefault_TorrentIndex$$anon$3.prototype.encodeObject__Ldefault_TorrentIndex$Results__Lio_circe_JsonObject = (function(a) {
-  return $m_Lio_circe_JsonObject$().fromIterable__sc_Iterable__Lio_circe_JsonObject(new $c_Lio_circe_DerivedEncoder$$anon$1(a, this))
+$c_Ldefault_WindowMessage$$anon$2.prototype.encodeObject__Ldefault_WindowMessage__Lio_circe_JsonObject = (function(a) {
+  var x37 = $f_Lio_circe_DerivedEncoder__encodeWith__I__O__T2(this, 0, a);
+  if ((x37 !== null)) {
+    var k = $as_T(x37._1__O());
+    var v = $as_Lio_circe_Json(x37._2__O());
+    return $m_Lio_circe_JsonObject$().singleton__T__Lio_circe_Json__Lio_circe_JsonObject(k, v)
+  };
+  throw new $c_s_MatchError(x37)
 });
-$c_Ldefault_TorrentIndex$$anon$3.prototype.apply__Lio_circe_HCursor__s_util_Either = (function(c) {
-  var \u03b4scrutinee41 = $m_Ldefault_TorrentIndex$Results$();
-  if (c.value__Lio_circe_Json().isObject__Z()) {
-    var iter = new $c_Lio_circe_DerivedDecoder$$anon$1(c, this);
-    var dimensions = new $ac_I(new Int32Array([$f_Lio_circe_DerivedInstance__elemCount__I(this)]));
-    var res = $asArrayOf_O($m_jl_reflect_Array$().newInstance__jl_Class__AI__O($d_O.getClassOf(), dimensions), 1);
-    var failed = null;
-    var i = 0;
-    while ((iter.hasNext__Z() && (failed === null))) {
-      matchResult14: {
-        var x32 = iter.next__s_util_Either();
-        if ((x32 instanceof $c_s_util_Right)) {
-          var value = $as_s_util_Right(x32).s_util_Right__f_value;
-          res.set(i, value);
-          break matchResult14
-        };
-        if ((x32 instanceof $c_s_util_Left)) {
-          var l = $as_s_util_Left(x32);
-          failed = l;
-          break matchResult14
-        };
-        throw new $c_s_MatchError(x32)
-      };
-      i = ((1 + i) | 0)
-    };
-    if ((failed === null)) {
-      $m_s_package$();
-      var p = $m_T$().fromArray__O__s_Product(res);
-      var value$1 = \u03b4scrutinee41.fromProduct__s_Product__Ldefault_TorrentIndex$Results(p);
-      return new $c_s_util_Right(value$1)
-    } else {
-      return failed
-    }
-  } else {
+$c_Ldefault_WindowMessage$$anon$2.prototype.apply__Lio_circe_HCursor__s_util_Either = (function(c) {
+  var x40 = $f_Lio_circe_DerivedDecoder__extractIndexFromWrapper__Lio_circe_HCursor__I(this, c);
+  if ((x40 === (-1))) {
     $m_s_package$();
     $m_Lio_circe_DecodingFailure$();
     var ops = new $c_sjsr_AnonFunction0(((c$2) => (() => c$2.history__sci_List()))(c));
-    var value$2 = new $c_Lio_circe_DecodingFailure$$anon$2("Results", ops);
-    return new $c_s_util_Left(value$2)
-  }
+    var value = new $c_Lio_circe_DecodingFailure$$anon$2("WindowMessage", ops);
+    return new $c_s_util_Left(value)
+  };
+  return $f_Lio_circe_DerivedDecoder__decodeWith__I__Lio_circe_HCursor__s_util_Either(this, x40, c)
 });
-$c_Ldefault_TorrentIndex$$anon$3.prototype.encodeObject__O__Lio_circe_JsonObject = (function(a) {
-  return this.encodeObject__Ldefault_TorrentIndex$Results__Lio_circe_JsonObject($as_Ldefault_TorrentIndex$Results(a))
+$c_Ldefault_WindowMessage$$anon$2.prototype.encodeObject__O__Lio_circe_JsonObject = (function(a) {
+  return this.encodeObject__Ldefault_WindowMessage__Lio_circe_JsonObject($as_Ldefault_WindowMessage(a))
 });
-var $d_Ldefault_TorrentIndex$$anon$3 = new $TypeData().initClass({
-  Ldefault_TorrentIndex$$anon$3: 0
-}, false, "default.TorrentIndex$$anon$3", {
-  Ldefault_TorrentIndex$$anon$3: 1,
+var $d_Ldefault_WindowMessage$$anon$2 = new $TypeData().initClass({
+  Ldefault_WindowMessage$$anon$2: 0
+}, false, "default.WindowMessage$$anon$2", {
+  Ldefault_WindowMessage$$anon$2: 1,
   O: 1,
   Ljava_io_Serializable: 1,
   Lio_circe_Decoder: 1,
@@ -42688,7 +43777,7 @@ var $d_Ldefault_TorrentIndex$$anon$3 = new $TypeData().initClass({
   Lio_circe_DerivedDecoder: 1,
   Lio_circe_DerivedEncoder: 1
 });
-$c_Ldefault_TorrentIndex$$anon$3.prototype.$classData = $d_Ldefault_TorrentIndex$$anon$3;
+$c_Ldefault_WindowMessage$$anon$2.prototype.$classData = $d_Ldefault_WindowMessage$$anon$2;
 /** @constructor */
 function $c_sc_AbstractSeq() {
   /*<skip>*/
