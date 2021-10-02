@@ -161,6 +161,13 @@ function $objectClassName(arg0) {
     }
   }
 }
+function $dp_codePointAt__I__I(instance, x0) {
+  if (((typeof instance) === "string")) {
+    return $f_T__codePointAt__I__I(instance, x0)
+  } else {
+    return instance.codePointAt__I__I(x0)
+  }
+}
 function $dp_compareTo__O__I(instance, x0) {
   switch ((typeof instance)) {
     case "string": {
@@ -250,6 +257,13 @@ function $dp_lastIndexOf__I__I(instance, x0) {
     return $f_T__lastIndexOf__I__I(instance, x0)
   } else {
     return instance.lastIndexOf__I__I(x0)
+  }
+}
+function $dp_split__T__I__AT(instance, x0, x1) {
+  if (((typeof instance) === "string")) {
+    return $f_T__split__T__I__AT(instance, x0, x1)
+  } else {
+    return instance.split__T__I__AT(x0, x1)
   }
 }
 function $dp_subSequence__I__I__jl_CharSequence(instance, x0, x1) {
@@ -1183,50 +1197,64 @@ function $c_Ldefault_ServiceWorker$() {
       };
       throw new $c_s_MatchError(message)
     };
-    this$4$1.torrentsStore__s_concurrent_Future().foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$5, source$2, query$3) => ((store$2) => {
+    var this$34 = $as_T(query$2.toLowerCase());
+    var words = $f_T__split__T__I__AT(this$34, " ", 0);
+    this$4$1.torrentsStore__s_concurrent_Future().foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$5, source$2, query$3, words$2) => ((store$2) => {
       var \u03b41$ = store$2.index("name");
       var c = \u03b41$.openKeyCursor();
       $m_s_package$();
       var elem = $m_sci_Nil$();
       var list = new $c_sr_ObjectRef(elem);
       var complete = $ct_s_concurrent_impl_Promise$DefaultPromise__(new $c_s_concurrent_impl_Promise$DefaultPromise());
-      c.onsuccess = ((this$37, query$2$2, list$2, complete$2) => ((event$4) => {
+      c.onsuccess = ((this$38, words$2$2, list$2, complete$2) => ((event$4) => {
         var cursor = event$4.target.result;
         if ((cursor !== null)) {
-          var this$38 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
-          var $$x2 = (this$38.length__I() < 10)
+          var this$39 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
+          var $$x2 = (this$39.length__I() < 10)
         } else {
           var $$x2 = false
         };
         if ($$x2) {
-          var this$39 = $as_T(cursor.key);
-          var this$40 = $as_T(this$39.toLowerCase());
-          if (($uI(this$40.indexOf(query$2$2)) !== (-1))) {
+          var name = $as_T(cursor.key);
+          _return: {
+            var i$1 = 0;
+            while ((i$1 < words$2$2.u.length)) {
+              var arg1$1 = words$2$2.get(i$1);
+              var x$0 = $as_T(arg1$1);
+              if ((!($uI(name.indexOf(x$0)) !== (-1)))) {
+                var $$x3 = false;
+                break _return
+              };
+              i$1 = ((1 + i$1) | 0)
+            };
+            var $$x3 = true
+          };
+          if ($$x3) {
             var pk = $as_T(cursor.primaryKey);
-            var this$42 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
-            var ev$7 = new $c_sci_$colon$colon(pk, this$42);
-            list$2.sr_ObjectRef__f_elem = ev$7
+            var this$43 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
+            var ev$8 = new $c_sci_$colon$colon(pk, this$43);
+            list$2.sr_ObjectRef__f_elem = ev$8
           };
           cursor.continue();
           return (void 0)
         } else {
           return $f_s_concurrent_Promise__success__O__s_concurrent_Promise(complete$2, (void 0))
         }
-      }))(this$2$5, query$3, list, complete);
-      complete.foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$6, source$1$2, query$2$3, store$2$1, list$3) => ((x$1$1) => {
+      }))(this$2$5, words$2, list, complete);
+      complete.foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$6, source$1$2, query$1$2, store$2$1, list$3) => ((x$1$1) => {
         $as_jl_Void(x$1$1);
-        var this$45 = $m_s_concurrent_Future$();
+        var this$46 = $m_s_concurrent_Future$();
         var in$1 = $as_sci_List(list$3.sr_ObjectRef__f_elem).reverse__sci_List();
-        var this$43 = $m_sc_BuildFrom$();
-        new $c_sc_BuildFromLowPriority2$$anon$11(this$43);
+        var this$44 = $m_sc_BuildFrom$();
+        new $c_sc_BuildFromLowPriority2$$anon$11(this$44);
         var executor = $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor();
-        var this$47 = in$1.iterator__sc_Iterator();
-        var z = this$45.successful__O__s_concurrent_Future(($m_sci_List$(), new $c_scm_ListBuffer()));
+        var this$48 = in$1.iterator__sc_Iterator();
+        var z = this$46.successful__O__s_concurrent_Future(($m_sci_List$(), new $c_scm_ListBuffer()));
         var result = z;
-        while (this$47.hasNext__Z()) {
-          var arg1$1 = result;
-          var arg2 = this$47.next__O();
-          var fr = $as_s_concurrent_Future(arg1$1);
+        while (this$48.hasNext__Z()) {
+          var arg1$2 = result;
+          var arg2 = this$48.next__O();
+          var fr = $as_s_concurrent_Future(arg1$2);
           var pk$1 = $as_T(arg2);
           var that = $p_Ldefault_ServiceWorker$__get$5__Lorg_scalajs_dom_raw_IDBObjectStore__T__s_concurrent_Future(this$2$6, store$2$1, pk$1);
           var f = $m_s_concurrent_Future$().s_concurrent_Future$__f__addToBuilderFun;
@@ -1235,16 +1263,16 @@ function $c_Ldefault_ServiceWorker$() {
         $as_s_concurrent_Future(result).map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$2$7) => ((x$9$2) => {
           var x$9 = $as_scm_Builder(x$9$2);
           return $as_sc_IterableOnce(x$9.result__O())
-        }))(this$45)), ($is_s_concurrent_BatchingExecutor(executor) ? executor : $m_s_concurrent_ExecutionContext$parasitic$())).foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$8, source$2$2, query$3$2) => ((entries) => {
+        }))(this$46)), ($is_s_concurrent_BatchingExecutor(executor) ? executor : $m_s_concurrent_ExecutionContext$parasitic$())).foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$8, source$2$2, query$2$2) => ((entries) => {
           var entries$1 = $as_sci_List(entries);
-          var results = new $c_Ldefault_WindowMessage$SearchResults(query$3$2, entries$1);
+          var results = new $c_Ldefault_WindowMessage$SearchResults(query$2$2, entries$1);
           var encoder = $m_Ldefault_WindowMessage$().given_Codec_WindowMessage__Lio_circe_Codec();
-          var this$51 = encoder.apply__O__Lio_circe_Json(results);
-          var s = $m_Lio_circe_Printer$().Lio_circe_Printer$__f_noSpaces.print__Lio_circe_Json__T(this$51);
+          var this$52 = encoder.apply__O__Lio_circe_Json(results);
+          var s = $m_Lio_circe_Printer$().Lio_circe_Printer$__f_noSpaces.print__Lio_circe_Json__T(this$52);
           source$2$2.postMessage(s, null)
-        }))(this$2$6, source$1$2, query$2$3)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
+        }))(this$2$6, source$1$2, query$1$2)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
       }))(this$2$5, source$2, query$3, store$2, list)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
-    }))(this$4$1, source, query$2)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
+    }))(this$4$1, source, query$2, words)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
   }))(this)
 }
 $c_Ldefault_ServiceWorker$.prototype = new $h_O();
@@ -5301,6 +5329,1390 @@ function $isArrayOf_ju_Map$Entry(obj, depth) {
 function $asArrayOf_ju_Map$Entry(obj, depth) {
   return (($isArrayOf_ju_Map$Entry(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ljava.util.Map$Entry;", depth))
 }
+function $p_ju_regex_PatternCompiler__parseError__T__E($thiz, desc) {
+  throw new $c_ju_regex_PatternSyntaxException(desc, $thiz.ju_regex_PatternCompiler__f_pattern, $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex)
+}
+function $p_ju_regex_PatternCompiler__processLeadingEmbeddedFlags__V($thiz) {
+  var m = $m_ju_regex_PatternCompiler$().ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$leadingEmbeddedFlagSpecifierRegExp.exec($thiz.ju_regex_PatternCompiler__f_pattern);
+  if ((m !== null)) {
+    var value = m[1];
+    if ((value !== (void 0))) {
+      var chars = $as_T(value);
+      var end = $uI(chars.length);
+      var i = 0;
+      while ((i < end)) {
+        var arg1 = i;
+        $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags = ($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags | $m_ju_regex_PatternCompiler$().java$util$regex$PatternCompiler$$charToFlag__C__I((65535 & $uI(chars.charCodeAt(arg1)))));
+        i = ((1 + i) | 0)
+      }
+    };
+    if (((256 & $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0)) {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags = (64 | $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags)
+    };
+    var value$1 = m[2];
+    if ((value$1 !== (void 0))) {
+      var chars$3 = $as_T(value$1);
+      var end$1 = $uI(chars$3.length);
+      var i$1 = 0;
+      while ((i$1 < end$1)) {
+        var arg1$1 = i$1;
+        $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags = ($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags & (~$m_ju_regex_PatternCompiler$().java$util$regex$PatternCompiler$$charToFlag__C__I((65535 & $uI(chars$3.charCodeAt(arg1$1))))));
+        i$1 = ((1 + i$1) | 0)
+      }
+    };
+    var $$x1 = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+    var value$2 = m[0];
+    if ((value$2 === (void 0))) {
+      throw $ct_ju_NoSuchElementException__T__(new $c_ju_NoSuchElementException(), "undefined.get")
+    };
+    var this$19 = $as_T(value$2);
+    $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = (($$x1 + $uI(this$19.length)) | 0)
+  }
+}
+function $p_ju_regex_PatternCompiler__literal__T__T($thiz, s) {
+  var result = "";
+  var len = $uI(s.length);
+  var i = 0;
+  while ((i !== len)) {
+    var cp = $f_T__codePointAt__I__I(s, i);
+    result = (("" + result) + $p_ju_regex_PatternCompiler__literal__I__T($thiz, cp));
+    i = ((i + ((cp >= 65536) ? 2 : 1)) | 0)
+  };
+  return result
+}
+function $p_ju_regex_PatternCompiler__literal__I__T($thiz, cp) {
+  var s = $m_ju_regex_PatternCompiler$().java$util$regex$PatternCompiler$$codePointToString__I__T(cp);
+  if ((cp < 128)) {
+    switch (cp) {
+      case 94:
+      case 36:
+      case 92:
+      case 46:
+      case 42:
+      case 43:
+      case 63:
+      case 40:
+      case 41:
+      case 91:
+      case 93:
+      case 123:
+      case 125:
+      case 124: {
+        return ("\\" + s);
+        break
+      }
+      default: {
+        return (((66 & $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 2) ? s : (((cp >= 65) && (cp <= 90)) ? ((("[" + s) + $m_ju_regex_PatternCompiler$().java$util$regex$PatternCompiler$$codePointToString__I__T(((32 + cp) | 0))) + "]") : (((cp >= 97) && (cp <= 122)) ? ((("[" + $m_ju_regex_PatternCompiler$().java$util$regex$PatternCompiler$$codePointToString__I__T((((-32) + cp) | 0))) + s) + "]") : s)))
+      }
+    }
+  } else {
+    return ((((-1024) & cp) === 56320) ? (("(?:" + s) + ")") : s)
+  }
+}
+function $p_ju_regex_PatternCompiler__skipComments__V($thiz) {
+  var pattern = $thiz.ju_regex_PatternCompiler__f_pattern;
+  var len = $uI(pattern.length);
+  while (true) {
+    if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex !== len)) {
+      var index = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+      var x1 = (65535 & $uI(pattern.charCodeAt(index)));
+      switch (x1) {
+        case 32:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13: {
+          $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+          continue;
+          break
+        }
+        case 35: {
+          $thiz.java$util$regex$PatternCompiler$$skipSharpComment__V();
+          continue;
+          break
+        }
+      }
+    };
+    break
+  }
+}
+function $p_ju_regex_PatternCompiler__compileRepeater__I__T__T($thiz, compiledGroupCountBeforeThisToken, compiledToken) {
+  var pattern = $thiz.ju_regex_PatternCompiler__f_pattern;
+  var len = $uI(pattern.length);
+  var startOfRepeater = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+  var repeaterDispatchChar = ((startOfRepeater === len) ? 46 : (65535 & $uI(pattern.charCodeAt(startOfRepeater))));
+  if (((((repeaterDispatchChar === 63) || (repeaterDispatchChar === 42)) || (repeaterDispatchChar === 43)) || (repeaterDispatchChar === 123))) {
+    var baseRepeater = $p_ju_regex_PatternCompiler__parseBaseRepeater__C__T($thiz, repeaterDispatchChar);
+    if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex !== len)) {
+      var index = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+      var x1 = (65535 & $uI(pattern.charCodeAt(index)));
+      switch (x1) {
+        case 43: {
+          $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+          return $p_ju_regex_PatternCompiler__buildPossessiveQuantifier__I__T__T__T($thiz, compiledGroupCountBeforeThisToken, compiledToken, baseRepeater);
+          break
+        }
+        case 63: {
+          $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+          return ((("" + compiledToken) + baseRepeater) + "?");
+          break
+        }
+        default: {
+          return (("" + compiledToken) + baseRepeater)
+        }
+      }
+    } else {
+      return (("" + compiledToken) + baseRepeater)
+    }
+  } else {
+    return compiledToken
+  }
+}
+function $p_ju_regex_PatternCompiler__parseBaseRepeater__C__T($thiz, repeaterDispatchChar) {
+  var pattern = $thiz.ju_regex_PatternCompiler__f_pattern;
+  var startOfRepeater = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+  $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+  if ((repeaterDispatchChar === 123)) {
+    var len = $uI(pattern.length);
+    if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex === len)) {
+      var $$x1 = true
+    } else {
+      var index = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+      var c = (65535 & $uI(pattern.charCodeAt(index)));
+      var $$x1 = (!((c >= 48) && (c <= 57)))
+    };
+    if ($$x1) {
+      $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Illegal repetition")
+    };
+    while (true) {
+      if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex !== len)) {
+        var index$1 = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+        var c$1 = (65535 & $uI(pattern.charCodeAt(index$1)));
+        var $$x2 = ((c$1 >= 48) && (c$1 <= 57))
+      } else {
+        var $$x2 = false
+      };
+      if ($$x2) {
+        $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0)
+      } else {
+        break
+      }
+    };
+    if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex === len)) {
+      $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Illegal repetition")
+    };
+    var index$2 = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+    if (((65535 & $uI(pattern.charCodeAt(index$2))) === 44)) {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      while (true) {
+        if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex !== len)) {
+          var index$3 = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+          var c$2 = (65535 & $uI(pattern.charCodeAt(index$3)));
+          var $$x3 = ((c$2 >= 48) && (c$2 <= 57))
+        } else {
+          var $$x3 = false
+        };
+        if ($$x3) {
+          $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0)
+        } else {
+          break
+        }
+      }
+    };
+    if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex === len)) {
+      var $$x4 = true
+    } else {
+      var index$4 = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+      var $$x4 = ((65535 & $uI(pattern.charCodeAt(index$4))) !== 125)
+    };
+    if ($$x4) {
+      $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Illegal repetition")
+    };
+    $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0)
+  };
+  var endIndex = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+  return $as_T(pattern.substring(startOfRepeater, endIndex))
+}
+function $p_ju_regex_PatternCompiler__buildPossessiveQuantifier__I__T__T__T($thiz, compiledGroupCountBeforeThisToken, compiledToken, baseRepeater) {
+  var end = $uI($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$groupNumberMap.length);
+  var i = 0;
+  while ((i < end)) {
+    var arg1 = i;
+    var mapped = $uI($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$groupNumberMap[arg1]);
+    if ((mapped > compiledGroupCountBeforeThisToken)) {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$groupNumberMap[arg1] = ((1 + mapped) | 0)
+    };
+    i = ((1 + i) | 0)
+  };
+  var amendedToken = $as_T(compiledToken.replace($m_ju_regex_PatternCompiler$().ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$renumberingRegExp, ((arg$outer, compiledGroupCountBeforeThisToken$1) => ((arg1$2, arg2$2, arg3$2) => {
+    var arg1$1 = $as_T(arg1$2);
+    var arg2 = $as_T(arg2$2);
+    var arg3 = $as_T(arg3$2);
+    return arg$outer.java$util$regex$PatternCompiler$$$anonfun$buildPossessiveQuantifier$2__T__T__T__I__T(arg1$1, arg2, arg3, compiledGroupCountBeforeThisToken$1)
+  }))($thiz, compiledGroupCountBeforeThisToken)));
+  $thiz.ju_regex_PatternCompiler__f_compiledGroupCount = ((1 + $thiz.ju_regex_PatternCompiler__f_compiledGroupCount) | 0);
+  var myGroupNumber = ((1 + compiledGroupCountBeforeThisToken) | 0);
+  return ((((("(?:(?=(" + amendedToken) + baseRepeater) + "))\\") + myGroupNumber) + ")")
+}
+function $p_ju_regex_PatternCompiler__compileEscape__T($thiz) {
+  var pattern = $thiz.ju_regex_PatternCompiler__f_pattern;
+  var len = $uI(pattern.length);
+  if ((((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0) === len)) {
+    $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "\\ at end of pattern")
+  };
+  $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+  var index = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+  var dispatchChar = (65535 & $uI(pattern.charCodeAt(index)));
+  switch (dispatchChar) {
+    case 100:
+    case 68:
+    case 104:
+    case 72:
+    case 115:
+    case 83:
+    case 118:
+    case 86:
+    case 119:
+    case 87:
+    case 112:
+    case 80: {
+      var cls = $p_ju_regex_PatternCompiler__parsePredefinedCharacterClass__C__ju_regex_PatternCompiler$CompiledCharClass($thiz, dispatchChar);
+      var x1$2 = cls.ju_regex_PatternCompiler$CompiledCharClass__f_kind;
+      switch (x1$2) {
+        case 0: {
+          return (("\\p{" + cls.ju_regex_PatternCompiler$CompiledCharClass__f_data) + "}");
+          break
+        }
+        case 1: {
+          return (("\\P{" + cls.ju_regex_PatternCompiler$CompiledCharClass__f_data) + "}");
+          break
+        }
+        case 2: {
+          return (("[" + cls.ju_regex_PatternCompiler$CompiledCharClass__f_data) + "]");
+          break
+        }
+        case 3: {
+          return $m_ju_regex_PatternCompiler$().java$util$regex$PatternCompiler$$codePointNotAmong__T__T(cls.ju_regex_PatternCompiler$CompiledCharClass__f_data);
+          break
+        }
+        default: {
+          throw new $c_s_MatchError(x1$2)
+        }
+      };
+      break
+    }
+    case 98: {
+      var beginIndex = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+      var endIndex = ((4 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      if (($as_T(pattern.substring(beginIndex, endIndex)) === "b{g}")) {
+        $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "\\b{g} is not supported")
+      } else if (((320 & $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0)) {
+        $thiz.java$util$regex$PatternCompiler$$parseErrorRequireESVersion__T__T__E("\\b with UNICODE_CASE", "2018")
+      } else {
+        $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+        return "\\b"
+      };
+      break
+    }
+    case 66: {
+      if (((320 & $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0)) {
+        $thiz.java$util$regex$PatternCompiler$$parseErrorRequireESVersion__T__T__E("\\B with UNICODE_CASE", "2018")
+      } else {
+        $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+        return "\\B"
+      };
+      break
+    }
+    case 65: {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      return "(?:^)";
+      break
+    }
+    case 71: {
+      $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "\\G in the middle of a pattern is not supported");
+      break
+    }
+    case 90: {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      var lineTerminator = (((1 & $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0) ? "\n" : "(?:\r\n?|[\n\u0085\u2028\u2029])");
+      return (("(?=" + lineTerminator) + "?$)");
+      break
+    }
+    case 122: {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      return "(?:$)";
+      break
+    }
+    case 82: {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      return "(?:\r\n|[\n-\r\u0085\u2028\u2029])";
+      break
+    }
+    case 88: {
+      $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "\\X is not supported");
+      break
+    }
+    case 49:
+    case 50:
+    case 51:
+    case 52:
+    case 53:
+    case 54:
+    case 55:
+    case 56:
+    case 57: {
+      var start = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+      var end = ((1 + start) | 0);
+      while (true) {
+        if ((end !== len)) {
+          var index$1 = end;
+          var c = (65535 & $uI(pattern.charCodeAt(index$1)));
+          var $$x2 = ((c >= 48) && (c <= 57))
+        } else {
+          var $$x2 = false
+        };
+        if ($$x2) {
+          var endIndex$1 = ((1 + end) | 0);
+          var s = $as_T(pattern.substring(start, endIndex$1));
+          var $$x1 = ($uI(parseInt(s, 10)) <= (((-1) + $uI($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$groupNumberMap.length)) | 0))
+        } else {
+          var $$x1 = false
+        };
+        if ($$x1) {
+          end = ((1 + end) | 0)
+        } else {
+          break
+        }
+      };
+      var endIndex$2 = end;
+      var groupString = $as_T(pattern.substring(start, endIndex$2));
+      var groupNumber = $uI(parseInt(groupString, 10));
+      if ((groupNumber > (((-1) + $uI($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$groupNumberMap.length)) | 0))) {
+        $p_ju_regex_PatternCompiler__parseError__T__E($thiz, (("numbered capturing group <" + groupNumber) + "> does not exist"))
+      };
+      var compiledGroupNumber = $uI($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$groupNumberMap[groupNumber]);
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = end;
+      return (("(?:\\" + compiledGroupNumber) + ")");
+      break
+    }
+    case 107: {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex === len)) {
+        var $$x3 = true
+      } else {
+        var index$2 = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+        var $$x3 = ((65535 & $uI(pattern.charCodeAt(index$2))) !== 60)
+      };
+      if ($$x3) {
+        $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "\\k is not followed by '<' for named capturing group")
+      };
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      var groupName = $p_ju_regex_PatternCompiler__parseGroupName__T($thiz);
+      var dict = $thiz.ju_regex_PatternCompiler__f_namedGroups;
+      var x1 = ($uZ($m_sjs_js_WrappedDictionary$Cache$().sjs_js_WrappedDictionary$Cache$__f_safeHasOwnProperty.call(dict, groupName)) ? new $c_s_Some(dict[groupName]) : $m_s_None$());
+      if ((!(x1 instanceof $c_s_Some))) {
+        var x = $m_s_None$();
+        if ((x === x1)) {
+          $p_ju_regex_PatternCompiler__parseError__T__E($thiz, (("named capturing group <" + groupName) + "> does not exit"))
+        };
+        throw new $c_s_MatchError(x1)
+      };
+      var x2 = $as_s_Some(x1);
+      var v = x2.s_Some__f_value;
+      var groupNumber$2 = $uI(v);
+      var compiledGroupNumber$2 = $uI($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$groupNumberMap[groupNumber$2]);
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      return (("(?:\\" + compiledGroupNumber$2) + ")");
+      break
+    }
+    case 81: {
+      var start$2 = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      var end$2 = $uI(pattern.indexOf("\\E", start$2));
+      if ((end$2 < 0)) {
+        $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = $uI(pattern.length);
+        return $p_ju_regex_PatternCompiler__literal__T__T($thiz, $as_T(pattern.substring(start$2)))
+      } else {
+        $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((2 + end$2) | 0);
+        return $p_ju_regex_PatternCompiler__literal__T__T($thiz, $as_T(pattern.substring(start$2, end$2)))
+      };
+      break
+    }
+    default: {
+      return $p_ju_regex_PatternCompiler__literal__I__T($thiz, $p_ju_regex_PatternCompiler__parseSingleCodePointEscape__I($thiz))
+    }
+  }
+}
+function $p_ju_regex_PatternCompiler__parseSingleCodePointEscape__I($thiz) {
+  var pattern = $thiz.ju_regex_PatternCompiler__f_pattern;
+  var x1 = $f_T__codePointAt__I__I(pattern, $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex);
+  switch (x1) {
+    case 48: {
+      return $p_ju_regex_PatternCompiler__parseOctalEscape__I($thiz);
+      break
+    }
+    case 120: {
+      return $p_ju_regex_PatternCompiler__parseHexEscape__I($thiz);
+      break
+    }
+    case 117: {
+      return $p_ju_regex_PatternCompiler__parseUnicodeHexEscape__I($thiz);
+      break
+    }
+    case 78: {
+      $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "\\N is not supported");
+      break
+    }
+    case 97: {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      return 7;
+      break
+    }
+    case 116: {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      return 9;
+      break
+    }
+    case 110: {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      return 10;
+      break
+    }
+    case 102: {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      return 12;
+      break
+    }
+    case 114: {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      return 13;
+      break
+    }
+    case 101: {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      return 27;
+      break
+    }
+    case 99: {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex === $uI(pattern.length))) {
+        $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Illegal control escape sequence")
+      };
+      var cp = $f_T__codePointAt__I__I(pattern, $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex);
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex + ((cp >= 65536) ? 2 : 1)) | 0);
+      return (64 ^ cp);
+      break
+    }
+    default: {
+      if ((((x1 >= 65) && (x1 <= 90)) || ((x1 >= 97) && (x1 <= 122)))) {
+        $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Illegal/unsupported escape sequence")
+      };
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex + ((x1 >= 65536) ? 2 : 1)) | 0);
+      return x1
+    }
+  }
+}
+function $p_ju_regex_PatternCompiler__parseOctalEscape__I($thiz) {
+  var pattern = $thiz.ju_regex_PatternCompiler__f_pattern;
+  var len = $uI(pattern.length);
+  var start = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+  if ((((1 + start) | 0) < len)) {
+    var index = ((1 + start) | 0);
+    var d1 = (((-48) + (65535 & $uI(pattern.charCodeAt(index)))) | 0)
+  } else {
+    var d1 = (-1)
+  };
+  if (((d1 < 0) || (d1 > 7))) {
+    $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Illegal octal escape sequence")
+  };
+  if ((((2 + start) | 0) < len)) {
+    var index$1 = ((2 + start) | 0);
+    var d2 = (((-48) + (65535 & $uI(pattern.charCodeAt(index$1)))) | 0)
+  } else {
+    var d2 = (-1)
+  };
+  if (((d2 < 0) || (d2 > 7))) {
+    $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((2 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+    return d1
+  } else if ((d1 > 3)) {
+    $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((3 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+    return (((d1 << 3) + d2) | 0)
+  } else {
+    if ((((3 + start) | 0) < len)) {
+      var index$2 = ((3 + start) | 0);
+      var d3 = (((-48) + (65535 & $uI(pattern.charCodeAt(index$2)))) | 0)
+    } else {
+      var d3 = (-1)
+    };
+    if (((d3 < 0) || (d3 > 7))) {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((3 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      return (((d1 << 3) + d2) | 0)
+    } else {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((4 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+      return (((((d1 << 6) + (d2 << 3)) | 0) + d3) | 0)
+    }
+  }
+}
+function $p_ju_regex_PatternCompiler__parseHexEscape__I($thiz) {
+  var pattern = $thiz.ju_regex_PatternCompiler__f_pattern;
+  var len = $uI(pattern.length);
+  var start = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+  if (((start !== len) && ((65535 & $uI(pattern.charCodeAt(start))) === 123))) {
+    var innerStart = ((1 + start) | 0);
+    var innerEnd = $uI(pattern.indexOf("}", innerStart));
+    if ((innerEnd < 0)) {
+      $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Unclosed hexadecimal escape sequence")
+    };
+    var cp = $p_ju_regex_PatternCompiler__parseHexCodePoint__I__I__T__I($thiz, innerStart, innerEnd, "hexadecimal");
+    $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + innerEnd) | 0);
+    return cp
+  } else {
+    var cp$2 = $p_ju_regex_PatternCompiler__parseHexCodePoint__I__I__T__I($thiz, start, ((2 + start) | 0), "hexadecimal");
+    $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((2 + start) | 0);
+    return cp$2
+  }
+}
+function $p_ju_regex_PatternCompiler__parseUnicodeHexEscape__I($thiz) {
+  var pattern = $thiz.ju_regex_PatternCompiler__f_pattern;
+  var start = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+  var end = ((4 + start) | 0);
+  var codeUnit = $p_ju_regex_PatternCompiler__parseHexCodePoint__I__I__T__I($thiz, start, end, "Unicode");
+  $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = end;
+  var lowStart = ((2 + end) | 0);
+  var lowEnd = ((4 + lowStart) | 0);
+  if (((((-1024) & codeUnit) === 55296) && ($as_T(pattern.substring(end, lowStart)) === "\\u"))) {
+    var low = $p_ju_regex_PatternCompiler__parseHexCodePoint__I__I__T__I($thiz, lowStart, lowEnd, "Unicode");
+    if ((((-1024) & low) === 56320)) {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = lowEnd;
+      return ((((64 + (1023 & codeUnit)) | 0) << 10) | (1023 & low))
+    } else {
+      return codeUnit
+    }
+  } else {
+    return codeUnit
+  }
+}
+function $p_ju_regex_PatternCompiler__parseHexCodePoint__I__I__T__I($thiz, start, end, nameForError) {
+  var pattern = $thiz.ju_regex_PatternCompiler__f_pattern;
+  var len = $uI(pattern.length);
+  if (((start === end) || (end > len))) {
+    $p_ju_regex_PatternCompiler__parseError__T__E($thiz, (("Illegal " + nameForError) + " escape sequence"))
+  };
+  var i = start;
+  while ((i < end)) {
+    var arg1 = i;
+    var c = (65535 & $uI(pattern.charCodeAt(arg1)));
+    if ((!((((c >= 48) && (c <= 57)) || ((c >= 65) && (c <= 70))) || ((c >= 97) && (c <= 102))))) {
+      $p_ju_regex_PatternCompiler__parseError__T__E($thiz, (("Illegal " + nameForError) + " escape sequence"))
+    };
+    i = ((1 + i) | 0)
+  };
+  if ((((end - start) | 0) > 6)) {
+    var cp = 1114112
+  } else {
+    var s = $as_T(pattern.substring(start, end));
+    var cp = $uI(parseInt(s, 16))
+  };
+  if ((cp > 1114111)) {
+    $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Hexadecimal codepoint is too big")
+  };
+  return cp
+}
+function $p_ju_regex_PatternCompiler__parsePredefinedCharacterClass__C__ju_regex_PatternCompiler$CompiledCharClass($thiz, dispatchChar) {
+  $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+  switch (dispatchChar) {
+    case 100:
+    case 68: {
+      var positive = $m_ju_regex_PatternCompiler$().ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$ASCIIDigit;
+      break
+    }
+    case 104:
+    case 72: {
+      var positive = $m_ju_regex_PatternCompiler$().ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$UniversalHorizontalWhiteSpace;
+      break
+    }
+    case 115:
+    case 83: {
+      var positive = $m_ju_regex_PatternCompiler$().ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$ASCIIWhiteSpace;
+      break
+    }
+    case 118:
+    case 86: {
+      var positive = $m_ju_regex_PatternCompiler$().ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$UniversalVerticalWhiteSpace;
+      break
+    }
+    case 119:
+    case 87: {
+      var positive = $m_ju_regex_PatternCompiler$().ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$ASCIIWordChar;
+      break
+    }
+    case 112:
+    case 80: {
+      var positive = $p_ju_regex_PatternCompiler__parsePCharacterClass__ju_regex_PatternCompiler$CompiledCharClass($thiz);
+      break
+    }
+    default: {
+      var positive;
+      throw new $c_s_MatchError($bC(dispatchChar))
+    }
+  };
+  return ((dispatchChar >= 97) ? positive : positive.negated__ju_regex_PatternCompiler$CompiledCharClass())
+}
+function $p_ju_regex_PatternCompiler__parsePCharacterClass__ju_regex_PatternCompiler$CompiledCharClass($thiz) {
+  var pattern = $thiz.ju_regex_PatternCompiler__f_pattern;
+  var len = $uI(pattern.length);
+  var start = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+  if ((start === len)) {
+    var property = "?"
+  } else if (((65535 & $uI(pattern.charCodeAt(start))) === 123)) {
+    var innerStart = ((1 + start) | 0);
+    var innerEnd = $uI(pattern.indexOf("}", innerStart));
+    if ((innerEnd < 0)) {
+      $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Unclosed character family")
+    };
+    $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = innerEnd;
+    var property = $as_T(pattern.substring(innerStart, innerEnd))
+  } else {
+    var endIndex = ((1 + start) | 0);
+    var property = $as_T(pattern.substring(start, endIndex))
+  };
+  var dict = $m_ju_regex_PatternCompiler$().ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$asciiPOSIXCharacterClasses;
+  if ((!$uZ($m_sjs_js_WrappedDictionary$Cache$().sjs_js_WrappedDictionary$Cache$__f_safeHasOwnProperty.call(dict, property)))) {
+    $thiz.java$util$regex$PatternCompiler$$parseErrorRequireESVersion__T__T__E("Unicode character family", "2018")
+  };
+  var property2 = ((((66 & $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) === 2) && ((property === "Lower") || (property === "Upper"))) ? "Alpha" : property);
+  var dict$1 = $m_ju_regex_PatternCompiler$().ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$asciiPOSIXCharacterClasses;
+  if ((!$uZ($m_sjs_js_WrappedDictionary$Cache$().sjs_js_WrappedDictionary$Cache$__f_safeHasOwnProperty.call(dict$1, property2)))) {
+    throw $ct_ju_NoSuchElementException__T__(new $c_ju_NoSuchElementException(), ("key not found: " + property2))
+  };
+  var result = $as_ju_regex_PatternCompiler$CompiledCharClass(dict$1[property2]);
+  $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+  return result
+}
+function $p_ju_regex_PatternCompiler__compileCharacterClass__T($thiz) {
+  var pattern = $thiz.ju_regex_PatternCompiler__f_pattern;
+  var len = $uI(pattern.length);
+  $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+  if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex !== len)) {
+    var index = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+    var isNegated = ((65535 & $uI(pattern.charCodeAt(index))) === 94)
+  } else {
+    var isNegated = false
+  };
+  if (isNegated) {
+    $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0)
+  };
+  var builder = new $c_ju_regex_PatternCompiler$CharacterClassBuilder(((66 & $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) === 2), isNegated);
+  while (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex !== len)) {
+    var x1 = $f_T__codePointAt__I__I(pattern, $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex);
+    matchResult: {
+      switch (x1) {
+        case 93: {
+          $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+          return builder.finish__T();
+          break
+        }
+        case 38: {
+          $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+          if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex !== len)) {
+            var index$1 = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+            var $$x1 = ((65535 & $uI(pattern.charCodeAt(index$1))) === 38)
+          } else {
+            var $$x1 = false
+          };
+          if ($$x1) {
+            $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+            builder.startNewConjunct__V()
+          } else {
+            $p_ju_regex_PatternCompiler__processRangeOrSingleCodePoint$1__I__I__T__ju_regex_PatternCompiler$CharacterClassBuilder__V($thiz, 38, len, pattern, builder)
+          };
+          break matchResult;
+          break
+        }
+        case 91: {
+          var cls = $p_ju_regex_PatternCompiler__compileCharacterClass__T($thiz);
+          $p_ju_regex_PatternCompiler$CharacterClassBuilder__addAlternative__T__V(builder, cls);
+          break matchResult;
+          break
+        }
+        case 92: {
+          $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+          if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex === len)) {
+            $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Illegal escape sequence")
+          };
+          var index$2 = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+          var c2 = (65535 & $uI(pattern.charCodeAt(index$2)));
+          switch (c2) {
+            case 100:
+            case 68:
+            case 104:
+            case 72:
+            case 115:
+            case 83:
+            case 118:
+            case 86:
+            case 119:
+            case 87:
+            case 112:
+            case 80: {
+              builder.addCharacterClass__ju_regex_PatternCompiler$CompiledCharClass__V($p_ju_regex_PatternCompiler__parsePredefinedCharacterClass__C__ju_regex_PatternCompiler$CompiledCharClass($thiz, c2));
+              break
+            }
+            case 81: {
+              $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+              var fromIndex = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+              var end = $uI(pattern.indexOf("\\E", fromIndex));
+              if ((end < 0)) {
+                $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Unclosed character class")
+              };
+              builder.addCodePointsInString__T__I__I__V(pattern, $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex, end);
+              $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((2 + end) | 0);
+              break
+            }
+            default: {
+              $p_ju_regex_PatternCompiler__processRangeOrSingleCodePoint$1__I__I__T__ju_regex_PatternCompiler$CharacterClassBuilder__V($thiz, $p_ju_regex_PatternCompiler__parseSingleCodePointEscape__I($thiz), len, pattern, builder)
+            }
+          };
+          break matchResult;
+          break
+        }
+        case 32:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13: {
+          if (((4 & $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0)) {
+            $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0)
+          } else {
+            break
+          };
+          break matchResult;
+          break
+        }
+        case 35: {
+          if (((4 & $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0)) {
+            $thiz.java$util$regex$PatternCompiler$$skipSharpComment__V()
+          } else {
+            break
+          };
+          break matchResult;
+          break
+        }
+      };
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex + ((x1 >= 65536) ? 2 : 1)) | 0);
+      $p_ju_regex_PatternCompiler__processRangeOrSingleCodePoint$1__I__I__T__ju_regex_PatternCompiler$CharacterClassBuilder__V($thiz, x1, len, pattern, builder)
+    }
+  };
+  $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Unclosed character class")
+}
+function $p_ju_regex_PatternCompiler__compileGroup__T($thiz) {
+  var pattern = $thiz.ju_regex_PatternCompiler__f_pattern;
+  var len = $uI(pattern.length);
+  var start = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+  if ((((1 + start) | 0) === len)) {
+    var $$x1 = true
+  } else {
+    var index = ((1 + start) | 0);
+    var $$x1 = ((65535 & $uI(pattern.charCodeAt(index))) !== 63)
+  };
+  if ($$x1) {
+    $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + start) | 0);
+    $thiz.ju_regex_PatternCompiler__f_compiledGroupCount = ((1 + $thiz.ju_regex_PatternCompiler__f_compiledGroupCount) | 0);
+    $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$groupNumberMap.push($thiz.ju_regex_PatternCompiler__f_compiledGroupCount);
+    return (("(" + $thiz.java$util$regex$PatternCompiler$$compileTopLevelOrInsideGroup__Z__T(true)) + ")")
+  } else {
+    if ((((2 + start) | 0) === len)) {
+      $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Unclosed group")
+    };
+    var index$1 = ((2 + start) | 0);
+    var c1 = (65535 & $uI(pattern.charCodeAt(index$1)));
+    if ((((c1 === 58) || (c1 === 61)) || (c1 === 33))) {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((3 + start) | 0);
+      var endIndex = ((3 + start) | 0);
+      return ((("" + $as_T(pattern.substring(start, endIndex))) + $thiz.java$util$regex$PatternCompiler$$compileTopLevelOrInsideGroup__Z__T(true)) + ")")
+    } else if ((c1 === 60)) {
+      if ((((3 + start) | 0) === len)) {
+        $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Unclosed group")
+      };
+      var index$2 = ((3 + start) | 0);
+      var c2 = (65535 & $uI(pattern.charCodeAt(index$2)));
+      if ((((c2 >= 65) && (c2 <= 90)) || ((c2 >= 97) && (c2 <= 122)))) {
+        $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((3 + start) | 0);
+        var name = $p_ju_regex_PatternCompiler__parseGroupName__T($thiz);
+        var dict = $thiz.ju_regex_PatternCompiler__f_namedGroups;
+        if ($uZ($m_sjs_js_WrappedDictionary$Cache$().sjs_js_WrappedDictionary$Cache$__f_safeHasOwnProperty.call(dict, name))) {
+          $p_ju_regex_PatternCompiler__parseError__T__E($thiz, (("named capturing group <" + name) + "> is already defined"))
+        };
+        $thiz.ju_regex_PatternCompiler__f_compiledGroupCount = ((1 + $thiz.ju_regex_PatternCompiler__f_compiledGroupCount) | 0);
+        $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$groupNumberMap.push($thiz.ju_regex_PatternCompiler__f_compiledGroupCount);
+        var dict$1 = $thiz.ju_regex_PatternCompiler__f_namedGroups;
+        var value = (((-1) + $uI($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$groupNumberMap.length)) | 0);
+        dict$1[name] = value;
+        $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+        return (("(" + $thiz.java$util$regex$PatternCompiler$$compileTopLevelOrInsideGroup__Z__T(true)) + ")")
+      } else {
+        if (((c2 !== 61) && (c2 !== 33))) {
+          $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Unknown look-behind group")
+        };
+        $thiz.java$util$regex$PatternCompiler$$parseErrorRequireESVersion__T__T__E("Look-behind group", "2018")
+      }
+    } else if ((c1 === 62)) {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((3 + start) | 0);
+      $thiz.ju_regex_PatternCompiler__f_compiledGroupCount = ((1 + $thiz.ju_regex_PatternCompiler__f_compiledGroupCount) | 0);
+      var groupNumber = $thiz.ju_regex_PatternCompiler__f_compiledGroupCount;
+      return (((("(?:(?=(" + $thiz.java$util$regex$PatternCompiler$$compileTopLevelOrInsideGroup__Z__T(true)) + "))\\") + groupNumber) + ")")
+    } else {
+      $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Embedded flag expression in the middle of a pattern is not supported")
+    }
+  }
+}
+function $p_ju_regex_PatternCompiler__parseGroupName__T($thiz) {
+  var pattern = $thiz.ju_regex_PatternCompiler__f_pattern;
+  var len = $uI(pattern.length);
+  var start = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+  while (true) {
+    if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex !== len)) {
+      var index = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+      var c = (65535 & $uI(pattern.charCodeAt(index)));
+      var $$x1 = ((((c >= 65) && (c <= 90)) || ((c >= 97) && (c <= 122))) || ((c >= 48) && (c <= 57)))
+    } else {
+      var $$x1 = false
+    };
+    if ($$x1) {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0)
+    } else {
+      break
+    }
+  };
+  if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex === len)) {
+    var $$x2 = true
+  } else {
+    var index$1 = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+    var $$x2 = ((65535 & $uI(pattern.charCodeAt(index$1))) !== 62)
+  };
+  if ($$x2) {
+    $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "named capturing group is missing trailing '>'")
+  };
+  var endIndex = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+  return $as_T(pattern.substring(start, endIndex))
+}
+function $p_ju_regex_PatternCompiler__processRangeOrSingleCodePoint$1__I__I__T__ju_regex_PatternCompiler$CharacterClassBuilder__V($thiz, startCodePoint, len$2, pattern$3, builder$1) {
+  if (((4 & $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0)) {
+    $p_ju_regex_PatternCompiler__skipComments__V($thiz)
+  };
+  if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex !== len$2)) {
+    var index = $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+    var $$x1 = ((65535 & $uI(pattern$3.charCodeAt(index))) === 45)
+  } else {
+    var $$x1 = false
+  };
+  if ($$x1) {
+    $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+    if (((4 & $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0)) {
+      $p_ju_regex_PatternCompiler__skipComments__V($thiz)
+    };
+    if (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex === len$2)) {
+      $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Unclosed character class")
+    };
+    var cpEnd = $f_T__codePointAt__I__I(pattern$3, $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex);
+    if (((cpEnd === 91) || (cpEnd === 93))) {
+      builder$1.addSingleCodePoint__I__V(startCodePoint);
+      builder$1.addSingleCodePoint__I__V(45)
+    } else {
+      $thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = (($thiz.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex + ((cpEnd >= 65536) ? 2 : 1)) | 0);
+      var endCodePoint = ((cpEnd === 92) ? $p_ju_regex_PatternCompiler__parseSingleCodePointEscape__I($thiz) : cpEnd);
+      if ((endCodePoint < startCodePoint)) {
+        $p_ju_regex_PatternCompiler__parseError__T__E($thiz, "Illegal character range")
+      };
+      builder$1.addCodePointRange__I__I__V(startCodePoint, endCodePoint)
+    }
+  } else {
+    builder$1.addSingleCodePoint__I__V(startCodePoint)
+  }
+}
+/** @constructor */
+function $c_ju_regex_PatternCompiler(pattern, flags) {
+  this.ju_regex_PatternCompiler__f_pattern = null;
+  this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags = 0;
+  this.ju_regex_PatternCompiler__f_sticky = false;
+  this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = 0;
+  this.ju_regex_PatternCompiler__f_compiledGroupCount = 0;
+  this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$groupNumberMap = null;
+  this.ju_regex_PatternCompiler__f_namedGroups = null;
+  this.ju_regex_PatternCompiler__f_pattern = pattern;
+  this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags = flags;
+  this.ju_regex_PatternCompiler__f_sticky = false;
+  this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = 0;
+  this.ju_regex_PatternCompiler__f_compiledGroupCount = 0;
+  this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$groupNumberMap = [0];
+  this.ju_regex_PatternCompiler__f_namedGroups = {}
+}
+$c_ju_regex_PatternCompiler.prototype = new $h_O();
+$c_ju_regex_PatternCompiler.prototype.constructor = $c_ju_regex_PatternCompiler;
+/** @constructor */
+function $h_ju_regex_PatternCompiler() {
+  /*<skip>*/
+}
+$h_ju_regex_PatternCompiler.prototype = $c_ju_regex_PatternCompiler.prototype;
+$c_ju_regex_PatternCompiler.prototype.compile__ju_regex_Pattern = (function() {
+  if (((256 & this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0)) {
+    this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags = (64 | this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags)
+  };
+  var isLiteral = ((16 & this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0);
+  if ((!isLiteral)) {
+    $p_ju_regex_PatternCompiler__processLeadingEmbeddedFlags__V(this)
+  };
+  if (((128 & this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0)) {
+    $p_ju_regex_PatternCompiler__parseError__T__E(this, "CANON_EQ is not supported")
+  };
+  if (((8 & this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0)) {
+    this.java$util$regex$PatternCompiler$$parseErrorRequireESVersion__T__T__E("MULTILINE", "2018")
+  };
+  if (((256 & this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0)) {
+    this.java$util$regex$PatternCompiler$$parseErrorRequireESVersion__T__T__E("UNICODE_CHARACTER_CLASS", "2018")
+  };
+  if (isLiteral) {
+    var jsPattern = $p_ju_regex_PatternCompiler__literal__T__T(this, this.ju_regex_PatternCompiler__f_pattern)
+  } else {
+    var this$5 = this.ju_regex_PatternCompiler__f_pattern;
+    var beginIndex = this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+    var endIndex = ((2 + this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+    if (($as_T(this$5.substring(beginIndex, endIndex)) === "\\G")) {
+      this.ju_regex_PatternCompiler__f_sticky = true;
+      this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((2 + this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0)
+    };
+    var jsPattern = this.java$util$regex$PatternCompiler$$compileTopLevelOrInsideGroup__Z__T(false)
+  };
+  var baseJSFlags = ($m_ju_regex_PatternCompiler$().ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$_supportsDotAll ? "us" : "u");
+  var jsFlags = (((66 & this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) === 66) ? (baseJSFlags + "i") : baseJSFlags);
+  return new $c_ju_regex_Pattern(this.ju_regex_PatternCompiler__f_pattern, this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags, jsPattern, jsFlags, this.ju_regex_PatternCompiler__f_sticky, (((-1) + $uI(this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$groupNumberMap.length)) | 0), this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$groupNumberMap, this.ju_regex_PatternCompiler__f_namedGroups)
+});
+$c_ju_regex_PatternCompiler.prototype.java$util$regex$PatternCompiler$$parseErrorRequireESVersion__T__T__E = (function(purpose, es) {
+  $p_ju_regex_PatternCompiler__parseError__T__E(this, (((((((purpose + " is not supported because it requires RegExp features of ECMAScript ") + es) + ".\n") + ((("If you only target environments with ES" + es) + "+, you can enable ES") + es)) + " features with\n") + ("  scalaJSLinkerConfig ~= { _.withESFeatures(_.withESVersion(ESVersion.ES" + es)) + ")) }\nor an equivalent configuration depending on your build tool."))
+});
+$c_ju_regex_PatternCompiler.prototype.java$util$regex$PatternCompiler$$compileTopLevelOrInsideGroup__Z__T = (function(insideGroup) {
+  var pattern = this.ju_regex_PatternCompiler__f_pattern;
+  var len = $uI(pattern.length);
+  var result = "";
+  while ((this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex !== len)) {
+    var dispatchCP = $f_T__codePointAt__I__I(pattern, this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex);
+    matchResult: {
+      switch (dispatchCP) {
+        case 41: {
+          if ((!insideGroup)) {
+            $p_ju_regex_PatternCompiler__parseError__T__E(this, "Unmatched closing ')'")
+          };
+          this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+          return result;
+          break
+        }
+        case 124: {
+          if ((this.ju_regex_PatternCompiler__f_sticky && (!insideGroup))) {
+            $p_ju_regex_PatternCompiler__parseError__T__E(this, "\\G is not supported when there is an alternative at the top level")
+          };
+          this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+          result = (result + "|");
+          break matchResult;
+          break
+        }
+        case 32:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13: {
+          if (((4 & this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0)) {
+            this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0)
+          } else {
+            break
+          };
+          break matchResult;
+          break
+        }
+        case 35: {
+          if (((4 & this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0)) {
+            this.java$util$regex$PatternCompiler$$skipSharpComment__V()
+          } else {
+            break
+          };
+          break matchResult;
+          break
+        }
+        case 63:
+        case 42:
+        case 43:
+        case 123: {
+          $p_ju_regex_PatternCompiler__parseError__T__E(this, (("Dangling meta character '" + $m_ju_regex_PatternCompiler$().java$util$regex$PatternCompiler$$codePointToString__I__T(dispatchCP)) + "'"));
+          break
+        }
+      };
+      var compiledGroupCountBeforeThisToken = this.ju_regex_PatternCompiler__f_compiledGroupCount;
+      switch (dispatchCP) {
+        case 92: {
+          var compiledToken = $p_ju_regex_PatternCompiler__compileEscape__T(this);
+          break
+        }
+        case 91: {
+          var compiledToken = $p_ju_regex_PatternCompiler__compileCharacterClass__T(this);
+          break
+        }
+        case 40: {
+          var compiledToken = $p_ju_regex_PatternCompiler__compileGroup__T(this);
+          break
+        }
+        case 94: {
+          this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+          var compiledToken = "(?:^)";
+          break
+        }
+        case 36: {
+          this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+          var compiledToken = "(?:$)";
+          break
+        }
+        case 46: {
+          this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0);
+          var rejected = (((32 & this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0) ? "" : (((1 & this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$flags) !== 0) ? "\n" : "\n\r\u0085\u2028\u2029"));
+          var compiledToken = $m_ju_regex_PatternCompiler$().java$util$regex$PatternCompiler$$codePointNotAmong__T__T(rejected);
+          break
+        }
+        default: {
+          this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex + ((dispatchCP >= 65536) ? 2 : 1)) | 0);
+          var compiledToken = $p_ju_regex_PatternCompiler__literal__I__T(this, dispatchCP)
+        }
+      };
+      result = (("" + result) + $p_ju_regex_PatternCompiler__compileRepeater__I__T__T(this, compiledGroupCountBeforeThisToken, compiledToken))
+    }
+  };
+  if (insideGroup) {
+    $p_ju_regex_PatternCompiler__parseError__T__E(this, "Unclosed group")
+  };
+  return result
+});
+$c_ju_regex_PatternCompiler.prototype.java$util$regex$PatternCompiler$$skipSharpComment__V = (function() {
+  var pattern = this.ju_regex_PatternCompiler__f_pattern;
+  var len = $uI(pattern.length);
+  while (true) {
+    if ((this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex !== len)) {
+      var index = this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex;
+      var c = (65535 & $uI(pattern.charCodeAt(index)));
+      var $$x1 = (!(((((c === 10) || (c === 13)) || (c === 133)) || (c === 8232)) || (c === 8233)))
+    } else {
+      var $$x1 = false
+    };
+    if ($$x1) {
+      this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex = ((1 + this.ju_regex_PatternCompiler__f_java$util$regex$PatternCompiler$$pIndex) | 0)
+    } else {
+      break
+    }
+  }
+});
+$c_ju_regex_PatternCompiler.prototype.java$util$regex$PatternCompiler$$$anonfun$buildPossessiveQuantifier$2__T__T__T__I__T = (function(str, backslashes, groupString, compiledGroupCountBeforeThisToken$1) {
+  if (((($uI(backslashes.length) % 2) | 0) === 0)) {
+    return str
+  } else {
+    var groupNumber = $uI(parseInt(groupString, 10));
+    return ((groupNumber > compiledGroupCountBeforeThisToken$1) ? (("" + backslashes) + ((1 + groupNumber) | 0)) : str)
+  }
+});
+var $d_ju_regex_PatternCompiler = new $TypeData().initClass({
+  ju_regex_PatternCompiler: 0
+}, false, "java.util.regex.PatternCompiler", {
+  ju_regex_PatternCompiler: 1,
+  O: 1
+});
+$c_ju_regex_PatternCompiler.prototype.$classData = $d_ju_regex_PatternCompiler;
+function $p_ju_regex_PatternCompiler$__featureTest__T__Z($thiz, flags) {
+  try {
+    new RegExp("", flags);
+    return true
+  } catch (e) {
+    var e$2 = $m_sjsr_package$().wrapJavaScriptException__O__jl_Throwable(e);
+    if ((e$2 instanceof $c_sjs_js_JavaScriptException)) {
+      return false
+    } else {
+      throw e
+    }
+  }
+}
+/** @constructor */
+function $c_ju_regex_PatternCompiler$() {
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$predefinedPCharacterClasses = null;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$canonicalizedScriptNameCache = null;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$leadingEmbeddedFlagSpecifierRegExp = null;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$renumberingRegExp = null;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$_supportsUnicode = false;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$_supportsSticky = false;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$_supportsDotAll = false;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$_supportsIndices = false;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$ASCIIDigit = null;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$UnicodeDigit = null;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$UniversalHorizontalWhiteSpace = null;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$ASCIIWhiteSpace = null;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$UnicodeWhitespace = null;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$UniversalVerticalWhiteSpace = null;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$ASCIIWordChar = null;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$UnicodeWordChar = null;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$asciiPOSIXCharacterClasses = null;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$scriptCanonicalizeRegExp = null;
+  this.ju_regex_PatternCompiler$__f_bitmap$0 = 0;
+  $n_ju_regex_PatternCompiler$ = this;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$leadingEmbeddedFlagSpecifierRegExp = new RegExp("^\\(\\?([idmsuxU]*)(?:-([idmsuxU]*))?\\)");
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$renumberingRegExp = new RegExp("(\\\\+)(\\d+)", "g");
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$_supportsUnicode = true;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$_supportsSticky = true;
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$_supportsDotAll = $p_ju_regex_PatternCompiler$__featureTest__T__Z(this, "us");
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$_supportsIndices = $p_ju_regex_PatternCompiler$__featureTest__T__Z(this, "d");
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$ASCIIDigit = new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "0-9");
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$UnicodeDigit = new $c_ju_regex_PatternCompiler$CompiledCharClass(0, "Nd");
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$UniversalHorizontalWhiteSpace = new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "\t \u00a0\u1680\u180e\u2000-\u200a\u202f\u205f\u3000");
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$ASCIIWhiteSpace = new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "\t-\r ");
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$UnicodeWhitespace = new $c_ju_regex_PatternCompiler$CompiledCharClass(0, "White_Space");
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$UniversalVerticalWhiteSpace = new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "\n-\r\u0085\u2028\u2029");
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$ASCIIWordChar = new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "a-zA-Z_0-9");
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$UnicodeWordChar = new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "\\p{Alphabetic}\\p{Mn}\\p{Me}\\p{Mc}\\p{Nd}\\p{Pc}\\p{Join_Control}");
+  var array = [new $c_T2("Lower", new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "a-z")), new $c_T2("Upper", new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "A-Z")), new $c_T2("ASCII", new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "\u0000-\u007f")), new $c_T2("Alpha", new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "A-Za-z")), new $c_T2("Digit", new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "0-9")), new $c_T2("Alnum", new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "0-9A-Za-z")), new $c_T2("Punct", new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "!-/:-@[-`{-~")), new $c_T2("Graph", new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "!-~")), new $c_T2("Print", new $c_ju_regex_PatternCompiler$CompiledCharClass(2, " -~")), new $c_T2("Blank", new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "\t ")), new $c_T2("Cntrl", new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "\u0000-\u001f\u007f")), new $c_T2("XDigit", new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "0-9A-Fa-f")), new $c_T2("Space", new $c_ju_regex_PatternCompiler$CompiledCharClass(2, "\t-\r "))];
+  var properties = new $c_sjsr_WrappedVarArgs(array);
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$asciiPOSIXCharacterClasses = $m_sjs_js_special_package$().objectLiteral__sci_Seq__sjs_js_Object(properties);
+  this.ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$scriptCanonicalizeRegExp = new RegExp("(?:^|_)[a-z]", "g")
+}
+$c_ju_regex_PatternCompiler$.prototype = new $h_O();
+$c_ju_regex_PatternCompiler$.prototype.constructor = $c_ju_regex_PatternCompiler$;
+/** @constructor */
+function $h_ju_regex_PatternCompiler$() {
+  /*<skip>*/
+}
+$h_ju_regex_PatternCompiler$.prototype = $c_ju_regex_PatternCompiler$.prototype;
+$c_ju_regex_PatternCompiler$.prototype.compile__T__I__ju_regex_Pattern = (function(regex, flags) {
+  return new $c_ju_regex_PatternCompiler(regex, flags).compile__ju_regex_Pattern()
+});
+$c_ju_regex_PatternCompiler$.prototype.java$util$regex$PatternCompiler$$charToFlag__C__I = (function(c) {
+  switch (c) {
+    case 105: {
+      return 2;
+      break
+    }
+    case 100: {
+      return 1;
+      break
+    }
+    case 109: {
+      return 8;
+      break
+    }
+    case 115: {
+      return 32;
+      break
+    }
+    case 117: {
+      return 64;
+      break
+    }
+    case 120: {
+      return 4;
+      break
+    }
+    case 85: {
+      return 256;
+      break
+    }
+    default: {
+      throw $ct_jl_IllegalArgumentException__T__(new $c_jl_IllegalArgumentException(), "bad in-pattern flag")
+    }
+  }
+});
+$c_ju_regex_PatternCompiler$.prototype.java$util$regex$PatternCompiler$$codePointNotAmong__T__T = (function(characters) {
+  return ((characters !== "") ? (("[^" + characters) + "]") : ($m_ju_regex_PatternCompiler$().ju_regex_PatternCompiler$__f_java$util$regex$PatternCompiler$$_supportsDotAll ? "." : "[\\d\\D]"))
+});
+$c_ju_regex_PatternCompiler$.prototype.java$util$regex$PatternCompiler$$codePointToString__I__T = (function(codePoint) {
+  return $as_T(String.fromCodePoint(codePoint))
+});
+var $d_ju_regex_PatternCompiler$ = new $TypeData().initClass({
+  ju_regex_PatternCompiler$: 0
+}, false, "java.util.regex.PatternCompiler$", {
+  ju_regex_PatternCompiler$: 1,
+  O: 1
+});
+$c_ju_regex_PatternCompiler$.prototype.$classData = $d_ju_regex_PatternCompiler$;
+var $n_ju_regex_PatternCompiler$;
+function $m_ju_regex_PatternCompiler$() {
+  if ((!$n_ju_regex_PatternCompiler$)) {
+    $n_ju_regex_PatternCompiler$ = new $c_ju_regex_PatternCompiler$()
+  };
+  return $n_ju_regex_PatternCompiler$
+}
+function $p_ju_regex_PatternCompiler$CharacterClassBuilder__addAlternative__T__V($thiz, alt) {
+  if (($thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisConjunct === "")) {
+    $thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisConjunct = alt
+  } else {
+    $thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisConjunct = (($thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisConjunct + "|") + alt)
+  }
+}
+function $p_ju_regex_PatternCompiler$CharacterClassBuilder__conjunctResult__T($thiz) {
+  if ($thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_isNegated) {
+    var negThisSegment = $m_ju_regex_PatternCompiler$().java$util$regex$PatternCompiler$$codePointNotAmong__T__T($thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment);
+    return (($thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisConjunct === "") ? negThisSegment : (((("(?:(?!" + $thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisConjunct) + ")") + negThisSegment) + ")"))
+  } else {
+    return (($thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment === "") ? (($thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisConjunct === "") ? "[^\\d\\D]" : (("(?:" + $thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisConjunct) + ")")) : (($thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisConjunct === "") ? (("[" + $thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment) + "]") : (((("(?:" + $thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisConjunct) + "|[") + $thiz.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment) + "])")))
+  }
+}
+function $p_ju_regex_PatternCompiler$CharacterClassBuilder__literalCodePoint__I__T($thiz, codePoint) {
+  var s = $m_ju_regex_PatternCompiler$().java$util$regex$PatternCompiler$$codePointToString__I__T(codePoint);
+  return (((((codePoint === 93) || (codePoint === 92)) || (codePoint === 45)) || (codePoint === 94)) ? ("\\" + s) : s)
+}
+/** @constructor */
+function $c_ju_regex_PatternCompiler$CharacterClassBuilder(asciiCaseInsensitive, isNegated) {
+  this.ju_regex_PatternCompiler$CharacterClassBuilder__f_asciiCaseInsensitive = false;
+  this.ju_regex_PatternCompiler$CharacterClassBuilder__f_isNegated = false;
+  this.ju_regex_PatternCompiler$CharacterClassBuilder__f_conjunction = null;
+  this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisConjunct = null;
+  this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment = null;
+  this.ju_regex_PatternCompiler$CharacterClassBuilder__f_asciiCaseInsensitive = asciiCaseInsensitive;
+  this.ju_regex_PatternCompiler$CharacterClassBuilder__f_isNegated = isNegated;
+  this.ju_regex_PatternCompiler$CharacterClassBuilder__f_conjunction = "";
+  this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisConjunct = "";
+  this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment = ""
+}
+$c_ju_regex_PatternCompiler$CharacterClassBuilder.prototype = new $h_O();
+$c_ju_regex_PatternCompiler$CharacterClassBuilder.prototype.constructor = $c_ju_regex_PatternCompiler$CharacterClassBuilder;
+/** @constructor */
+function $h_ju_regex_PatternCompiler$CharacterClassBuilder() {
+  /*<skip>*/
+}
+$h_ju_regex_PatternCompiler$CharacterClassBuilder.prototype = $c_ju_regex_PatternCompiler$CharacterClassBuilder.prototype;
+$c_ju_regex_PatternCompiler$CharacterClassBuilder.prototype.finish__T = (function() {
+  var conjunct = $p_ju_regex_PatternCompiler$CharacterClassBuilder__conjunctResult__T(this);
+  return ((this.ju_regex_PatternCompiler$CharacterClassBuilder__f_conjunction === "") ? conjunct : ((("(?:" + this.ju_regex_PatternCompiler$CharacterClassBuilder__f_conjunction) + conjunct) + ")"))
+});
+$c_ju_regex_PatternCompiler$CharacterClassBuilder.prototype.startNewConjunct__V = (function() {
+  var conjunct = $p_ju_regex_PatternCompiler$CharacterClassBuilder__conjunctResult__T(this);
+  this.ju_regex_PatternCompiler$CharacterClassBuilder__f_conjunction = (this.ju_regex_PatternCompiler$CharacterClassBuilder__f_conjunction + (this.ju_regex_PatternCompiler$CharacterClassBuilder__f_isNegated ? (conjunct + "|") : (("(?=" + conjunct) + ")")));
+  this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisConjunct = "";
+  this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment = ""
+});
+$c_ju_regex_PatternCompiler$CharacterClassBuilder.prototype.addCharacterClass__ju_regex_PatternCompiler$CompiledCharClass__V = (function(cls) {
+  var x1 = cls.ju_regex_PatternCompiler$CompiledCharClass__f_kind;
+  switch (x1) {
+    case 0: {
+      this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment = ((this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment + ("\\p{" + cls.ju_regex_PatternCompiler$CompiledCharClass__f_data)) + "}");
+      break
+    }
+    case 1: {
+      this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment = ((this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment + ("\\P{" + cls.ju_regex_PatternCompiler$CompiledCharClass__f_data)) + "}");
+      break
+    }
+    case 2: {
+      this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment = (("" + this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment) + cls.ju_regex_PatternCompiler$CompiledCharClass__f_data);
+      break
+    }
+    case 3: {
+      $p_ju_regex_PatternCompiler$CharacterClassBuilder__addAlternative__T__V(this, $m_ju_regex_PatternCompiler$().java$util$regex$PatternCompiler$$codePointNotAmong__T__T(cls.ju_regex_PatternCompiler$CompiledCharClass__f_data));
+      break
+    }
+    default: {
+      throw new $c_s_MatchError(x1)
+    }
+  }
+});
+$c_ju_regex_PatternCompiler$CharacterClassBuilder.prototype.addCodePointsInString__T__I__I__V = (function(str, start, end) {
+  var i = start;
+  while ((i !== end)) {
+    var codePoint = $f_T__codePointAt__I__I(str, i);
+    this.addSingleCodePoint__I__V(codePoint);
+    i = ((i + ((codePoint >= 65536) ? 2 : 1)) | 0)
+  }
+});
+$c_ju_regex_PatternCompiler$CharacterClassBuilder.prototype.addSingleCodePoint__I__V = (function(codePoint) {
+  var s = $p_ju_regex_PatternCompiler$CharacterClassBuilder__literalCodePoint__I__T(this, codePoint);
+  if ((((-1024) & codePoint) === 56320)) {
+    this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment = (("" + s) + this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment)
+  } else {
+    this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment = (("" + this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment) + s)
+  };
+  if (this.ju_regex_PatternCompiler$CharacterClassBuilder__f_asciiCaseInsensitive) {
+    if (((codePoint >= 65) && (codePoint <= 90))) {
+      this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment = (("" + this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment) + $m_ju_regex_PatternCompiler$().java$util$regex$PatternCompiler$$codePointToString__I__T(((32 + codePoint) | 0)))
+    } else if (((codePoint >= 97) && (codePoint <= 122))) {
+      this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment = (("" + this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment) + $m_ju_regex_PatternCompiler$().java$util$regex$PatternCompiler$$codePointToString__I__T((((-32) + codePoint) | 0)))
+    }
+  }
+});
+$c_ju_regex_PatternCompiler$CharacterClassBuilder.prototype.addCodePointRange__I__I__V = (function(startCodePoint, endCodePoint) {
+  var s = (($p_ju_regex_PatternCompiler$CharacterClassBuilder__literalCodePoint__I__T(this, startCodePoint) + "-") + $p_ju_regex_PatternCompiler$CharacterClassBuilder__literalCodePoint__I__T(this, endCodePoint));
+  if ((((-1024) & startCodePoint) === 56320)) {
+    this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment = (s + this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment)
+  } else {
+    this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment = (this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment + s)
+  };
+  if (this.ju_regex_PatternCompiler$CharacterClassBuilder__f_asciiCaseInsensitive) {
+    var start = ((startCodePoint > 65) ? startCodePoint : 65);
+    var end = ((endCodePoint < 90) ? endCodePoint : 90);
+    if ((start <= end)) {
+      var $$x1 = this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment;
+      var start$1 = ((32 + start) | 0);
+      var end$1 = ((32 + end) | 0);
+      this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment = ($$x1 + (($p_ju_regex_PatternCompiler$CharacterClassBuilder__literalCodePoint__I__T(this, start$1) + "-") + $p_ju_regex_PatternCompiler$CharacterClassBuilder__literalCodePoint__I__T(this, end$1)))
+    };
+    var start$2 = ((startCodePoint > 97) ? startCodePoint : 97);
+    var end$2 = ((endCodePoint < 122) ? endCodePoint : 122);
+    if ((start$2 <= end$2)) {
+      var $$x2 = this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment;
+      var start$3 = (((-32) + start$2) | 0);
+      var end$3 = (((-32) + end$2) | 0);
+      this.ju_regex_PatternCompiler$CharacterClassBuilder__f_thisSegment = ($$x2 + (($p_ju_regex_PatternCompiler$CharacterClassBuilder__literalCodePoint__I__T(this, start$3) + "-") + $p_ju_regex_PatternCompiler$CharacterClassBuilder__literalCodePoint__I__T(this, end$3)))
+    }
+  }
+});
+var $d_ju_regex_PatternCompiler$CharacterClassBuilder = new $TypeData().initClass({
+  ju_regex_PatternCompiler$CharacterClassBuilder: 0
+}, false, "java.util.regex.PatternCompiler$CharacterClassBuilder", {
+  ju_regex_PatternCompiler$CharacterClassBuilder: 1,
+  O: 1
+});
+$c_ju_regex_PatternCompiler$CharacterClassBuilder.prototype.$classData = $d_ju_regex_PatternCompiler$CharacterClassBuilder;
+function $p_ju_regex_PatternCompiler$CompiledCharClass__negated$lzycompute__ju_regex_PatternCompiler$CompiledCharClass($thiz) {
+  if ((!$thiz.ju_regex_PatternCompiler$CompiledCharClass__f_bitmap$0)) {
+    $thiz.ju_regex_PatternCompiler$CompiledCharClass__f_negated = new $c_ju_regex_PatternCompiler$CompiledCharClass((1 ^ $thiz.ju_regex_PatternCompiler$CompiledCharClass__f_kind), $thiz.ju_regex_PatternCompiler$CompiledCharClass__f_data);
+    $thiz.ju_regex_PatternCompiler$CompiledCharClass__f_bitmap$0 = true
+  };
+  return $thiz.ju_regex_PatternCompiler$CompiledCharClass__f_negated
+}
+/** @constructor */
+function $c_ju_regex_PatternCompiler$CompiledCharClass(kind, data) {
+  this.ju_regex_PatternCompiler$CompiledCharClass__f_negated = null;
+  this.ju_regex_PatternCompiler$CompiledCharClass__f_kind = 0;
+  this.ju_regex_PatternCompiler$CompiledCharClass__f_data = null;
+  this.ju_regex_PatternCompiler$CompiledCharClass__f_bitmap$0 = false;
+  this.ju_regex_PatternCompiler$CompiledCharClass__f_kind = kind;
+  this.ju_regex_PatternCompiler$CompiledCharClass__f_data = data
+}
+$c_ju_regex_PatternCompiler$CompiledCharClass.prototype = new $h_O();
+$c_ju_regex_PatternCompiler$CompiledCharClass.prototype.constructor = $c_ju_regex_PatternCompiler$CompiledCharClass;
+/** @constructor */
+function $h_ju_regex_PatternCompiler$CompiledCharClass() {
+  /*<skip>*/
+}
+$h_ju_regex_PatternCompiler$CompiledCharClass.prototype = $c_ju_regex_PatternCompiler$CompiledCharClass.prototype;
+$c_ju_regex_PatternCompiler$CompiledCharClass.prototype.negated__ju_regex_PatternCompiler$CompiledCharClass = (function() {
+  return ((!this.ju_regex_PatternCompiler$CompiledCharClass__f_bitmap$0) ? $p_ju_regex_PatternCompiler$CompiledCharClass__negated$lzycompute__ju_regex_PatternCompiler$CompiledCharClass(this) : this.ju_regex_PatternCompiler$CompiledCharClass__f_negated)
+});
+function $as_ju_regex_PatternCompiler$CompiledCharClass(obj) {
+  return (((obj instanceof $c_ju_regex_PatternCompiler$CompiledCharClass) || (obj === null)) ? obj : $throwClassCastException(obj, "java.util.regex.PatternCompiler$CompiledCharClass"))
+}
+function $isArrayOf_ju_regex_PatternCompiler$CompiledCharClass(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.ju_regex_PatternCompiler$CompiledCharClass)))
+}
+function $asArrayOf_ju_regex_PatternCompiler$CompiledCharClass(obj, depth) {
+  return (($isArrayOf_ju_regex_PatternCompiler$CompiledCharClass(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ljava.util.regex.PatternCompiler$CompiledCharClass;", depth))
+}
+var $d_ju_regex_PatternCompiler$CompiledCharClass = new $TypeData().initClass({
+  ju_regex_PatternCompiler$CompiledCharClass: 0
+}, false, "java.util.regex.PatternCompiler$CompiledCharClass", {
+  ju_regex_PatternCompiler$CompiledCharClass: 1,
+  O: 1
+});
+$c_ju_regex_PatternCompiler$CompiledCharClass.prototype.$classData = $d_ju_regex_PatternCompiler$CompiledCharClass;
 function $p_Lorg_scalajs_dom_package$__console$lzycompute__Lorg_scalajs_dom_raw_Console($thiz) {
   if (((134217728 & $thiz.Lorg_scalajs_dom_package$__f_bitmap$0) === 0)) {
     $thiz.Lorg_scalajs_dom_package$__f_console = console;
@@ -11852,6 +13264,179 @@ $c_ju_concurrent_atomic_AtomicReference.prototype.toString__T = (function() {
   var obj = this.ju_concurrent_atomic_AtomicReference__f_value;
   return ("" + obj)
 });
+function $p_ju_regex_Matcher__ensureLastMatch__sjs_js_RegExp$ExecResult($thiz) {
+  if (($thiz.ju_regex_Matcher__f_lastMatch === null)) {
+    throw new $c_jl_IllegalStateException("No match available")
+  };
+  return $thiz.ju_regex_Matcher__f_lastMatch
+}
+/** @constructor */
+function $c_ju_regex_Matcher(pattern0, input0) {
+  this.ju_regex_Matcher__f_pattern0 = null;
+  this.ju_regex_Matcher__f_java$util$regex$Matcher$$input0 = null;
+  this.ju_regex_Matcher__f_regionStart0 = 0;
+  this.ju_regex_Matcher__f_regionEnd0 = 0;
+  this.ju_regex_Matcher__f_inputstr = null;
+  this.ju_regex_Matcher__f_position = 0;
+  this.ju_regex_Matcher__f_lastMatch = null;
+  this.ju_regex_Matcher__f_lastMatchIsForMatches = false;
+  this.ju_regex_Matcher__f_appendPos = 0;
+  this.ju_regex_Matcher__f_pattern0 = pattern0;
+  this.ju_regex_Matcher__f_java$util$regex$Matcher$$input0 = input0;
+  this.ju_regex_Matcher__f_regionStart0 = 0;
+  var this$1 = this.ju_regex_Matcher__f_java$util$regex$Matcher$$input0;
+  this.ju_regex_Matcher__f_regionEnd0 = $uI(this$1.length);
+  this.ju_regex_Matcher__f_inputstr = this.ju_regex_Matcher__f_java$util$regex$Matcher$$input0;
+  this.ju_regex_Matcher__f_position = 0;
+  this.ju_regex_Matcher__f_lastMatch = null;
+  this.ju_regex_Matcher__f_lastMatchIsForMatches = false;
+  this.ju_regex_Matcher__f_appendPos = 0
+}
+$c_ju_regex_Matcher.prototype = new $h_O();
+$c_ju_regex_Matcher.prototype.constructor = $c_ju_regex_Matcher;
+/** @constructor */
+function $h_ju_regex_Matcher() {
+  /*<skip>*/
+}
+$h_ju_regex_Matcher.prototype = $c_ju_regex_Matcher.prototype;
+$c_ju_regex_Matcher.prototype.find__Z = (function() {
+  var this$1 = this.ju_regex_Matcher__f_pattern0;
+  var input = this.ju_regex_Matcher__f_inputstr;
+  var start = this.ju_regex_Matcher__f_position;
+  var mtch = this$1.java$util$regex$Pattern$$execFindInternal__T__I__sjs_js_RegExp$ExecResult(input, start);
+  var end = $uI(this$1.ju_regex_Pattern__f_java$util$regex$Pattern$$jsRegExpForFind.lastIndex);
+  if ((mtch !== null)) {
+    var $$x1 = ((end === $uI(mtch.index)) ? ((1 + end) | 0) : end)
+  } else {
+    var this$2 = this.ju_regex_Matcher__f_inputstr;
+    var $$x1 = ((1 + $uI(this$2.length)) | 0)
+  };
+  this.ju_regex_Matcher__f_position = $$x1;
+  this.ju_regex_Matcher__f_lastMatch = mtch;
+  this.ju_regex_Matcher__f_lastMatchIsForMatches = false;
+  return (mtch !== null)
+});
+$c_ju_regex_Matcher.prototype.start__I = (function() {
+  return (($uI($p_ju_regex_Matcher__ensureLastMatch__sjs_js_RegExp$ExecResult(this).index) + this.ju_regex_Matcher__f_regionStart0) | 0)
+});
+$c_ju_regex_Matcher.prototype.end__I = (function() {
+  var $$x1 = this.start__I();
+  var this$1 = this.group__T();
+  return (($$x1 + $uI(this$1.length)) | 0)
+});
+$c_ju_regex_Matcher.prototype.group__T = (function() {
+  var value = $p_ju_regex_Matcher__ensureLastMatch__sjs_js_RegExp$ExecResult(this)[0];
+  if ((value === (void 0))) {
+    throw $ct_ju_NoSuchElementException__T__(new $c_ju_NoSuchElementException(), "undefined.get")
+  };
+  return $as_T(value)
+});
+var $d_ju_regex_Matcher = new $TypeData().initClass({
+  ju_regex_Matcher: 0
+}, false, "java.util.regex.Matcher", {
+  ju_regex_Matcher: 1,
+  O: 1,
+  ju_regex_MatchResult: 1
+});
+$c_ju_regex_Matcher.prototype.$classData = $d_ju_regex_Matcher;
+/** @constructor */
+function $c_ju_regex_Pattern(_pattern, _flags, jsPattern, jsFlags, sticky, groupCount, groupNumberMap, namedGroups) {
+  this.ju_regex_Pattern__f_indicesBuilder = null;
+  this.ju_regex_Pattern__f__pattern = null;
+  this.ju_regex_Pattern__f__flags = 0;
+  this.ju_regex_Pattern__f_jsPattern = null;
+  this.ju_regex_Pattern__f_java$util$regex$Pattern$$jsFlags = null;
+  this.ju_regex_Pattern__f_java$util$regex$Pattern$$sticky = false;
+  this.ju_regex_Pattern__f_groupCount = 0;
+  this.ju_regex_Pattern__f_groupNumberMap = null;
+  this.ju_regex_Pattern__f_namedGroups = null;
+  this.ju_regex_Pattern__f_enabledNativeIndices = false;
+  this.ju_regex_Pattern__f_java$util$regex$Pattern$$jsRegExpForFind = null;
+  this.ju_regex_Pattern__f_jsRegExpForMatches = null;
+  this.ju_regex_Pattern__f_bitmap$0 = false;
+  this.ju_regex_Pattern__f__pattern = _pattern;
+  this.ju_regex_Pattern__f__flags = _flags;
+  this.ju_regex_Pattern__f_jsPattern = jsPattern;
+  this.ju_regex_Pattern__f_java$util$regex$Pattern$$jsFlags = jsFlags;
+  this.ju_regex_Pattern__f_java$util$regex$Pattern$$sticky = sticky;
+  this.ju_regex_Pattern__f_groupCount = groupCount;
+  this.ju_regex_Pattern__f_groupNumberMap = groupNumberMap;
+  this.ju_regex_Pattern__f_namedGroups = namedGroups;
+  this.ju_regex_Pattern__f_enabledNativeIndices = false;
+  this.ju_regex_Pattern__f_java$util$regex$Pattern$$jsRegExpForFind = new RegExp(jsPattern, (this.ju_regex_Pattern__f_java$util$regex$Pattern$$jsFlags + (this.ju_regex_Pattern__f_java$util$regex$Pattern$$sticky ? "gy" : "g")));
+  this.ju_regex_Pattern__f_jsRegExpForMatches = new RegExp((("^(?:" + jsPattern) + ")$"), jsFlags)
+}
+$c_ju_regex_Pattern.prototype = new $h_O();
+$c_ju_regex_Pattern.prototype.constructor = $c_ju_regex_Pattern;
+/** @constructor */
+function $h_ju_regex_Pattern() {
+  /*<skip>*/
+}
+$h_ju_regex_Pattern.prototype = $c_ju_regex_Pattern.prototype;
+$c_ju_regex_Pattern.prototype.java$util$regex$Pattern$$execFindInternal__T__I__sjs_js_RegExp$ExecResult = (function(input, start) {
+  var regexp = this.ju_regex_Pattern__f_java$util$regex$Pattern$$jsRegExpForFind;
+  regexp.lastIndex = start;
+  return regexp.exec(input)
+});
+$c_ju_regex_Pattern.prototype.toString__T = (function() {
+  return this.ju_regex_Pattern__f__pattern
+});
+$c_ju_regex_Pattern.prototype.java$util$regex$Pattern$$split__T__I__AT = (function(inputStr, limit) {
+  if ((inputStr === "")) {
+    return new ($d_T.getArrayOf().constr)([""])
+  } else {
+    var lim = ((limit > 0) ? limit : 2147483647);
+    var matcher = new $c_ju_regex_Matcher(this, inputStr);
+    var capacity = 0;
+    var size = 0;
+    var jsElems = null;
+    capacity = 0;
+    size = 0;
+    jsElems = [];
+    var prevEnd = 0;
+    var size$1 = 0;
+    while (((size$1 < (((-1) + lim) | 0)) && matcher.find__Z())) {
+      if ((matcher.end__I() !== 0)) {
+        var beginIndex = prevEnd;
+        var endIndex = matcher.start__I();
+        var elem = $as_T(inputStr.substring(beginIndex, endIndex));
+        var unboxedElem = ((elem === null) ? null : elem);
+        jsElems.push(unboxedElem);
+        size$1 = ((1 + size$1) | 0)
+      };
+      prevEnd = matcher.end__I()
+    };
+    var beginIndex$1 = prevEnd;
+    var elem$1 = $as_T(inputStr.substring(beginIndex$1));
+    var unboxedElem$1 = ((elem$1 === null) ? null : elem$1);
+    jsElems.push(unboxedElem$1);
+    var result = new ($d_T.getArrayOf().constr)(jsElems);
+    if ((limit !== 0)) {
+      return result
+    } else {
+      var actualLength = result.u.length;
+      while (((actualLength !== 0) && (result.get((((-1) + actualLength) | 0)) === ""))) {
+        actualLength = (((-1) + actualLength) | 0)
+      };
+      if ((actualLength === result.u.length)) {
+        return result
+      } else {
+        var actualResult = new ($d_T.getArrayOf().constr)(actualLength);
+        var length = actualLength;
+        result.copyTo(0, actualResult, 0, length);
+        return actualResult
+      }
+    }
+  }
+});
+var $d_ju_regex_Pattern = new $TypeData().initClass({
+  ju_regex_Pattern: 0
+}, false, "java.util.regex.Pattern", {
+  ju_regex_Pattern: 1,
+  O: 1,
+  Ljava_io_Serializable: 1
+});
+$c_ju_regex_Pattern.prototype.$classData = $d_ju_regex_Pattern;
 function $p_RTLong$__toUnsignedString__I__I__T($thiz, lo, hi) {
   if ((((-2097152) & hi) === 0)) {
     var this$1 = ((4.294967296E9 * hi) + $uD((lo >>> 0)));
@@ -22982,6 +24567,9 @@ var $d_jl_Short = new $TypeData().initClass({
   Ljava_io_Serializable: 1,
   jl_Comparable: 1
 }, (void 0), (void 0), ((x) => $isShort(x)));
+function $f_T__codePointAt__I__I($thiz, index) {
+  return $uI($thiz.codePointAt(index))
+}
 function $f_T__hashCode__I($thiz) {
   var res = 0;
   var mul = 1;
@@ -23031,6 +24619,10 @@ function $f_T__getChars__I__I__AC__I__V($thiz, srcBegin, srcEnd, dst, dstBegin) 
 function $f_T__lastIndexOf__I__I($thiz, ch) {
   var str = $m_jl_Character$().toString__I__T(ch);
   return $uI($thiz.lastIndexOf(str))
+}
+function $f_T__split__T__I__AT($thiz, regex, limit) {
+  var this$2 = $m_ju_regex_PatternCompiler$().compile__T__I__ju_regex_Pattern(regex, 0);
+  return this$2.java$util$regex$Pattern$$split__T__I__AT($thiz, limit)
 }
 function $f_T__subSequence__I__I__jl_CharSequence($thiz, beginIndex, endIndex) {
   return $as_T($thiz.substring(beginIndex, endIndex))
@@ -36030,6 +37622,37 @@ var $d_ju_LinkedHashMap = new $TypeData().initClass({
   jl_Cloneable: 1
 });
 $c_ju_LinkedHashMap.prototype.$classData = $d_ju_LinkedHashMap;
+class $c_ju_regex_PatternSyntaxException extends $c_jl_IllegalArgumentException {
+  constructor(desc, regex, index) {
+    super();
+    this.ju_regex_PatternSyntaxException__f_desc = null;
+    this.ju_regex_PatternSyntaxException__f_regex = null;
+    this.ju_regex_PatternSyntaxException__f_index = 0;
+    this.ju_regex_PatternSyntaxException__f_desc = desc;
+    this.ju_regex_PatternSyntaxException__f_regex = regex;
+    this.ju_regex_PatternSyntaxException__f_index = index;
+    $ct_jl_Throwable__T__jl_Throwable__Z__Z__(this, null, null, true, true)
+  };
+  getMessage__T() {
+    var idx = this.ju_regex_PatternSyntaxException__f_index;
+    var re = this.ju_regex_PatternSyntaxException__f_regex;
+    var indexHint = ((idx < 0) ? "" : (" near index " + idx));
+    var base = (((this.ju_regex_PatternSyntaxException__f_desc + indexHint) + "\n") + re);
+    return ((((idx >= 0) && (re !== null)) && (idx < $uI(re.length))) ? (((base + "\n") + $as_T(" ".repeat(idx))) + "^") : base)
+  };
+}
+var $d_ju_regex_PatternSyntaxException = new $TypeData().initClass({
+  ju_regex_PatternSyntaxException: 0
+}, false, "java.util.regex.PatternSyntaxException", {
+  ju_regex_PatternSyntaxException: 1,
+  jl_IllegalArgumentException: 1,
+  jl_RuntimeException: 1,
+  jl_Exception: 1,
+  jl_Throwable: 1,
+  O: 1,
+  Ljava_io_Serializable: 1
+});
+$c_ju_regex_PatternSyntaxException.prototype.$classData = $d_ju_regex_PatternSyntaxException;
 /** @constructor */
 function $c_s_None$() {
   /*<skip>*/
