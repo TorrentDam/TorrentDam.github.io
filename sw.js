@@ -1,4 +1,3 @@
-(function(){
 'use strict';
 var $linkingInfo = Object.freeze({
   "esVersion": 6,
@@ -53811,5 +53810,4 @@ $c_sjs_js_WrappedArray.prototype.$classData = $d_sjs_js_WrappedArray;
 $L0 = new $c_RTLong(0, 0);
 $d_J.zero = $L0;
 $s_Ldefault_ServiceWorker__init__V();
-}).call(this);
 //# sourceMappingURL=sw.js.map
