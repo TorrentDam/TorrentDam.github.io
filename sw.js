@@ -1122,9 +1122,9 @@ function $c_Ldefault_ServiceWorker$() {
   this.Ldefault_ServiceWorker$__f_database = null;
   $n_Ldefault_ServiceWorker$ = this;
   this.Ldefault_ServiceWorker$__f_idb = indexedDB;
-  this.Ldefault_ServiceWorker$__f_database = $ct_s_concurrent_impl_Promise$DefaultPromise__(new $c_s_concurrent_impl_Promise$DefaultPromise());
-  var a = this.Ldefault_ServiceWorker$__f_idb.open("index");
-  a.onupgradeneeded = ((this$4) => ((event) => {
+  var a = $ct_s_concurrent_impl_Promise$DefaultPromise__(new $c_s_concurrent_impl_Promise$DefaultPromise());
+  var a$1 = this.Ldefault_ServiceWorker$__f_idb.open("index");
+  a$1.onupgradeneeded = ((this$6) => ((event) => {
     $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Upgrading database");
     var db = event.target.result;
     var fields = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T2.getArrayOf().constr)([new $c_T2("keyPath", "infoHash")]));
@@ -1132,42 +1132,42 @@ function $c_Ldefault_ServiceWorker$() {
     var fields$1 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T2.getArrayOf().constr)([new $c_T2("unique", false)]));
     return store.createIndex("name", "name", $m_sjs_js_special_package$().objectLiteral__sci_Seq__sjs_js_Object(fields$1))
   }))(this);
-  a.onsuccess = ((this$2$1) => ((event$2) => {
+  a$1.onsuccess = ((this$2$1, it$1$2) => ((event$2) => {
     $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Open database: success");
     var db$1 = event$2.target.result;
-    var this$11 = this$2$1.Ldefault_ServiceWorker$__f_database;
-    return $f_s_concurrent_Promise__success__O__s_concurrent_Promise(this$11, db$1)
-  }))(this);
+    return $f_s_concurrent_Promise__success__O__s_concurrent_Promise(it$1$2, db$1)
+  }))(this, a);
+  this.Ldefault_ServiceWorker$__f_database = a;
   self.oninstall = ((this$2$2) => ((event$1) => {
     $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("ServiceWorker: install");
     $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Fetch https://raw.githubusercontent.com/TorrentDam/torrents/master/index/index.json");
     var p = fetch("https://raw.githubusercontent.com/TorrentDam/torrents/master/index/index.json");
-    var indexJson = $m_sjs_js_Thenable$ThenableOps$().toFuture$extension__sjs_js_Thenable__s_concurrent_Future(p).flatMap__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$13) => ((response) => {
+    var indexJson = $m_sjs_js_Thenable$ThenableOps$().toFuture$extension__sjs_js_Thenable__s_concurrent_Future(p).flatMap__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$14) => ((response) => {
       var p$1 = response.json();
-      return $m_sjs_js_Thenable$ThenableOps$().toFuture$extension__sjs_js_Thenable__s_concurrent_Future(p$1).map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$15) => ((body) => {
+      return $m_sjs_js_Thenable$ThenableOps$().toFuture$extension__sjs_js_Thenable__s_concurrent_Future(p$1).map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$16) => ((body) => {
         $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Fetch complete");
         return body
-      }))(this$13)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
+      }))(this$14)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
     }))(this$2$2)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor());
-    var storeComplete = $ct_s_concurrent_impl_Promise$DefaultPromise__(new $c_s_concurrent_impl_Promise$DefaultPromise());
-    indexJson.flatMap__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$2$3, storeComplete$2) => ((indexJson$2) => this$2$3.Ldefault_ServiceWorker$__f_database.map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$19, storeComplete$2$2, indexJson$2$1) => ((database) => {
+    var a$2 = $ct_s_concurrent_impl_Promise$DefaultPromise__(new $c_s_concurrent_impl_Promise$DefaultPromise());
+    indexJson.flatMap__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$22, it$2) => ((indexJson$1) => this$22.Ldefault_ServiceWorker$__f_database.map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$23, it$4$2, indexJson$2) => ((database) => {
       var tx = database.transaction("torrents", "readwrite");
       var store$1 = tx.objectStore("torrents");
       store$1.clear();
       $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Store torrents");
-      var len = $uI(indexJson$2$1.length);
+      var len = $uI(indexJson$2.length);
       var i = 0;
       while ((i < len)) {
-        var arg1 = indexJson$2$1[i];
+        var arg1 = indexJson$2[i];
         store$1.add(arg1);
         i = ((1 + i) | 0)
       };
-      tx.oncomplete = ((this$2$4, storeComplete$1$2) => ((event$3) => {
+      tx.oncomplete = ((this$2$3, it$3$2) => ((event$3) => {
         $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("Store complete");
-        return $f_s_concurrent_Promise__success__O__s_concurrent_Promise(storeComplete$1$2, true)
-      }))(this$19, storeComplete$2$2)
-    }))(this$2$3, storeComplete$2, indexJson$2)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())))(this$2$2, storeComplete)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor());
-    event$1.waitUntil($m_sjs_js_JSConverters$JSRichFuture$().toJSPromise$extension__s_concurrent_Future__s_concurrent_ExecutionContext__sjs_js_Promise(storeComplete, $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor()))
+        return $f_s_concurrent_Promise__success__O__s_concurrent_Promise(it$3$2, true)
+      }))(this$23, it$4$2)
+    }))(this$22, it$2, indexJson$1)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())))(this$2$2, a$2)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor());
+    event$1.waitUntil($m_sjs_js_JSConverters$JSRichFuture$().toJSPromise$extension__s_concurrent_Future__s_concurrent_ExecutionContext__sjs_js_Promise(a$2, $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor()))
   }))(this);
   self.onactivate = ((this$3$1) => ((event$2$1) => {
     $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("ServiceWorker: activate");
@@ -1175,15 +1175,15 @@ function $c_Ldefault_ServiceWorker$() {
   }))(this);
   self.onmessage = ((this$4$1) => ((event$3$1) => {
     var source = event$3$1.source;
-    var this$31 = $m_Lio_circe_parser_package$().parse__T__s_util_Either($as_T(event$3$1.data));
-    if ((this$31 instanceof $c_s_util_Right)) {
-      var x2 = $as_s_util_Right(this$31);
+    var this$35 = $m_Lio_circe_parser_package$().parse__T__s_util_Either($as_T(event$3$1.data));
+    if ((this$35 instanceof $c_s_util_Right)) {
+      var x2 = $as_s_util_Right(this$35);
       var b = x2.s_util_Right__f_value;
       var _$1 = $as_Lio_circe_Json(b);
       var d = $m_Ldefault_ServiceWorkerMessage$().given_Codec_ServiceWorkerMessage__Lio_circe_Codec();
       var $$x1 = d.apply__Lio_circe_HCursor__s_util_Either(new $c_Lio_circe_cursor_TopCursor(_$1, null, null))
     } else {
-      var $$x1 = this$31
+      var $$x1 = this$35
     };
     var message = $as_Ldefault_ServiceWorkerMessage($$x1.toOption__s_Option().get__O());
     $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log(("ServiceWorker: " + message));
@@ -1197,20 +1197,20 @@ function $c_Ldefault_ServiceWorker$() {
       };
       throw new $c_s_MatchError(message)
     };
-    var this$34 = $as_T(query$2.toLowerCase());
-    var words = $f_T__split__T__I__AT(this$34, " ", 0);
-    this$4$1.torrentsStore__s_concurrent_Future().foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$5, source$2, query$3, words$2) => ((store$2) => {
+    var this$38 = $as_T(query$2.toLowerCase());
+    var words = $f_T__split__T__I__AT(this$38, " ", 0);
+    this$4$1.torrentsStore__s_concurrent_Future().foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$4, source$2, query$3, words$2) => ((store$2) => {
       var \u03b41$ = store$2.index("name");
-      var c = \u03b41$.openKeyCursor();
+      var request = \u03b41$.openKeyCursor();
       $m_s_package$();
       var elem = $m_sci_Nil$();
       var list = new $c_sr_ObjectRef(elem);
       var complete = $ct_s_concurrent_impl_Promise$DefaultPromise__(new $c_s_concurrent_impl_Promise$DefaultPromise());
-      c.onsuccess = ((this$38, words$2$2, list$2, complete$2) => ((event$4) => {
+      request.onsuccess = ((this$42, words$2$2, list$2, complete$2) => ((event$4) => {
         var cursor = event$4.target.result;
         if ((cursor !== null)) {
-          var this$39 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
-          var $$x2 = (this$39.length__I() < 10)
+          var this$43 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
+          var $$x2 = (this$43.length__I() < 10)
         } else {
           var $$x2 = false
         };
@@ -1231,47 +1231,47 @@ function $c_Ldefault_ServiceWorker$() {
           };
           if ($$x3) {
             var pk = $as_T(cursor.primaryKey);
-            var this$43 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
-            var ev$8 = new $c_sci_$colon$colon(pk, this$43);
-            list$2.sr_ObjectRef__f_elem = ev$8
+            var this$47 = $as_sci_List(list$2.sr_ObjectRef__f_elem);
+            var ev$10 = new $c_sci_$colon$colon(pk, this$47);
+            list$2.sr_ObjectRef__f_elem = ev$10
           };
           cursor.continue();
           return (void 0)
         } else {
           return $f_s_concurrent_Promise__success__O__s_concurrent_Promise(complete$2, (void 0))
         }
-      }))(this$2$5, words$2, list, complete);
-      complete.foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$6, source$1$2, query$1$2, store$2$1, list$3) => ((x$1$1) => {
+      }))(this$2$4, words$2, list, complete);
+      complete.foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$5, source$1$2, query$1$2, store$2$1, list$3) => ((x$1$1) => {
         $as_jl_Void(x$1$1);
-        var this$46 = $m_s_concurrent_Future$();
+        var this$50 = $m_s_concurrent_Future$();
         var in$1 = $as_sci_List(list$3.sr_ObjectRef__f_elem).reverse__sci_List();
-        var this$44 = $m_sc_BuildFrom$();
-        new $c_sc_BuildFromLowPriority2$$anon$11(this$44);
+        var this$48 = $m_sc_BuildFrom$();
+        new $c_sc_BuildFromLowPriority2$$anon$11(this$48);
         var executor = $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor();
-        var this$48 = in$1.iterator__sc_Iterator();
-        var z = this$46.successful__O__s_concurrent_Future(($m_sci_List$(), new $c_scm_ListBuffer()));
+        var this$52 = in$1.iterator__sc_Iterator();
+        var z = this$50.successful__O__s_concurrent_Future(($m_sci_List$(), new $c_scm_ListBuffer()));
         var result = z;
-        while (this$48.hasNext__Z()) {
+        while (this$52.hasNext__Z()) {
           var arg1$2 = result;
-          var arg2 = this$48.next__O();
+          var arg2 = this$52.next__O();
           var fr = $as_s_concurrent_Future(arg1$2);
           var pk$1 = $as_T(arg2);
-          var that = $p_Ldefault_ServiceWorker$__get$5__Lorg_scalajs_dom_raw_IDBObjectStore__T__s_concurrent_Future(this$2$6, store$2$1, pk$1);
+          var that = $p_Ldefault_ServiceWorker$__get$5__Lorg_scalajs_dom_raw_IDBObjectStore__T__s_concurrent_Future(this$2$5, store$2$1, pk$1);
           var f = $m_s_concurrent_Future$().s_concurrent_Future$__f__addToBuilderFun;
           result = $f_s_concurrent_Future__zipWith__s_concurrent_Future__F2__s_concurrent_ExecutionContext__s_concurrent_Future(fr, that, f, executor)
         };
-        $as_s_concurrent_Future(result).map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$2$7) => ((x$9$2) => {
+        $as_s_concurrent_Future(result).map__F1__s_concurrent_ExecutionContext__s_concurrent_Future(new $c_sjsr_AnonFunction1(((this$2$6) => ((x$9$2) => {
           var x$9 = $as_scm_Builder(x$9$2);
           return $as_sc_IterableOnce(x$9.result__O())
-        }))(this$46)), ($is_s_concurrent_BatchingExecutor(executor) ? executor : $m_s_concurrent_ExecutionContext$parasitic$())).foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$8, source$2$2, query$2$2) => ((entries) => {
+        }))(this$50)), ($is_s_concurrent_BatchingExecutor(executor) ? executor : $m_s_concurrent_ExecutionContext$parasitic$())).foreach__F1__s_concurrent_ExecutionContext__V(new $c_sjsr_AnonFunction1(((this$2$7, source$2$2, query$2$2) => ((entries) => {
           var entries$1 = $as_sci_List(entries);
           var results = new $c_Ldefault_WindowMessage$SearchResults(query$2$2, entries$1);
           var encoder = $m_Ldefault_WindowMessage$().given_Codec_WindowMessage__Lio_circe_Codec();
-          var this$52 = encoder.apply__O__Lio_circe_Json(results);
-          var s = $m_Lio_circe_Printer$().Lio_circe_Printer$__f_noSpaces.print__Lio_circe_Json__T(this$52);
+          var this$56 = encoder.apply__O__Lio_circe_Json(results);
+          var s = $m_Lio_circe_Printer$().Lio_circe_Printer$__f_noSpaces.print__Lio_circe_Json__T(this$56);
           source$2$2.postMessage(s, null)
-        }))(this$2$6, source$1$2, query$1$2)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
-      }))(this$2$5, source$2, query$3, store$2, list)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
+        }))(this$2$5, source$1$2, query$1$2)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
+      }))(this$2$4, source$2, query$3, store$2, list)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
     }))(this$4$1, source, query$2, words)), $m_s_concurrent_ExecutionContext$().global__s_concurrent_ExecutionContextExecutor())
   }))(this)
 }
