@@ -829,10 +829,10 @@ function $s_Ldefault_ServiceWorker__init__V() {
 function $c_Ldefault_ServiceWorker$() {
   $n_Ldefault_ServiceWorker$ = this;
   self.oninstall = ((this$1) => ((event) => {
-    $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("ServiceWorker: install")
+    console.log("ServiceWorker: install")
   }))(this);
   self.onactivate = ((this$2) => ((event$2) => {
-    $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("ServiceWorker: activate")
+    console.log("ServiceWorker: activate")
   }))(this)
 }
 $c_Ldefault_ServiceWorker$.prototype = new $h_O();
@@ -843,7 +843,7 @@ function $h_Ldefault_ServiceWorker$() {
 }
 $h_Ldefault_ServiceWorker$.prototype = $c_Ldefault_ServiceWorker$.prototype;
 $c_Ldefault_ServiceWorker$.prototype.init__V = (function() {
-  $m_Lorg_scalajs_dom_package$().console__Lorg_scalajs_dom_raw_Console().log("ServiceWorker: init")
+  console.log("ServiceWorker: init")
 });
 var $d_Ldefault_ServiceWorker$ = new $TypeData().initClass({
   Ldefault_ServiceWorker$: 0
@@ -922,69 +922,6 @@ var $d_jl_Void = new $TypeData().initClass({
   jl_Void: 1,
   O: 1
 }, (void 0), (void 0), ((x) => (x === (void 0))));
-function $p_Lorg_scalajs_dom_package$__console$lzycompute__Lorg_scalajs_dom_raw_Console($thiz) {
-  if (((134217728 & $thiz.Lorg_scalajs_dom_package$__f_bitmap$0) === 0)) {
-    $thiz.Lorg_scalajs_dom_package$__f_console = console;
-    $thiz.Lorg_scalajs_dom_package$__f_bitmap$0 = (134217728 | $thiz.Lorg_scalajs_dom_package$__f_bitmap$0)
-  };
-  return $thiz.Lorg_scalajs_dom_package$__f_console
-}
-/** @constructor */
-function $c_Lorg_scalajs_dom_package$() {
-  this.Lorg_scalajs_dom_package$__f_ApplicationCache = null;
-  this.Lorg_scalajs_dom_package$__f_Blob = null;
-  this.Lorg_scalajs_dom_package$__f_BlobPropertyBag = null;
-  this.Lorg_scalajs_dom_package$__f_DOMException = null;
-  this.Lorg_scalajs_dom_package$__f_Event = null;
-  this.Lorg_scalajs_dom_package$__f_EventException = null;
-  this.Lorg_scalajs_dom_package$__f_EventSource = null;
-  this.Lorg_scalajs_dom_package$__f_FileReader = null;
-  this.Lorg_scalajs_dom_package$__f_FormData = null;
-  this.Lorg_scalajs_dom_package$__f_KeyboardEvent = null;
-  this.Lorg_scalajs_dom_package$__f_MediaError = null;
-  this.Lorg_scalajs_dom_package$__f_MutationObserverInit = null;
-  this.Lorg_scalajs_dom_package$__f_Node = null;
-  this.Lorg_scalajs_dom_package$__f_NodeFilter = null;
-  this.Lorg_scalajs_dom_package$__f_PerformanceNavigation = null;
-  this.Lorg_scalajs_dom_package$__f_PositionError = null;
-  this.Lorg_scalajs_dom_package$__f_Range = null;
-  this.Lorg_scalajs_dom_package$__f_TextEvent = null;
-  this.Lorg_scalajs_dom_package$__f_TextTrack = null;
-  this.Lorg_scalajs_dom_package$__f_URL = null;
-  this.Lorg_scalajs_dom_package$__f_VisibilityState = null;
-  this.Lorg_scalajs_dom_package$__f_WebSocket = null;
-  this.Lorg_scalajs_dom_package$__f_WheelEvent = null;
-  this.Lorg_scalajs_dom_package$__f_XMLHttpRequest = null;
-  this.Lorg_scalajs_dom_package$__f_XPathResult = null;
-  this.Lorg_scalajs_dom_package$__f_window = null;
-  this.Lorg_scalajs_dom_package$__f_document = null;
-  this.Lorg_scalajs_dom_package$__f_console = null;
-  this.Lorg_scalajs_dom_package$__f_bitmap$0 = 0
-}
-$c_Lorg_scalajs_dom_package$.prototype = new $h_O();
-$c_Lorg_scalajs_dom_package$.prototype.constructor = $c_Lorg_scalajs_dom_package$;
-/** @constructor */
-function $h_Lorg_scalajs_dom_package$() {
-  /*<skip>*/
-}
-$h_Lorg_scalajs_dom_package$.prototype = $c_Lorg_scalajs_dom_package$.prototype;
-$c_Lorg_scalajs_dom_package$.prototype.console__Lorg_scalajs_dom_raw_Console = (function() {
-  return (((134217728 & this.Lorg_scalajs_dom_package$__f_bitmap$0) === 0) ? $p_Lorg_scalajs_dom_package$__console$lzycompute__Lorg_scalajs_dom_raw_Console(this) : this.Lorg_scalajs_dom_package$__f_console)
-});
-var $d_Lorg_scalajs_dom_package$ = new $TypeData().initClass({
-  Lorg_scalajs_dom_package$: 0
-}, false, "org.scalajs.dom.package$", {
-  Lorg_scalajs_dom_package$: 1,
-  O: 1
-});
-$c_Lorg_scalajs_dom_package$.prototype.$classData = $d_Lorg_scalajs_dom_package$;
-var $n_Lorg_scalajs_dom_package$;
-function $m_Lorg_scalajs_dom_package$() {
-  if ((!$n_Lorg_scalajs_dom_package$)) {
-    $n_Lorg_scalajs_dom_package$ = new $c_Lorg_scalajs_dom_package$()
-  };
-  return $n_Lorg_scalajs_dom_package$
-}
 /** @constructor */
 function $c_jl_Number() {
   /*<skip>*/
