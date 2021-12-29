@@ -835,6 +835,9 @@ function $c_Ldefault_ServiceWorker$() {
   }))(this);
   self.onactivate = ((this$2) => ((event$2) => {
     console.log("ServiceWorker: activate")
+  }))(this);
+  self.onfetch = ((this$3) => ((event$3) => {
+    event$3.respondWith(fetch(event$3.request, null))
   }))(this)
 }
 $c_Ldefault_ServiceWorker$.prototype = new $h_O();
