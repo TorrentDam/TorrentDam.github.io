@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "@fortawesome/fontawesome-free/js/all": "./@fortawesome/fontawesome-free/js/all.js",
+    "bulma/css/bulma.css": "./bulma/css/bulma.css"
+  }
+}
