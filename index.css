@@ -1,1 +1,0 @@
-@import"./_snowpack/pkg/bulma/css/bulma.css";.navbar .logo{width:28px;height:48px}.navbar .index-refresh-icon svg{animation:mover 1s infinite alternate}@keyframes mover{0%{transform:translateY(-3px)}to{transform:translateY(+3px)}}
